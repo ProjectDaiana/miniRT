@@ -1,9 +1,8 @@
-#miniRT: A Simple Raytracer in C with MiniLibX
-
+# miniRT: A Simple Raytracer in C with MiniLibX
 Welcome to miniRT, a basic raytracing engine built from scratch using the MiniLibX graphical library. This project brings together essential concepts of computer graphics, particularly raytracing, to create realistic images of 3D scenes.
 
-##Features
 
+## Features
 - Geometric Objects: Supports rendering of basic geometric shapes including planes, spheres, and cylinders. These objects can be resized, translated, and rotated (except for spheres and lights, which cannot be rotated).
 - Lighting System: Implements ambient and diffuse lighting, ensuring objects are illuminated realistically. The system also handles spot brightness and hard shadows, with no object ever being completely in the dark.
 - Scene Description: Scenes are defined in a flexible .rt file format. Each element, such as objects, lights, and cameras, can be described in any order, with parameters separated by spaces or line breaks.
