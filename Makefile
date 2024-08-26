@@ -1,0 +1,33 @@
+cc = cc
+NAME=minirt
+CFLAGS= -Wextra -Wall -Werror -I/usr/local/includes -I./includes
+MLX = -L./lib/minilibx-linux -lmlx -lXext -lX11 -lm
+
+SRCDIR = src
+SOURCES := $(shell find $(SRCDIR) -name '*.c')
+OBJS := ${SOURCES:.c=.o}
+LIBFT= lib/libft/libft.a
+
+$(NAME): $(OBJS) $(MLX) $(LIBFT)
+	@$(CC) $(OBJS) $(MLX) $(LIBFT) -o $(NAME)
+
+$(MLX) :
+	$(MAKE) -C ./lib/minilibx-linux
+
+$(LIBFT) :
+	$(MAKE) -C ./lib/libft
+
+all: $(NAME)
+
+m: all
+	./$(NAME)
+
+clean:
+	$(MAKE) -C ./lib/libft clean
+	rm -f $(OBJS)
+
+fclean: clean
+	$(MAKE) -C ./lib/libft fclean
+	rm -rf $(NAME)
+
+re: fclean all
