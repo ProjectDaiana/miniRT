@@ -1,3 +1,5 @@
+# include <X11/X.h>
+# include <X11/keysym.h>
 # include <stdio.h>
 # include <math.h>
 # include "../lib/minilibx-linux/mlx.h"
@@ -33,3 +35,7 @@ typedef struct data
 	void *mlx_ptr;
 	void *win_ptr;
 } t_data;
+
+int	handle_no_event(void *data);
+int	handle_keypress(int keysym, t_data *data);
+int	handle_keyrelease(int keysym, void *data);

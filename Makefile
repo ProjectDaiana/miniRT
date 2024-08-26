@@ -8,8 +8,11 @@ SOURCES := $(shell find $(SRCDIR) -name '*.c')
 OBJS := ${SOURCES:.c=.o}
 LIBFT= lib/libft/libft.a
 
-$(NAME): $(OBJS) $(MLX) $(LIBFT)
+$(NAME): $(OBJS) $(LIBFT)
 	@$(CC) $(OBJS) $(MLX) $(LIBFT) -o $(NAME)
+
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
 
 $(MLX) :
 	$(MAKE) -C ./lib/minilibx-linux
