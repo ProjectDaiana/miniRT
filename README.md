@@ -1,6 +1,8 @@
 # miniRT: A Simple Raytracer in C with MiniLibX
 Welcome to miniRT, a basic raytracing engine built from scratch using the MiniLibX graphical library. This project brings together essential concepts of computer graphics, particularly raytracing, to create realistic images of 3D scenes.
 
+## Subject
+[Subject](https://cdn.intra.42.fr/pdf/pdf/137465/en.subject.pdf)
 
 ## Features
 #### Geometric Objects
@@ -17,3 +19,38 @@ Objects, lights, and cameras can undergo translation and rotation transformation
 The program correctly manages all possible intersections and the insides of objects, ensuring accurate rendering of complex scenes.
 #### MiniLibX Integration
 Utilizes the MiniLibX library for graphical output, adhering to the requirements for fluid window management and image handling.
+
+
+## Resources
+- [minilibx](https://aurelienbrabant.fr/blog?q=minilibx)
+- [Basic Raytracing, Gabriel Gambetta](https://www.gabrielgambetta.com/computer-graphics-from-scratch/02-basic-raytracing.html)
+- [Ray Tracer Youtube](https://www.youtube.com/watch?v=RIgc5J_ZGu8&list=PLAqGIYgEAxrUO6ODA0pnLkM2UOijerFPv&index=1)
+- [Ray Tracing in one Weekend](https://raytracing.github.io/)
+- [The Ray Tracer Challenge](http://raytracerchallenge.com/)
+
+## Maths 
+#### Calculate the length of a vector
+sqrt(vec.x * vec.x + vec.y * vec.y + vec.z * vec.z)
+#### Vector adition
+V + W =⟨Vx​ + Wx​, Vy​ + Wy​, Vz​ + Wz​⟩(for 3D vectors)
+#### Vector substraction
+V - W = ⟨Vx​ - Wx​, Vy​ - Wy​, Vz​ - Wz​⟩(for 3D vectors)
+#### Vector multiplication
+t * V = (t *Vx, t * Vy, t * Vz)
+#### Component-Wise multiplication
+W * V = (Vx * Wx, Vy * Wy, Vz * Wz)
+#### Scalar division
+vec.x *= 1 / t;
+vec.y *= 1 / t;
+vec.z *= 1 / t;
+#### Unit vectors
+    vec.x /= len;
+    vec.y /= len;
+    vec.z /= len;
+#### Dot Product
+V.W = Vx * Wx + Vy * Wy + Vz * Wz
+vec.x * vec2.x + vec.y * vec2.y + vec.z * vec2.z
+#### Cross Product
+    new.x = vec.y * vec2.z - vec.z * vec2.y;
+    new.y = vec.z * vec2.x - vec.x * vec2.z;
+    new.z = vec.x * vec2.y - vec.y * vec2.x;
