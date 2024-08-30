@@ -75,7 +75,7 @@ If the two vectors are unit vectors, the dot product is actually the cosine of t
 	a.x * b.x + a.y * b.y + a.z * b.z
 
 #### Cross Product
-You get a new vector that is perpendicular to both of the original vectors. Returns new_vector
+You get a new vector that is perpendicular to both of the original vectors. Returns a new vector.
 
     new.x = vec.y * vec2.z - vec.z * vec2.y;
     new.y = vec.z * vec2.x - vec.x * vec2.z;
