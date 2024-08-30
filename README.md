@@ -44,28 +44,54 @@ Utilizes the MiniLibX library for graphical output, adhering to the requirements
 - [The Ray Tracer Challenge](http://raytracerchallenge.com/)
 
 ## Maths 
-#### Calculate the length of a vector
-sqrt(vec.x * vec.x + vec.y * vec.y + vec.z * vec.z)
+
 #### Vector adition
-V + W =⟨Vx​ + Wx​, Vy​ + Wy​, Vz​ + Wz​⟩(for 3D vectors)
+	V + W =⟨Vx​ + Wx​, Vy​ + Wy​, Vz​ + Wz​⟩(for 3D vectors)
+
 #### Vector substraction
-V - W = ⟨Vx​ - Wx​, Vy​ - Wy​, Vz​ - Wz​⟩(for 3D vectors)
+	V - W = ⟨Vx​ - Wx​, Vy​ - Wy​, Vz​ - Wz​⟩(for 3D vectors)
+
 #### Vector multiplication
-t * V = (t *Vx, t * Vy, t * Vz)
+	t * V = (t *Vx, t * Vy, t * Vz)
+
 #### Component-Wise multiplication
-W * V = (Vx * Wx, Vy * Wy, Vz * Wz)
+	W * V = (Vx * Wx, Vy * Wy, Vz * Wz)
+
 #### Scalar division
-vec.x *= 1 / t;
-vec.y *= 1 / t;
-vec.z *= 1 / t;
+	vec.x *= 1 / t;
+	vec.y *= 1 / t;
+	vec.z *= 1 / t;
+
 #### Unit vectors
     vec.x /= len;
     vec.y /= len;
     vec.z /= len;
-#### Dot Product
-V.W = Vx * Wx + Vy * Wy + Vz * Wz
-vec.x * vec2.x + vec.y * vec2.y + vec.z * vec2.z
+
+#### Vector Normalization
+Convert any vector  with a nonzero magnitude into a unit vector.
+
+    return tuple(v.x / magnitude(v),
+                v.y / magnitude(v),
+                v.z / magnitude(v),
+                v.w / magnitude(v))
+
+#### Dot/Scalar Product
+If the two vectors are unit vectors, the dot product is actually the cosine of the angle between them. The smaller the dot product, the larger the angle between the vectors. Returns a scalar.
+
+	V.W = Vx * Wx + Vy * Wy + Vz * Wz
+	a.x * b.x + a.y * b.y + a.z * b.z
+
 #### Cross Product
+You get a new vector that is perpendicular to both of the original vectors. Returns new_vector
+
     new.x = vec.y * vec2.z - vec.z * vec2.y;
     new.y = vec.z * vec2.x - vec.x * vec2.z;
     new.z = vec.x * vec2.y - vec.y * vec2.x;
+
+#### Magnitude/Length of a vector (pythagoras)
+	sqrt(vec.x * vec.x + vec.y * vec.y + vec.z * vec.z)
+	ft_sqr(x) + ft_sqr(y) + ft_sqr(z);
+
+
+
+
