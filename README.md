@@ -4,15 +4,15 @@ Welcome to miniRT, a basic raytracing engine built from scratch using the MiniLi
 ## To Do
 - [ ] Read file
 - [ ] Check if file is valid
-- [ ]Parse file
+- [ ] Parse file
 - [x] Create window
 - [x] Handle keypress ESC
 - [ ] Handle X button
 - [ ] Create image
 - [ ] Put pixel on screen
 
-[ ] Normalize vectors
-[ ] Calcualate color of pixel
+- [ ] Normalize vectors 🐱
+- [ ] Calcualate color of pixel
 
 ## Subject
 [Subject](https://cdn.intra.42.fr/pdf/pdf/137465/en.subject.pdf)
