@@ -72,3 +72,4 @@ double ft_sqr(double x);
 double vect_length(double x, double y, double z);
 
 int normalize_vect(t_vector *vector);
+double cross_product_to_array(t_vector a, t_vector b);

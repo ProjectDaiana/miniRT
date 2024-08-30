@@ -1,6 +1,5 @@
 #include "minirt.h"
 
-
 void init(t_data *data, t_vector *vector)
 {
 	data->mlx_ptr = NULL;
@@ -42,22 +41,31 @@ int main(int argc, char **argv)
 	mlx_loop(data.mlx_ptr);
 
 	normalize_vect(&vector);
-
+	t_vector a = {1, 2, 3};
+	t_vector b = {4, 5, 6};
+	double *result[3];
+	cross_product_to_array(a, b);
+	printf("Cross Product: %f, %f, %f\n", result[0], result[1], result[2]);
 	return (0);	
 }
+
 // Input Reference
 
+// Ambient lighting
 // A	ambient lighting ratio in range [0.0,1.0]: 0.2
 //		r, g, b
 
+// Camera
 // C	x, y, z,
 //		3d normalized orientation vector. In range [-1,1] for each x,y,z,
 //		FOV  Horizontal field of view in degrees in range [0,180]: 70
 
+// Light
 // L	x, y, z,
 //		light_brightnes_ratio,
 //		r, g, b
 
+// Sphere
 // sp	x, y, z,
 // 		diameter,
 // 		r, g, b
