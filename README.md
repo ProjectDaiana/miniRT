@@ -13,7 +13,7 @@ Welcome to miniRT, a basic raytracing engine built from scratch using the MiniLi
 
 - [x] Normalize vectors
 - [ ] Calculate dot product 🐱
-- [ ] Calculate cross product
+- [ ] Calculate cross product 🐱
 - [ ] Calcualate color of pixel
 
 ## Subject
