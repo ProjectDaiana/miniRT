@@ -23,12 +23,40 @@ typedef struct vector
 	double x;
 	double y;
 	double z;
+	double nx;
+	double ny;
+	double nz;
+	double magnitude;
+	double norm_vector;
+	int r;
+	int g;
+	int b;
 } t_vector;
 
-typedef struct scene
+typedef struct camera
 {
+	t_vector pos;
+	t_vector dir;
+	t_vector up;
+	t_vector right;
+} t_camera;
 
-} t_scene;
+typedef struct ray
+{
+	t_vector origin;
+	t_vector direction;
+} t_ray;
+
+typedef struct light
+{
+	t_vector pos;
+	t_vector color;
+} t_light;
+typedef struct ambient
+{
+	float ratio;
+	t_vector color;
+} t_ambient;
 
 typedef struct data
 {
@@ -39,3 +67,8 @@ typedef struct data
 int	handle_no_event(void *data);
 int	handle_keypress(int keysym, t_data *data);
 int	handle_keyrelease(int keysym, void *data);
+
+double ft_sqr(double x);
+double vect_length(double x, double y, double z);
+
+int normalize_vect(t_vector *vector);
