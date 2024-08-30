@@ -2,14 +2,14 @@
 Welcome to miniRT, a basic raytracing engine built from scratch using the MiniLibX graphical library. This project brings together essential concepts of computer graphics, particularly raytracing, to create realistic images of 3D scenes.
 
 ## To Do
-[ ] Read file
-[ ] Check if file is valid
-[ ] Parse file
-[x] Create window
-[x] Handle keypress ESC
-[ ] Handle X button
-[ ] Create image
-[ ] Put pixel on screen
+- [ ] Read file
+- [ ] Check if file is valid
+- [ ]Parse file
+- [x] Create window
+- [x] Handle keypress ESC
+- [ ] Handle X button
+- [ ] Create image
+- [ ] Put pixel on screen
 
 [ ] Normalize vectors
 [ ] Calcualate color of pixel
