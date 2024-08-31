@@ -1,28 +1,29 @@
 # miniRT: A Simple Raytracer in C with MiniLibX
 Welcome to miniRT, a basic raytracing engine built from scratch using the MiniLibX graphical library. This project brings together essential concepts of computer graphics, particularly raytracing, to create realistic images of 3D scenes.
 
-## Input
+## Input Reference
 
-// Input Reference
+#### Ambient lighting
+- A
+- ambient lighting ratio in range [0.0,1.0]: 0.2
+- r, g, b
 
-// Ambient lighting
-// A	ambient lighting ratio in range [0.0,1.0]: 0.2
-//		r, g, b
+#### Camera
+- C
+- x, y, z,
+- 3d normalized orientation vector. In range [-1,1] for each x,y,z,
+- FOV  Horizontal field of view in degrees in range [0,180]: 70
 
-// Camera
-// C	x, y, z,
-//		3d normalized orientation vector. In range [-1,1] for each x,y,z,
-//		FOV  Horizontal field of view in degrees in range [0,180]: 70
+#### Light
+- L
+- x, y, z,
+- light_brightnes_ratio,
+- r, g, b
 
-// Light
-// L	x, y, z,
-//		light_brightnes_ratio,
-//		r, g, b
-
-// Sphere
-// sp	x, y, z,
-// 		diameter,
-// 		r, g, b
+#### Sphere
+- sp	x, y, z,
+- diameter,
+- r, g, b
 
 
 ## To Do
