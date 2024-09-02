@@ -20,19 +20,19 @@ Utilizes the MiniLibX library for graphical output, adhering to the requirements
 
 ## Maths 
 #### Calculate the length of a vector
-sqrt(vec.x * vec.x + vec.y * vec.y + vec.z * vec.z)
+    sqrt(vec.x * vec.x + vec.y * vec.y + vec.z * vec.z)
 #### Vector adition
-V + W =⟨Vx​ + Wx​, Vy​ + Wy​, Vz​ + Wz​⟩(for 3D vectors)
+    V + W =⟨Vx​ + Wx​, Vy​ + Wy​, Vz​ + Wz​⟩(for 3D vectors)
 #### Vector substraction
-V - W = ⟨Vx​ - Wx​, Vy​ - Wy​, Vz​ - Wz​⟩(for 3D vectors)
+    V - W = ⟨Vx​ - Wx​, Vy​ - Wy​, Vz​ - Wz​⟩(for 3D vectors)
 #### Vector multiplication
-t * V = (t *Vx, t * Vy, t * Vz)
+    t * V = (t *Vx, t * Vy, t * Vz)
 #### Component-Wise multiplication
-W * V = (Vx * Wx, Vy * Wy, Vz * Wz)
+    W * V = (Vx * Wx, Vy * Wy, Vz * Wz)
 #### Scalar division
-vec.x *= 1 / t;
-vec.y *= 1 / t;
-vec.z *= 1 / t;
+    vec.x *= 1 / t;
+    vec.y *= 1 / t;
+    vec.z *= 1 / t;
 #### Unit vectors
     vec.x /= len;
     vec.y /= len;
