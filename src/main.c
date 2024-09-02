@@ -1,11 +1,16 @@
 #include "minirt.h"
 
-int main(int argc, char **argv)
+// void	*mlx;
+// void	*win;
+// void	*img;
+// int		*img_data;
+
+int	main(int argc, char **argv)
 {
+	static t_data	data;
+
 	(void)argc;
 	(void)argv;
-	static t_data data;
-
 	data.mlx_ptr = mlx_init();
 	if (data.mlx_ptr == NULL)
 		return (MLX_ERROR);
@@ -15,12 +20,20 @@ int main(int argc, char **argv)
 		free(data.mlx_ptr);
 		return (MLX_ERROR);
 	}
+	// modif here?
+	init_scene(&data.scene);
+	// draw the initial scene
+	if (render_frame(&data) == MLX_ERROR)
+	{
+		// error
+		mlx_destroy_window(data.mlx_ptr, data.win_ptr);
+		free(data.mlx_ptr);
+		return (MLX_ERROR);
+	}
 	mlx_loop_hook(data.mlx_ptr, &handle_no_event, &data);
 	mlx_hook(data.win_ptr, KeyPress, KeyPressMask, handle_keypress, &data);
-	mlx_hook(data.win_ptr, KeyRelease, KeyReleaseMask, &handle_keyrelease, &data);
+	mlx_hook(data.win_ptr, KeyRelease, KeyReleaseMask, &handle_keyrelease,
+		&data);
 	mlx_loop(data.mlx_ptr);
-
-	return (0);	
+	return (0);
 }
-
-
