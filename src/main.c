@@ -32,7 +32,7 @@ int render(t_data *data)
         int x = (int)(data->proj.position.x * SCALE) + W_WIDTH / 2;  // Scale and center x
         int y = W_HEIGHT - (int)(data->proj.position.y * SCALE) - W_HEIGHT / 2; // Scale and invert y
         if (x >= 0 && x < W_WIDTH && y >= 0 && y < W_HEIGHT)
-			mlx_pixel_put(data->mlx_ptr, data->win_ptr, x, y, multiply_color_by_color(&color1, &color2));
+			mlx_pixel_put(data->mlx_ptr, data->win_ptr, x, y, add_color(&color1, &color2));
 		//printf(BLU"Projectile Position: (%f, %f, %f)\n" RESET, data->proj.position.x, data->proj.position.y, data->proj.position.z);
         // Update projectile
         if (data->proj.position.y > 0) {
@@ -65,6 +65,17 @@ int main(int argc, char **argv)
 	//printf(YEL"Normalized Velocity: (%f, %f, %f)\n" RESET, normalized_velocity.x, normalized_velocity.y, normalized_velocity.z);
 	//cross_product_to_array(&a, &b);
 	
+	double mtrx[4][4] = {
+		{1, 2, 3, 4}, 
+        {5.5, 6.5, 7.5, 8.5}, 
+        {9, 10, 11, 12}, 
+        {13.5, 14.5, 15.5, 16.5}
+		};
+	t_matrix matrix = create_matrix(mtrx);
+	//Print all nums in matrix
+	print_matrix(matrix);
+
+
 	data.mlx_ptr = mlx_init();
 	if (data.mlx_ptr == NULL)
 		return (MLX_ERROR);

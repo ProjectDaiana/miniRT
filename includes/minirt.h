@@ -35,6 +35,11 @@ typedef struct s_vector
 	//t_color *color;
 } t_vector;
 
+typedef struct s_matrix
+{
+	double m[4][4];
+} t_matrix;
+
 typedef struct s_color
 {
 	int r;
@@ -74,9 +79,10 @@ typedef struct s_proj{
 // } t_light;
 // typedef struct ambient
 // {
-// 	float ratio;
+// 	floa ratio;
 // 	t_vector color;
 // } t_ambient;
+
 
 typedef struct data
 {
@@ -109,3 +115,7 @@ int	add_color(t_color *color1, t_color *color2);
 int	substract_color(t_color *color1, t_color *color2);
 int	multiply_color_by_scalar(t_color *color1, int scalar);
 int	hadamard_product(t_color *color1, t_color *color2);
+
+// Matrix functions
+t_matrix create_matrix(double m[4][4]);
+void print_matrix(t_matrix matrix);
