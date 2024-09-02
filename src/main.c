@@ -18,7 +18,6 @@ void init(t_data *data, t_vector *vector)
 //	printf(YEL"Vector Magnitude: %f\n" RESET, vector->magnitude);
 }
 
-
 int render(t_data *data)
 {
     if (data->win_ptr != NULL)
@@ -36,7 +35,7 @@ int render(t_data *data)
 		//printf(BLU"Projectile Position: (%f, %f, %f)\n" RESET, data->proj.position.x, data->proj.position.y, data->proj.position.z);
         // Update projectile
         if (data->proj.position.y > 0) {
-			printf(RED"Projectile Position: (%f, %f, %f)\n" RESET, data->proj.position.x, data->proj.position.y, data->proj.position.z);
+			//printf(RED"Projectile Position: (%f, %f, %f)\n" RESET, data->proj.position.x, data->proj.position.y, data->proj.position.z);
             data->proj = tick(&data->env, &data->proj);
         }
     }
@@ -64,17 +63,42 @@ int main(int argc, char **argv)
     data.proj = (t_proj){initial_position, normalized_velocity};
 	//printf(YEL"Normalized Velocity: (%f, %f, %f)\n" RESET, normalized_velocity.x, normalized_velocity.y, normalized_velocity.z);
 	//cross_product_to_array(&a, &b);
-	
-	double mtrx[4][4] = {
-		{1, 2, 3, 4}, 
-        {5.5, 6.5, 7.5, 8.5}, 
-        {9, 10, 11, 12}, 
-        {13.5, 14.5, 15.5, 16.5}
-		};
-	t_matrix matrix = create_matrix(mtrx);
-	//Print all nums in matrix
-	print_matrix(matrix);
 
+	double identity_matrix[4][4] = {
+		{1, 0, 0, 0}, 
+		{0, 1, 0, 0}, 
+		{0, 0, 1, 0}, 
+		{0, 0, 0, 1}
+	};	
+	t_matrix identity = create_matrix(identity_matrix);
+
+	// double m1[4][4] = {
+	// 	{1, 2, 3, 4}, 
+    //     {2, 4, 4, 2}, 
+    //     {8, 6, 4, 1}, 
+    //     {0, 0, 0, 1}
+	// 	};
+	//t_matrix matrix = create_matrix(m1);
+
+	// double m2[4][4] = {
+	// {1, 2, 3, 4}, 
+	// {5.5, 6.5, 7.5, 8.5}, 
+	// {9, 10, 11, 12}, 
+	// {13.5, 14, 15.5, 16.5}
+	// };
+
+	t_tuple tup_a = {1, 2, 3, 4};
+	
+//	t_matrix matrix2 = create_matrix(m2);
+	//printf("Matrix are equal? %d\n", compare_matrix(matrix, matrix2));
+	//Print all nums in matrix
+	//print_matrix(matrix);
+	t_tuple result = multiply_matrix_by_tuple(&identity, &tup_a);
+	printf("Result: %f, %f, %f, %f\n", result.x, result.y, result.z, result.w);
+	
+	// Multiply matrix by identity matrix
+	//t_matrix result = matrix_multiply(matrix, identity);
+	//print_matrix(result);
 
 	data.mlx_ptr = mlx_init();
 	if (data.mlx_ptr == NULL)
