@@ -44,3 +44,29 @@ vec.x * vec2.x + vec.y * vec2.y + vec.z * vec2.z
     new.x = vec.y * vec2.z - vec.z * vec2.y;
     new.y = vec.z * vec2.x - vec.x * vec2.z;
     new.z = vec.x * vec2.y - vec.y * vec2.x;
+
+#### Matrix by Tuple
+    Given the following matrix A:
+    | 1 | 2 | 3 | 4 |
+    | 2 | 4 | 4 | 2 |
+    | 8 | 6 | 4 | 1 |
+    | 0 | 0 | 0 | 1 |
+    And b ← tuple(1, 2, 3, 1)
+    Then A * b = tuple(18, 24, 33, 1)
+#### Matrix by Identity Matrix
+    function matrix_multiply(A, B)
+    M ← matrix()
+    for row ← 0 to 3
+    for col ← 0 to 3
+    M[row, col] ← A[row, 0] * B[0, col] +
+    A[row, 1] * B[1, col] +
+    A[row, 2] * B[2, col] +
+    A[row, 3] * B[3, col]
+    end for
+    end for
+    return M
+    end function
+        
+
+
+
