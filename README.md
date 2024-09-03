@@ -22,6 +22,14 @@ Welcome to miniRT, a basic raytracing engine built from scratch using the MiniLi
 ## Subject
 [Subject](https://cdn.intra.42.fr/pdf/pdf/137465/en.subject.pdf)
 
+## Resources
+- [minilibx](https://aurelienbrabant.fr/blog?q=minilibx)
+- [Basic Raytracing, Gabriel Gambetta](https://www.gabrielgambetta.com/computer-graphics-from-scratch/02-basic-raytracing.html)
+- [Ray Tracer Youtube](https://www.youtube.com/watch?v=RIgc5J_ZGu8&list=PLAqGIYgEAxrUO6ODA0pnLkM2UOijerFPv&index=1)
+- [Ray Tracing in one Weekend](https://raytracing.github.io/)
+- [The Ray Tracer Challenge](http://raytracerchallenge.com/)
+
+
 ## Features
 - **Geometric Objects.** Supports rendering of basic geometric shapes including planes, spheres, and cylinders. These objects can be resized, translated, and rotated (except for spheres and lights, which cannot be rotated).
 - **Lighting System.** Implements ambient and diffuse lighting, ensuring objects are illuminated realistically. The system also handles spot brightness and hard shadows, with no object ever being completely in the dark.
@@ -30,14 +38,6 @@ Welcome to miniRT, a basic raytracing engine built from scratch using the MiniLi
 - **Transformations.** Objects, lights, and cameras can undergo translation and rotation transformations, with specific properties like the diameter of a sphere or the width and height of a cylinder being adjustable.
 - **Accurate Intersection Handling.** The program correctly manages all possible intersections and the insides of objects, ensuring accurate rendering of complex scenes.
 - **MiniLibX Integration.** Utilizes the MiniLibX library for graphical output, adhering to the requirements for fluid window management and image handling.
-
-
-## Resources
-- [minilibx](https://aurelienbrabant.fr/blog?q=minilibx)
-- [Basic Raytracing, Gabriel Gambetta](https://www.gabrielgambetta.com/computer-graphics-from-scratch/02-basic-raytracing.html)
-- [Ray Tracer Youtube](https://www.youtube.com/watch?v=RIgc5J_ZGu8&list=PLAqGIYgEAxrUO6ODA0pnLkM2UOijerFPv&index=1)
-- [Ray Tracing in one Weekend](https://raytracing.github.io/)
-- [The Ray Tracer Challenge](http://raytracerchallenge.com/)
 
 
 ## Maths 
