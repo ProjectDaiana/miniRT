@@ -125,8 +125,13 @@ int	multiply_color_by_scalar(t_color *color1, int scalar);
 int	hadamard_product(t_color *color1, t_color *color2);
 
 // Matrix functions
-t_matrix	create_matrix(double m[4][4]);
-void		print_matrix(t_matrix matrix);
-int			compare_matrix(t_matrix a, t_matrix b);
 t_tuple		multiply_matrix_by_tuple(t_matrix *matrix, t_tuple *tuple);
+t_matrix	create_matrix(double m[4][4]);
+t_matrix	create_matrix_3(double m[3][3]);
 t_matrix	matrix_multiply(t_matrix a, t_matrix b);
+t_matrix	transpose_matrix(t_matrix *identity_matrix);
+t_matrix	find_submatrix(t_matrix *matrix, int row, int col, int mtrx_size);
+double		calculate_determinant(double m[2][2]);
+double		calculate_minor(t_matrix *matrix, int row, int col, int mtrx_size);
+int			compare_matrix(t_matrix a, t_matrix b);
+void		print_matrix(t_matrix matrix, char *str);

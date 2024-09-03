@@ -63,22 +63,24 @@ int main(int argc, char **argv)
     data.proj = (t_proj){initial_position, normalized_velocity};
 	//printf(YEL"Normalized Velocity: (%f, %f, %f)\n" RESET, normalized_velocity.x, normalized_velocity.y, normalized_velocity.z);
 	//cross_product_to_array(&a, &b);
+	
+	///////// MATRIX DECLARATIONS
 
-	double identity_matrix[4][4] = {
-		{1, 0, 0, 0}, 
-		{0, 1, 0, 0}, 
-		{0, 0, 1, 0}, 
-		{0, 0, 0, 1}
-	};	
-	t_matrix identity = create_matrix(identity_matrix);
+	// double identity_matrix[4][4] = {
+	// 	{1, 0, 0, 0}, 
+	// 	{0, 1, 0, 0}, 
+	// 	{0, 0, 1, 0}, 
+	// 	{0, 0, 0, 1}
+	// };	
+	// t_matrix identity = create_matrix(identity_matrix);
 
 	// double m1[4][4] = {
-	// 	{1, 2, 3, 4}, 
-    //     {2, 4, 4, 2}, 
-    //     {8, 6, 4, 1}, 
-    //     {0, 0, 0, 1}
-	// 	};
-	//t_matrix matrix = create_matrix(m1);
+	// 	{-6, 1, 1, 6}, 
+    //     {-8, 5, 8, 6}, 
+    //     {-1, 0, 8, 2}, 
+    //     {-7, 1, -1, 1}
+	// };
+	// t_matrix matrix = create_matrix(m1);
 
 	// double m2[4][4] = {
 	// {1, 2, 3, 4}, 
@@ -86,20 +88,48 @@ int main(int argc, char **argv)
 	// {9, 10, 11, 12}, 
 	// {13.5, 14, 15.5, 16.5}
 	// };
+	//t_matrix matrix2 = create_matrix(m2);
 
-	t_tuple tup_a = {1, 2, 3, 4};
+	double m3[3][3] = {
+		{3, 5, 0},
+		{2, -1, -7},
+		{6, -1, 5}
+	};
+	t_matrix matrix3 = create_matrix_3(m3);
+	calculate_minor(&matrix3, 1, 0, 3);
+
+	// double twobytwo_mtrx[2][2] = {
+	// 	{1, 5},
+	// 	{-3, 2}
+	// };
+	//double	determinant = calculate_determinant(twobytwo_mtrx);
+	//printf("Determinant: %f\n", determinant);
+
+	// t_tuple tup_a = {0.0, 0.0, 20.6, 0};
+	// printf("Tuple: %f, %f, %f, %f\n", tup_a.x, tup_a.y, tup_a.z, tup_a.w);
 	
-//	t_matrix matrix2 = create_matrix(m2);
+
+	///////// MATRIX CALCULATIONS
+
+	// t_matrix submatrix = find_submatrix(&matrix, 0, 2, 4);
+	// print_matrix(submatrix, "Submatrix");
+
+	//t_matrix result = transpose_matrix(&identity);
+	// print_matrix(identity, "Transpose Matrix");
+
 	//printf("Matrix are equal? %d\n", compare_matrix(matrix, matrix2));
-	//Print all nums in matrix
-	//print_matrix(matrix);
-	t_tuple result = multiply_matrix_by_tuple(&identity, &tup_a);
-	printf("Result: %f, %f, %f, %f\n", result.x, result.y, result.z, result.w);
+	//print_matrix(matrix, "Comparison");
 	
+	// t_tuple result = multiply_matrix_by_tuple(&identity, &tup_a);
+	// printf("Result: %f, %f, %f, %f\n", result.x, result.y, result.z, result.w);
+
+
 	// Multiply matrix by identity matrix
 	//t_matrix result = matrix_multiply(matrix, identity);
 	//print_matrix(result);
 
+
+	//////// MINILIBX
 	data.mlx_ptr = mlx_init();
 	if (data.mlx_ptr == NULL)
 		return (MLX_ERROR);
@@ -116,7 +146,7 @@ int main(int argc, char **argv)
 	return (0);	
 }
 
-// Input Reference
+// INPUT REFERENCE
 
 // Ambient lighting
 // A	ambient lighting ratio in range [0.0,1.0]: 0.2
@@ -133,6 +163,7 @@ int main(int argc, char **argv)
 //		r, g, b
 
 // Sphere
+// sp 0.0,0.0,20.6 12.6 10,0,255
 // sp	x, y, z,
 // 		diameter,
 // 		r, g, b
