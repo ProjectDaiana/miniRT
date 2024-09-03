@@ -32,7 +32,6 @@
 // 	mlx_loop(data.mlx_ptr);
 // 	return (0);
 // }
-#include <stdio.h>
 
 int	main(int argc, char **argv)
 {
