@@ -2,3 +2,15 @@ A 0.2 255,255,255
 C -50.0,0,20 0,0,1 70
 L -40.0,50.0,0.0 0.6 10,0,255
 sp 0.0,0.0,20.6 12.6 10,0,255
+
+
+ambient (A): Calculate the ambient light component by multiplying the ambient light color by its intensity. Ambient light is a constant light that uniformly illuminates the entire scene.
+light_dir (L): direction from the hit point on the sphere to the light source, normalized to a unit vector.
+
+important p 84 lighting and combining ambiant, diffuse reflection and spectacular reflection
+light p89 puts everything together.
+
+create ray imortant p58.
+
+That discriminant value is the key. If it’s negative, then the ray misses and no
+intersections occur between the sphere and the ray.

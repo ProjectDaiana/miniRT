@@ -36,13 +36,13 @@
 
 int	render_frame(t_data *data)
 {
-	Ray		ray;
+	t_ray		ray;
 	t_color	color;
 	t_color	accumulated_color;
 	double	u;
 	double	v;
 
-	int samples = 2; // Reduce samples for faster rendering during testing
+	int samples = 2; 
 	for (int y = 0; y < W_HEIGHT; y++)
 	{
 		for (int x = 0; x < W_WIDTH; x++)
@@ -59,7 +59,6 @@ int	render_frame(t_data *data)
 				accumulated_color = add_color(accumulated_color, color);
 			}
 			color = multiply_color_by_scalar(accumulated_color, 1.0 / samples);
-			// Ensure color values are within valid range
 			color.r = fmin(fmax(color.r, 0), 255);
 			color.g = fmin(fmax(color.g, 0), 255);
 			color.b = fmin(fmax(color.b, 0), 255);
@@ -70,7 +69,7 @@ int	render_frame(t_data *data)
 	return (0);
 }
 
-t_hit	intersect_sphere(Ray ray, t_sphere sphere)
+t_hit	intersect_sphere(t_ray ray, t_sphere sphere)
 {
 	t_hit		hit;
 	t_vector	oc;

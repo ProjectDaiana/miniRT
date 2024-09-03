@@ -8,7 +8,7 @@
 # include <math.h>
 # include <stdio.h>
 
-# define W_WIDTH 1200
+# define W_WIDTH 800
 # define W_HEIGHT 800
 # define MLX_ERROR 1
 
@@ -64,7 +64,7 @@ typedef struct
 {
 	t_vector	origin;
 	t_vector	direction;
-}				Ray;
+}				t_ray;
 
 typedef struct
 {
@@ -162,12 +162,12 @@ t_matrix		matrix_multiply(t_matrix a, t_matrix b);
 t_tuple			multiply_matrix_by_tuple(t_matrix *matrix, t_tuple *tuple);
 
 // added for checks?
-Ray				create_ray(double x, double y);
+t_ray				create_ray(double x, double y);
 // int				trace_ray(Ray ray);
-t_color			trace_ray(Ray ray, t_scene *scene);
+t_color			trace_ray(t_ray ray, t_scene *scene);
 int				render_frame(t_data *data);
-t_hit			intersect_sphere(Ray ray, t_sphere sphere);
-t_color			calculate_lighting(t_hit hit, t_scene *scene, Ray ray);
+t_hit			intersect_sphere(t_ray ray, t_sphere sphere);
+t_color			calculate_lighting(t_hit hit, t_scene *scene, t_ray ray);
 void			init_scene(t_scene *scene);
 void			render(t_scene *scene);
 t_vector		vect_normalize(t_vector v);
@@ -180,6 +180,6 @@ void			put_pixel(t_data *data, int x, int y, int color);
 t_color			create_color(int r, int g, int b);
 
 t_color			scale_color(t_color color, double factor);
-Ray	create_ray(double x, double y);
+t_ray	create_ray(double x, double y);
 
 #endif

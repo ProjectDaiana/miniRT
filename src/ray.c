@@ -16,9 +16,9 @@
 // 	return (ray);
 // }
 
-Ray	create_ray(double x, double y)
+t_ray	create_ray(double x, double y)
 {
-	Ray	ray;
+	t_ray	ray;
 
 	ray.origin = (t_vector){0, 2, -5}; // Camera position
 	ray.direction = vect_normalize((t_vector){x - 0.5, (y - 0.5) * -1, 1});
@@ -95,11 +95,11 @@ Ray	create_ray(double x, double y)
 // 	return (0x000000); // Black
 // }
 
-t_color	trace_ray(Ray ray, t_scene *scene)
+t_color	trace_ray(t_ray ray, t_scene *scene)
 {
 	t_hit		hit;
 	t_color		color;
-	Ray			reflect_ray;
+	t_ray			reflect_ray;
 	t_color		reflect_color;
 	double		check_size;
 	double		t;
@@ -109,6 +109,9 @@ t_color	trace_ray(Ray ray, t_scene *scene)
 	int			check_y;
 
 	check_size = 1.0;
+	check_z = 0;
+
+	// hits sphere?
 	hit = intersect_sphere(ray, scene->sphere);
 	if (hit.hit)
 	{
@@ -123,7 +126,7 @@ t_color	trace_ray(Ray ray, t_scene *scene)
 		}
 		return (color);
 	}
-	// Checkered floor and walls
+	// hits floor?
 	t = -ray.origin.y / ray.direction.y;
 	if (t > 0)
 	{
@@ -131,23 +134,40 @@ t_color	trace_ray(Ray ray, t_scene *scene)
 					t));
 		check_x = (int)(point.x / check_size) & 1;
 		check_z = (int)(point.z / check_size) & 1;
-		if (check_x ^ check_z)
+		if ((check_x == 1 && check_z == 0) || (check_x == 0 && check_z == 1))
 			return ((t_color){255, 255, 255}); // White
 		else
 			return ((t_color){0, 0, 0}); // Black
 	}
-	// Walls
-	t = (5 - ray.origin.z) / ray.direction.z;
-	if (t > 0)
+	//hits wall?
+	t = (- ray.origin.z) / ray.direction.z;
+	if (t > 0) // will not hit the wall at <= 0
 	{
 		point = vect_addition(ray.origin, vect_multiplication(ray.direction,
 					t));
 		check_x = (int)(point.x / check_size) & 1;
 		check_y = (int)(point.y / check_size) & 1;
-		if (check_x ^ check_y)
+		if ((check_x == 1 && check_y == 0) || (check_x == 0 && check_y == 1))
+
 			return ((t_color){255, 255, 255}); // White
 		else
 			return ((t_color){0, 0, 0}); // Black
 	}
-	return ((t_color){100, 100, 100}); // Gray background
+	return ((t_color){0, 0, 0}); 
+
+	
+// t = (5 - ray.origin.z) / ray.direction.z;
+// 	if (t > 0) // will not hit the wall at <= 0
+// 	{
+// 		point = vect_addition(ray.origin, vect_multiplication(ray.direction,
+// 					t));
+// 		check_x = (int)(point.x / check_size) & 1;
+// 		check_y = (int)(point.y / check_size) & 1;
+// 		if ((check_x == 1 && check_z == 0) || (check_x == 0 && check_z == 1))
+
+// 			return ((t_color){255, 255, 255}); // White
+// 		else
+// 			return ((t_color){0, 0, 0}); // Black
+// 	}
+// 	return ((t_color){0, 0, 0});  
 }

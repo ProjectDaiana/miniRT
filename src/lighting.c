@@ -1,6 +1,6 @@
 #include "minirt.h"
 
-t_color	calculate_lighting(t_hit hit, t_scene *scene, Ray ray)
+t_color	calculate_lighting(t_hit hit, t_scene *scene, t_ray ray)
 {
 	t_color ambient, diffuse, specular, result;
 	t_vector light_dir, view_dir, reflect_dir;
