@@ -17,7 +17,7 @@ Objects, lights, and cameras can undergo translation and rotation transformation
 The program correctly manages all possible intersections and the insides of objects, ensuring accurate rendering of complex scenes.
 #### MiniLibX Integration
 Utilizes the MiniLibX library for graphical output, adhering to the requirements for fluid window management and image handling.
-
+--
 ## Maths 
 #### Calculate the length of a vector
     sqrt(vec.x * vec.x + vec.y * vec.y + vec.z * vec.z)
@@ -38,8 +38,8 @@ Utilizes the MiniLibX library for graphical output, adhering to the requirements
     vec.y /= len;
     vec.z /= len;
 #### Dot Product
-V.W = Vx * Wx + Vy * Wy + Vz * Wz
-vec.x * vec2.x + vec.y * vec2.y + vec.z * vec2.z
+    V.W = Vx * Wx + Vy * Wy + Vz * Wz
+    vec.x * vec2.x + vec.y * vec2.y + vec.z * vec2.z
 #### Cross Product
     new.x = vec.y * vec2.z - vec.z * vec2.y;
     new.y = vec.z * vec2.x - vec.x * vec2.z;
