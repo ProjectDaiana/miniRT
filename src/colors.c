@@ -55,6 +55,18 @@ int	hadamard_product(t_color *color1, t_color *color2)
 	color1->r *= color2->r;
 	color1->g *= color2->g;
 	color1->b *= color2->b;
-
 	return (rgb_to_int(*color1));
+}
+
+/// added?
+
+t_color	create_color(int r, int g, int b)
+{
+	return ((t_color){r, g, b});
+}
+
+t_color	scale_color(t_color color, double factor)
+{
+	return ((t_color){fmin(color.r * factor, 255), fmin(color.g * factor, 255),
+		fmin(color.b * factor, 255)});
 }

@@ -28,10 +28,6 @@ typedef struct vector
 	double		z;
 }				t_vector;
 
-// typedef struct scene
-// {
-// }				t_scene;
-
 typedef struct
 {
 	double		m[4][4];
@@ -72,6 +68,7 @@ typedef struct
 
 typedef struct
 {
+	double		ambient;
 	double		diffuse;
 	double		specular;
 	double		shininess;
@@ -89,8 +86,18 @@ typedef struct
 typedef struct
 {
 	t_vector	position;
+	double		intensity;
 	t_color		color;
 }				t_light;
+
+typedef struct
+{
+	void		*img;
+	char		*addr;
+	int			bits_per_pixel;
+	int			line_length;
+	int			endian;
+}				t_img;
 
 typedef struct
 {
@@ -98,6 +105,14 @@ typedef struct
 	t_light		light;
 	t_color		ambient_color;
 	double		ambient_intensity;
+	void		*mlx;
+	void		*win;
+	// void		*img;
+	char		*addr;
+	int			bits_per_pixel;
+	int			line_length;
+	int			endian;
+	t_img		img;
 }				t_scene;
 
 typedef struct data
@@ -105,14 +120,13 @@ typedef struct data
 	void		*mlx_ptr;
 	void		*win_ptr;
 	void		*img_ptr;
+	char		*addr;
+	int			bits_per_pixel;
+	int			line_length;
+	int			endian;
 	t_scene		scene;
 
 }				t_data;
-// typedef struct
-// {
-// 	t_vector	center;
-// 	double		radius;
-// }				Sphere;
 
 typedef struct
 {
@@ -155,11 +169,17 @@ int				render_frame(t_data *data);
 t_hit			intersect_sphere(Ray ray, t_sphere sphere);
 t_color			calculate_lighting(t_hit hit, t_scene *scene, Ray ray);
 void			init_scene(t_scene *scene);
+void			render(t_scene *scene);
 t_vector		vect_normalize(t_vector v);
 t_vector		vect_reflect(t_vector v, t_vector n);
 t_vector		vect_negate(t_vector v);
 t_color			color_multiply(t_color a, t_color b);
 t_vector		vect_subtraction(t_vector a, t_vector b);
 double			vect_length(t_vector v);
+void			put_pixel(t_data *data, int x, int y, int color);
+t_color			create_color(int r, int g, int b);
+
+t_color			scale_color(t_color color, double factor);
+Ray	create_ray(double x, double y);
 
 #endif
