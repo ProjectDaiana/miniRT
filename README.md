@@ -1,31 +1,6 @@
 # miniRT: A Simple Raytracer in C with MiniLibX
 Welcome to miniRT, a basic raytracing engine built from scratch using the MiniLibX graphical library. This project brings together essential concepts of computer graphics, particularly raytracing, to create realistic images of 3D scenes.
 
-## Input Reference
-
-#### Ambient lighting
-- A
-- ambient lighting ratio in range [0.0,1.0]: 0.2
-- r, g, b
-
-#### Camera
-- C
-- x, y, z,
-- 3d normalized orientation vector. In range [-1,1] for each x,y,z,
-- FOV  Horizontal field of view in degrees in range [0,180]: 70
-
-#### Light
-- L
-- x, y, z,
-- light_brightnes_ratio,
-- r, g, b
-
-#### Sphere
-- sp	x, y, z,
-- diameter,
-- r, g, b
-
-
 ## To Do
 - [ ] Read file
 - [ ] Check if file is valid
@@ -33,13 +8,16 @@ Welcome to miniRT, a basic raytracing engine built from scratch using the MiniLi
 - [x] Create window
 - [x] Handle keypress ESC
 - [ ] Handle X button
-- [ ] Create image
-- [ ] Put pixel on screen
+- [x] Create image
+- [x] Put pixel on screen
 
 - [x] Normalize vectors
-- [ ] Calculate dot product 🐱
-- [ ] Calculate cross product 🐱
-- [ ] Calcualate color of pixel
+- [x] Calculate dot product
+- [x] Calculate cross product
+- [x] Calcualate color of pixel
+- [x] Matrix Multiplication (by tuple and matrix)
+- [x] Color addition, substraction, multiplication, hadamard
+
 
 ## Subject
 [Subject](https://cdn.intra.42.fr/pdf/pdf/137465/en.subject.pdf)
@@ -61,55 +39,53 @@ Welcome to miniRT, a basic raytracing engine built from scratch using the MiniLi
 - [Ray Tracing in one Weekend](https://raytracing.github.io/)
 - [The Ray Tracer Challenge](http://raytracerchallenge.com/)
 
+
 ## Maths 
-
+#### Calculate the length of a vector
+    sqrt(vec.x * vec.x + vec.y * vec.y + vec.z * vec.z)
 #### Vector adition
-	V + W =⟨Vx​ + Wx​, Vy​ + Wy​, Vz​ + Wz​⟩(for 3D vectors)
-
+    V + W =⟨Vx​ + Wx​, Vy​ + Wy​, Vz​ + Wz​⟩(for 3D vectors)
 #### Vector substraction
-	V - W = ⟨Vx​ - Wx​, Vy​ - Wy​, Vz​ - Wz​⟩(for 3D vectors)
-
+    V - W = ⟨Vx​ - Wx​, Vy​ - Wy​, Vz​ - Wz​⟩(for 3D vectors)
 #### Vector multiplication
-	t * V = (t *Vx, t * Vy, t * Vz)
-
+    t * V = (t *Vx, t * Vy, t * Vz)
 #### Component-Wise multiplication
-	W * V = (Vx * Wx, Vy * Wy, Vz * Wz)
-
+    W * V = (Vx * Wx, Vy * Wy, Vz * Wz)
 #### Scalar division
-	vec.x *= 1 / t;
-	vec.y *= 1 / t;
-	vec.z *= 1 / t;
-
+    vec.x *= 1 / t;
+    vec.y *= 1 / t;
+    vec.z *= 1 / t;
 #### Unit vectors
     vec.x /= len;
     vec.y /= len;
     vec.z /= len;
-
-#### Vector Normalization
-Convert any vector  with a nonzero magnitude into a unit vector.
-
-    return tuple(v.x / magnitude(v),
-                v.y / magnitude(v),
-                v.z / magnitude(v),
-                v.w / magnitude(v))
-
-#### Dot/Scalar Product
-If the two vectors are unit vectors, the dot product is actually the cosine of the angle between them. The smaller the dot product, the larger the angle between the vectors. Returns a scalar.
-
-	V.W = Vx * Wx + Vy * Wy + Vz * Wz
-	a.x * b.x + a.y * b.y + a.z * b.z
-
+#### Dot Product
+    V.W = Vx * Wx + Vy * Wy + Vz * Wz
+    vec.x * vec2.x + vec.y * vec2.y + vec.z * vec2.z
 #### Cross Product
-You get a new vector that is perpendicular to both of the original vectors. Returns a new vector.
-
     new.x = vec.y * vec2.z - vec.z * vec2.y;
     new.y = vec.z * vec2.x - vec.x * vec2.z;
     new.z = vec.x * vec2.y - vec.y * vec2.x;
 
-#### Magnitude/Length of a vector (pythagoras)
-	sqrt(vec.x * vec.x + vec.y * vec.y + vec.z * vec.z)
-	ft_sqr(x) + ft_sqr(y) + ft_sqr(z);
-
-
-
-
+#### Matrix by Tuple
+    Given the following matrix A:
+    | 1 | 2 | 3 | 4 |
+    | 2 | 4 | 4 | 2 |
+    | 8 | 6 | 4 | 1 |
+    | 0 | 0 | 0 | 1 |
+    And b ← tuple(1, 2, 3, 1)
+    Then A * b = tuple(18, 24, 33, 1)
+#### Matrix by Identity Matrix
+    function matrix_multiply(A, B)
+        M ← matrix()
+        for row ← 0 to 3
+        for col ← 0 to 3
+        M[row, col] ← A[row, 0] * B[0, col] +
+        A[row, 1] * B[1, col] +
+        A[row, 2] * B[2, col] +
+        A[row, 3] * B[3, col]
+        end for
+        end for
+        return M
+    end function
+        
