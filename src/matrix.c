@@ -17,6 +17,7 @@ t_matrix	create_matrix(int size)
 	return (matrix);
 }
 
+
 void	free_matrix(t_matrix *matrix)
 {
 	int i;
@@ -30,43 +31,25 @@ void	free_matrix(t_matrix *matrix)
 	free(matrix->m);
 }
 
-// void populate_matrix(t_matrix *matrix, double values[][4], int size) {
-//     matrix->size = size;
-//     matrix->m = (double **)malloc(size * sizeof(double *));
-//     for (int i = 0; i < size; i++) {
-//         matrix->m[i] = (double *)malloc(size * sizeof(double));
-//         for (int j = 0; j < size; j++) {
-//             matrix->m[i][j] = values[i][j];
-//         }
-//     }
-// }
+//assign matrix
+void	assign_matrix(t_matrix *matrix, double m[4][4])
+{
+	int i;
+	int j;
 
-// void	create_and_populate_matrix(t_matrix *matrix, double *values, int size)
-// {
-// 	int i;
-// 	int j;
+	i = 0;
+	while (i < matrix->size)
+	{
+		j = 0;
+		while (j < matrix->size)
+		{
+			matrix->m[i][j] = m[i][j];
+			j++;
+		}
+		i++;
+	}
+}
 
-// 	printf(MAG"Creating and populating matrix\n"RESET);
-// 	matrix->size = size;
-// 	matrix->m = (double **)malloc(size * sizeof(double *));
-// 	if (matrix->m == NULL)
-// 		print_error("Error: Memory allocation failed\n");
-// 	i = 0;
-// 	while (i < size)
-// 	{
-// 		printf("i: %d\n", i);
-// 		j = 0;
-// 		matrix->m[i] = (double *)malloc(size * sizeof(double));
-// 		if (matrix->m[i] == NULL)
-// 			print_error("Error: Memory allocation failed\n");
-// 		while (j < size) {
-// 			printf("j: %d\n", j);
-// 			matrix->m[i][j] = values[i][j];
-// 			j++;
-// 		}
-// 		i++;
-// 	}
-// }
 
 // t_matrix create_matrix(double m[4][4])
 // {
@@ -110,7 +93,7 @@ t_matrix create_matrix_3(double m[3][3])
 	return (matrix);
 }
 
-void print_matrix(t_matrix matrix, char *str)
+void print_matrix(t_matrix matrix, char *str, int size)
 {
 	int	i;
 	int	j;
@@ -118,10 +101,10 @@ void print_matrix(t_matrix matrix, char *str)
 	i = 0;
 	j = 0;
 	printf(YEL"%s\n"RESET ,str);
-	while (i < 4)
+	while (i < size)
 	{
 		j = 0;
-		while (j < 4)
+		while (j < size)
 		{
 			printf("%f ", matrix.m[i][j]);
 			j++;
@@ -218,6 +201,7 @@ double calculate_determinant(double m[2][2])
 t_matrix	find_submatrix(t_matrix *matrix, int row, int col, int mtrx_size)
 {
 	t_matrix submatrix;
+	submatrix = create_matrix(mtrx_size - 1);
 	int i;
 	int j;
 	int sub_i;
@@ -248,7 +232,6 @@ t_matrix	find_submatrix(t_matrix *matrix, int row, int col, int mtrx_size)
 		i++;
 		sub_i++;
 	}
-	print_matrix(submatrix, "Submatrix");
 	return (submatrix);
 }
 

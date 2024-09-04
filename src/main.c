@@ -48,7 +48,6 @@ int main(int argc, char **argv)
 	(void)argv;
 	static t_data data;
 	t_vector vector;
-	t_matrix matrix3;
 
 	init(&data, &vector);
 	t_vector gravity = {0.0, -0.1, 0.0, 0.0, 0.0, 0.0, 0.0};  // Initialize all fields
@@ -65,7 +64,7 @@ int main(int argc, char **argv)
 	//printf(YEL"Normalized Velocity: (%f, %f, %f)\n" RESET, normalized_velocity.x, normalized_velocity.y, normalized_velocity.z);
 	//cross_product_to_array(&a, &b);
 	
-	///////// MATRIX DECLARATIONS
+	///////// MATRIX CREATION
 
 	// double identity_matrix[4][4] = {
 	// 	{1, 0, 0, 0}, 
@@ -83,24 +82,24 @@ int main(int argc, char **argv)
 	// };
 	// t_matrix matrix = create_matrix(m1);
 
-	// double m2[4][4] = {
-	// {1, 2, 3, 4}, 
-	// {5.5, 6.5, 7.5, 8.5}, 
-	// {9, 10, 11, 12}, 
-	// {13.5, 14, 15.5, 16.5}
-	// };
-	//t_matrix matrix2 = create_matrix(m2);
-
-	double m3[3][3] = {
-		{3, 5, 0},
-		{2, -1, -7},
-		{6, -1, 5}
+	t_matrix matrix4;
+	double m2[4][4] = {
+	{1, 2, 3, 4}, 
+	{5.5, 6.5, 7.5, 8.5}, 
+	{9, 10, 11, 12}, 
+	{13.5, 14, 15.5, 16.5}
 	};
+	matrix4 = create_matrix(4);
+	assign_matrix(&matrix4, m2);
+	print_matrix(matrix4, "Matrix 4", 4);
+	
+	// double m3[3][3] = {
+	// 	{3, 5, 0},
+	// 	{2, -1, -7},
+	// 	{6, -1, 5}
+	// };
+	// t_matrix matrix3 = create_matrix_3(m3);
 
-	create_and_populate_matrix(&matrix3, (double *)m3, 3);
-	print_matrix(matrix3, "Matrix 3");
-
-	//calculate_minor(&matrix3, 1, 0, 3);
 
 	// double twobytwo_mtrx[2][2] = {
 	// 	{1, 5},
@@ -115,8 +114,10 @@ int main(int argc, char **argv)
 
 	///////// MATRIX CALCULATIONS
 
-	// t_matrix submatrix = find_submatrix(&matrix, 0, 2, 4);
-	// print_matrix(submatrix, "Submatrix");
+	t_matrix submatrix = find_submatrix(&matrix4, 0, 2, 4);
+	print_matrix(submatrix, "Submatrix in main", 3);
+
+	calculate_minor(&submatrix, 1, 0, 3);
 
 	//t_matrix result = transpose_matrix(&identity);
 	// print_matrix(identity, "Transpose Matrix");
