@@ -1,26 +1,93 @@
 #include "minirt.h"
 
 //Create matrix
-t_matrix create_matrix(double m[4][4])
+t_matrix	create_matrix(int size)
 {
-	t_matrix matrix;
-
 	int i;
-	int j;
+	t_matrix	matrix;
 
 	i = 0;
-	while (i < 4)
+	matrix.size = size;
+	matrix.m = malloc(sizeof(double *) * size);
+	while (i < size)
 	{
-		j = 0;
-		while (j < 4)
-		{
-			matrix.m[i][j] = m[i][j];
-			j++;
-		}
+		matrix.m[i] = malloc(sizeof(double) * size);
 		i++;
 	}
 	return (matrix);
 }
+
+void	free_matrix(t_matrix *matrix)
+{
+	int i;
+
+	i = 0;
+	while (i < matrix->size)
+	{
+		free(matrix->m[i]);
+		i++;
+	}
+	free(matrix->m);
+}
+
+// void populate_matrix(t_matrix *matrix, double values[][4], int size) {
+//     matrix->size = size;
+//     matrix->m = (double **)malloc(size * sizeof(double *));
+//     for (int i = 0; i < size; i++) {
+//         matrix->m[i] = (double *)malloc(size * sizeof(double));
+//         for (int j = 0; j < size; j++) {
+//             matrix->m[i][j] = values[i][j];
+//         }
+//     }
+// }
+
+// void	create_and_populate_matrix(t_matrix *matrix, double *values, int size)
+// {
+// 	int i;
+// 	int j;
+
+// 	printf(MAG"Creating and populating matrix\n"RESET);
+// 	matrix->size = size;
+// 	matrix->m = (double **)malloc(size * sizeof(double *));
+// 	if (matrix->m == NULL)
+// 		print_error("Error: Memory allocation failed\n");
+// 	i = 0;
+// 	while (i < size)
+// 	{
+// 		printf("i: %d\n", i);
+// 		j = 0;
+// 		matrix->m[i] = (double *)malloc(size * sizeof(double));
+// 		if (matrix->m[i] == NULL)
+// 			print_error("Error: Memory allocation failed\n");
+// 		while (j < size) {
+// 			printf("j: %d\n", j);
+// 			matrix->m[i][j] = values[i][j];
+// 			j++;
+// 		}
+// 		i++;
+// 	}
+// }
+
+// t_matrix create_matrix(double m[4][4])
+// {
+// 	t_matrix matrix;
+
+// 	int i;
+// 	int j;
+
+// 	i = 0;
+// 	while (i < 4)
+// 	{
+// 		j = 0;
+// 		while (j < 4)
+// 		{
+// 			matrix.m[i][j] = m[i][j];
+// 			j++;
+// 		}
+// 		i++;
+// 	}
+// 	return (matrix);
+//}
 
 t_matrix create_matrix_3(double m[3][3])
 {

@@ -48,6 +48,7 @@ int main(int argc, char **argv)
 	(void)argv;
 	static t_data data;
 	t_vector vector;
+	t_matrix matrix3;
 
 	init(&data, &vector);
 	t_vector gravity = {0.0, -0.1, 0.0, 0.0, 0.0, 0.0, 0.0};  // Initialize all fields
@@ -95,8 +96,11 @@ int main(int argc, char **argv)
 		{2, -1, -7},
 		{6, -1, 5}
 	};
-	t_matrix matrix3 = create_matrix_3(m3);
-	calculate_minor(&matrix3, 1, 0, 3);
+
+	create_and_populate_matrix(&matrix3, (double *)m3, 3);
+	print_matrix(matrix3, "Matrix 3");
+
+	//calculate_minor(&matrix3, 1, 0, 3);
 
 	// double twobytwo_mtrx[2][2] = {
 	// 	{1, 5},

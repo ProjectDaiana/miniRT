@@ -45,7 +45,8 @@ typedef struct tuple
 
 typedef struct s_matrix
 {
-	double m[4][4];
+	double	**m;
+	int		size;
 } t_matrix;
 
 typedef struct s_color
@@ -99,8 +100,10 @@ int	hadamard_product(t_color *color1, t_color *color2);
 
 // Matrix functions
 t_tuple		multiply_matrix_by_tuple(t_matrix *matrix, t_tuple *tuple);
-t_matrix	create_matrix(double m[4][4]);
+void		create_and_populate_matrix(t_matrix *matrix, double *values, int size);
+//t_matrix	create_matrix(double m[4][4]);
 t_matrix	create_matrix_3(double m[3][3]);
+t_matrix	create_matrix(int size);
 t_matrix	matrix_multiply(t_matrix a, t_matrix b);
 t_matrix	transpose_matrix(t_matrix *identity_matrix);
 t_matrix	find_submatrix(t_matrix *matrix, int row, int col, int mtrx_size);
@@ -108,3 +111,6 @@ double		calculate_determinant(double m[2][2]);
 double		calculate_minor(t_matrix *matrix, int row, int col, int mtrx_size);
 int			compare_matrix(t_matrix a, t_matrix b);
 void		print_matrix(t_matrix matrix, char *str);
+
+// Error functions
+void print_error(char *msg);
