@@ -18,6 +18,9 @@ Welcome to miniRT, a basic raytracing engine built from scratch using the MiniLi
 - [x] Matrix Multiplication (by tuple and matrix)
 - [ ] Matrix comparison, calculate determinant, transpose matrix, find submatrix(needs fix), calculate minor
 - [x] Color addition, substraction, multiplication, hadamard
+      
+- [x] Changed print_matrix() to while loop
+- [x] Added print_error(char *msg)
 
 
 ## Subject
