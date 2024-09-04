@@ -5,19 +5,18 @@ Welcome to miniRT, a basic raytracing engine built from scratch using the MiniLi
 - [ ] Read file
 - [ ] Check if file is valid
 - [ ] Parse file
+
+- [ ] Handle X button
 - [x] Create window
 - [x] Handle keypress ESC
-- [ ] Handle X button
 - [x] Create image
 - [x] Put pixel on screen
 
 - [x] Normalize vectors
-- [x] Calculate dot product
-- [x] Calculate cross product
-- [x] Calcualate color of pixel
+- [x] Calculate dot product & cross product
 - [x] Matrix Multiplication (by tuple and matrix)
-- [ ] Matrix comparison, calculate determinant, transpose matrix, find submatrix(needs fix), calculate minor
-- [x] Color addition, substraction, multiplication, hadamard
+- [ ] Matrix comparison, calculate determinant, transpose matrix, find submatrix(needs fix), calculate minor 🐱
+- [x] Color addition, substraction, multiplication, hadamard, Calcualate color of pixel
       
 - [x] Changed print_matrix() to while loop
 - [x] Added print_error(char *msg)
