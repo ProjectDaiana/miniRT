@@ -65,33 +65,6 @@ typedef struct s_proj{
 	t_vector velocity;
 } t_proj;
 
-
-// typedef struct camera
-// {
-// 	t_vector pos;
-// 	t_vector dir;
-// 	t_vector up;
-// 	t_vector right;
-// } t_camera;
-
-// typedef struct ray
-// {
-// 	t_vector origin;
-// 	t_vector direction;
-// } t_ray;
-
-// typedef struct light
-// {
-// 	t_vector pos;
-// 	t_vector color;
-// } t_light;
-// typedef struct ambient
-// {
-// 	floa ratio;
-// 	t_vector color;
-// } t_ambient;
-
-
 typedef struct data
 {
 	void *mlx_ptr;

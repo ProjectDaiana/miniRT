@@ -45,12 +45,22 @@ t_matrix create_matrix_3(double m[3][3])
 
 void print_matrix(t_matrix matrix, char *str)
 {
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
 	printf(YEL"%s\n"RESET ,str);
-	for (int i = 0; i < 4; i++)
+	while (i < 4)
 	{
-		for (int j = 0; j < 4; j++)
+		j = 0;
+		while (j < 4)
+		{
 			printf("%f ", matrix.m[i][j]);
+			j++;
+		}
 		printf("\n");
+		i++;
 	}
 }
 
