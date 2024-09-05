@@ -22,7 +22,32 @@ Welcome to miniRT, a basic raytracing engine built from scratch using the MiniLi
 - [x] Changed print_matrix() to while loop
 - [x] Added print_error(char *msg)
 - [x] Calulate Minor for 3x3 matrix
-- [ ] Compute Cofactors 🐱
+- [x] Compute Cofactors
+
+## Input Reference
+#### Ambient lighting
+      A
+      ambient lighting ratio in range [0.0,1.0]: 0.2
+	r, g, b
+
+#### Camera
+      C
+      x, y, z,
+	3d normalized orientation vector. In range [-1,1] for each x,y,z,
+      FOV  Horizontal field of view in degrees in range [0,180]: 70
+
+#### Light
+      L
+      x, y, z,
+	light_brightnes_ratio,
+	r, g, b
+
+#### Sphere
+      sp 0.0,0.0,20.6 12.6 10,0,255
+      
+      sp	x, y, z,
+      diameter,
+ 	r, g, b
 
 
 ## Subject
