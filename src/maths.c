@@ -141,3 +141,27 @@ double	vect_length(t_vector v)
 {
 	return (sqrt(v.x * v.x + v.y * v.y + v.z * v.z));
 }
+
+
+t_tuple	create_point(double x, double y, double z)
+{
+	return ((t_tuple){x, y, z, 1.0});
+}
+
+t_tuple	create_vector(double x, double y, double z)
+{
+	return ((t_tuple){x, y, z, 0.0});
+}
+
+t_tuple	normalize_vector(t_tuple v)
+{
+	double	length;
+
+	length = sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
+	return ((t_tuple){v.x / length, v.y / length, v.z / length, v.w});
+}
+
+t_vector	vector_from_tuple(t_tuple t)
+{
+	return ((t_vector){t.x, t.y, t.z});
+}
