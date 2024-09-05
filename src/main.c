@@ -50,7 +50,8 @@ int main(int argc, char **argv)
 	t_vector	vector;
 
 	init(&data, &vector);	
-	///////// MATRIX CREATION
+
+	///////// MATRIX CREATION TESTS //////////////////////////
 
 	// double identity_matrix[4][4] = {
 	// 	{1, 0, 0, 0}, 
@@ -68,44 +69,53 @@ int main(int argc, char **argv)
 	// };
 	// t_matrix matrix = create_matrix(m1);
 
+	t_matrix matrix4;
+	double m2[4][4] = {
+		{9, 3, 0, 9}, 
+		{-5, -2, -6, -3}, 
+		{-4, 9, 6, 4}, 
+		{-7, 6, 6, 2}
+	};
+	matrix4 = create_matrix(4);
+	assign_matrix(&matrix4, m2);
+	print_matrix(matrix4, "MAIN Matrix 4", 4);
+	
+	// NOT INVERTIBLE MATRIX
 	// t_matrix matrix4;
 	// double m2[4][4] = {
-	// {-2, -8, 3, 5}, 
-	// {-3, 1, 7, 3},
-	// {1, 2, -9, 6},
-	// {-6, 7, 7, -9}
+	// 	{-4, 2, -2, -3}, 
+	// 	{9, 6, 2, 6},
+	// 	{0, -5, 1, -5},
+	// 	{0, 0, 0, 0}
 	// };
 	// matrix4 = create_matrix(4);
 	// assign_matrix(&matrix4, m2);
 	// print_matrix(matrix4, "MAIN Matrix 4", 4);
-	
-	t_matrix matrix3;
-	double m3[3][3] = {
-		{1, 2, 6},
-		{-5, 8, -4},
-		{2, 6, 4}
-	};
-	matrix3 = create_matrix(3);
-	assign_matrix_3(&matrix3, m3);
-	print_matrix(matrix3, "MAIN: Matrix 3", 3);
+
+	// t_matrix matrix3;
+	// double m3[3][3] = {
+	// 	{1, 2, 6},
+	// 	{-5, 8, -4},
+	// 	{2, 6, 4}
+	// };
+	// matrix3 = create_matrix(3);
+	// assign_matrix_3(&matrix3, m3);
+	// print_matrix(matrix3, "MAIN: Matrix 3", 3);
 
 	// double twobytwo_mtrx[2][2] = {
 	// 	{1, 5},
 	// 	{-3, 2}
 	// };
 	// double	determinant = calculate_determinant(twobytwo_mtrx);
-	// printf("Determinant: %f\n", determinant);
+	// printf("Determinant: %f\n", determinant);	
 
-	// t_tuple tup_a = {0.0, 0.0, 20.6, 0};
-	// printf("Tuple: %f, %f, %f, %f\n", tup_a.x, tup_a.y, tup_a.z, tup_a.w);
-	
-
-	///////// MATRIX CALCULATIONS
+	///////// MATRIX CALCULATIONS TESTS //////////////////////////
 	//calculate_cofactor(&matrix4, 0, 3, 4);
 	//calculate_determinant(&matrix4, 4);
-	int det = calculate_determinant(&matrix3, 3);
-	printf(GRN"Determinant: %d\n"RESET, det);
 	
+	// Inverse Matrix
+	t_matrix inverse = inverse_matrix(&matrix4);
+	print_matrix(inverse, "Inverse Matrix", 4);
 
 	// t_matrix submatrix = find_submatrix(&matrix3, 1, 1, 3);
 	// print_matrix(submatrix, "Submatrix in main", 2);
@@ -125,7 +135,7 @@ int main(int argc, char **argv)
 	//t_matrix result = matrix_multiply(matrix, identity);
 	//print_matrix(result);
 
-	//////// MINILIBX
+	//////// MINILIBX /////////////////////////////
 	data.mlx_ptr = mlx_init();
 	if (data.mlx_ptr == NULL)
 		return (MLX_ERROR);

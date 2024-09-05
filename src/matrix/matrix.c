@@ -1,6 +1,5 @@
 #include "minirt.h"
 
-//Create matrix
 t_matrix	create_matrix(int size)
 {
 	int i;
@@ -30,8 +29,6 @@ void	free_matrix(t_matrix *matrix)
 	}
 	free(matrix->m);
 }
-
-//assign matrix
 
 void	assign_matrix_3(t_matrix *matrix, double m[3][3])
 {
@@ -206,6 +203,7 @@ t_matrix	transpose_matrix(t_matrix *identity_matrix)
 	return (transposed);
 }
 
+// Determinant 2x2 matrix
 double calculate_determinant_m2(double **m, int size)
 {
 	double determinant;
@@ -228,6 +226,7 @@ double calculate_determinant_m2(double **m, int size)
 // 	printf(MAG"Determinant: %f\n"RESET, determinant);
 // 	return (determinant);
 // }
+
 
 t_matrix	find_submatrix(t_matrix *matrix, int row, int col, int mtrx_size)
 {
@@ -280,6 +279,7 @@ double	calculate_minor(t_matrix *matrix, int row, int col, int mtrx_size)
  	return (minor);
  }
 
+// Cofactor is the minor with the sign changed
  double calculate_cofactor(t_matrix *matrix, int row, int col, int mtrx_size)
  {
 	double	minor;
@@ -294,6 +294,7 @@ double	calculate_minor(t_matrix *matrix, int row, int col, int mtrx_size)
 	return (cofactor);
  }
 
+// Supports 2x2,  3x3 and 4x4 matrices
  double calculate_determinant(t_matrix *matrix, int size)
  {
 	int		i;

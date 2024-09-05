@@ -115,6 +115,8 @@ double		calculate_determinant_m2(double **m, int size);
 double		calculate_determinant(t_matrix *matrix, int size);
 double		calculate_minor(t_matrix *matrix, int row, int col, int mtrx_size);
 double		calculate_cofactor(t_matrix *matrix, int row, int col, int mtrx_size);
+t_matrix	inverse_matrix(t_matrix *matrix);
+int			is_invertible(double det);
 
 int			compare_matrix(t_matrix a, t_matrix b);
 void		print_matrix(t_matrix matrix, char *str, int size);
