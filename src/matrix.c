@@ -272,3 +272,17 @@ double	calculate_minor(t_matrix *matrix, int row, int col, int mtrx_size)
  	printf(MAG"Minor: %f\n"RESET, minor);
  	return (minor);
  }
+
+ double calculate_cofactor(t_matrix *matrix, int row, int col, int mtrx_size)
+ {
+	 double minor;
+	 double cofactor;
+
+	 minor = calculate_minor(matrix, row, col, mtrx_size);
+	 if ((row + col) % 2 == 0)
+	 	cofactor = minor;
+	 else
+	 	cofactor = minor * -1;
+	 printf(MAG"Cofactor: %f\n"RESET, cofactor);
+	 return (cofactor);
+ }

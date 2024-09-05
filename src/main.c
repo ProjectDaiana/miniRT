@@ -119,8 +119,8 @@ int main(int argc, char **argv)
 	// t_matrix submatrix = find_submatrix(&matrix3, 1, 1, 3);
 	// print_matrix(submatrix, "Submatrix in main", 2);
 
-	calculate_minor(&matrix3, 1, 0, 3);
-
+	//calculate_minor(&matrix3, 1, 0, 3);
+	calculate_cofactor(&matrix3, 1, 0, 3);
 	//t_matrix result = transpose_matrix(&identity);
 	// print_matrix(identity, "Transpose Matrix");
 
