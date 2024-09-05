@@ -1,28 +1,29 @@
 # miniRT: A Simple Raytracer in C with MiniLibX
 Welcome to miniRT, a basic raytracing engine built from scratch using the MiniLibX graphical library. This project brings together essential concepts of computer graphics, particularly raytracing, to create realistic images of 3D scenes.
 
+## Subject
+[Subject](https://cdn.intra.42.fr/pdf/pdf/137465/en.subject.pdf)
+
 ## To Do
 - [ ] Read file
 - [ ] Check if file is valid
 - [ ] Parse file
-
 - [ ] Handle X button
 - [x] Create window
 - [x] Handle keypress ESC
 - [x] Create image
 - [x] Put pixel on screen
-
+- [x] Color addition, substraction, multiplication, hadamard, Calcualate color of pixel   
 - [x] Normalize vectors
 - [x] Calculate dot product & cross product
 - [x] Matrix Multiplication (by tuple and matrix)
-- [x] Matrix comparison, calculate determinant, transpose matrix
-- [x] Find submatrix
-- [x] Color addition, substraction, multiplication, hadamard, Calcualate color of pixel
-      
-- [x] Changed print_matrix() to while loop
-- [x] Added print_error(char *msg)
+- [x] Matrix comparison, calculate determinant, transpose matrix, find submatrix
 - [x] Calulate Minor for 3x3 matrix
 - [x] Compute Cofactors
+- [x] Added print_error(char *msg)
+- [x] Changed print_matrix() to while loop
+- [x] Inverse Matrix!!!!! 🎉
+- [ ] Test inverse_matrix() 🐱
 
 ## Input Reference
 #### Ambient lighting
@@ -48,10 +49,6 @@ Welcome to miniRT, a basic raytracing engine built from scratch using the MiniLi
       sp	x, y, z,
       diameter,
  	r, g, b
-
-
-## Subject
-[Subject](https://cdn.intra.42.fr/pdf/pdf/137465/en.subject.pdf)
 
 ## Resources
 - [minilibx](https://aurelienbrabant.fr/blog?q=minilibx)
