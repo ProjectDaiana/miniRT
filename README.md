@@ -16,11 +16,13 @@ Welcome to miniRT, a basic raytracing engine built from scratch using the MiniLi
 - [x] Calculate dot product & cross product
 - [x] Matrix Multiplication (by tuple and matrix)
 - [x] Matrix comparison, calculate determinant, transpose matrix
-- [ ] Find submatrix(needs fix), calculate minor 🐱
+- [x] Find submatrix
 - [x] Color addition, substraction, multiplication, hadamard, Calcualate color of pixel
       
 - [x] Changed print_matrix() to while loop
 - [x] Added print_error(char *msg)
+- [x] Calulate Minor for 3x3 matrix
+- [ ] Compute Cofactors 🐱
 
 
 ## Subject
