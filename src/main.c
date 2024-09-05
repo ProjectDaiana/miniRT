@@ -47,23 +47,9 @@ int main(int argc, char **argv)
 	(void)argc;
 	(void)argv;
 	static t_data data;
-	t_vector vector;
+	t_vector	vector;
 
-	init(&data, &vector);
-	t_vector gravity = {0.0, -0.1, 0.0, 0.0, 0.0, 0.0, 0.0};  // Initialize all fields
-    t_vector wind = {-0.01, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};    // Initialize all fields
-     data.env = (t_env){gravity, wind};
-
-    // Initialize projectile starting one unit above origin
-    t_vector initial_position = {0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0}; // Initialize all fields
-    t_vector initial_velocity = {1.0, 1.8, 0.0, 0.0, 0.0, 0.0, 0.0};
-	vect_multiplication(initial_velocity, 11.25);
-    t_vector normalized_velocity = normalize_vect(initial_velocity); // Normalize the velocity
-	//printf(GRN"Normalized Vector: %f, %f, %f\n" RESET, vector.nx, vector.ny, vector.nz);
-    data.proj = (t_proj){initial_position, normalized_velocity};
-	//printf(YEL"Normalized Velocity: (%f, %f, %f)\n" RESET, normalized_velocity.x, normalized_velocity.y, normalized_velocity.z);
-	//cross_product_to_array(&a, &b);
-	
+	init(&data, &vector);	
 	///////// MATRIX CREATION
 
 	// double identity_matrix[4][4] = {
@@ -84,20 +70,20 @@ int main(int argc, char **argv)
 
 	// t_matrix matrix4;
 	// double m2[4][4] = {
-	// {1, 2, 3, 4}, 
-	// {5.5, 6.5, 7.5, 8.5}, 
-	// {9, 10, 11, 12}, 
-	// {13.5, 14, 15.5, 16.5}
+	// {-2, -8, 3, 5}, 
+	// {-3, 1, 7, 3},
+	// {1, 2, -9, 6},
+	// {-6, 7, 7, -9}
 	// };
 	// matrix4 = create_matrix(4);
 	// assign_matrix(&matrix4, m2);
-	// print_matrix(matrix4, "Matrix 4", 4);
+	// print_matrix(matrix4, "MAIN Matrix 4", 4);
 	
 	t_matrix matrix3;
 	double m3[3][3] = {
-		{3, 5, 0},
-		{2, -1, -7},
-		{6, -1, 5}
+		{1, 2, 6},
+		{-5, 8, -4},
+		{2, 6, 4}
 	};
 	matrix3 = create_matrix(3);
 	assign_matrix_3(&matrix3, m3);
@@ -115,12 +101,16 @@ int main(int argc, char **argv)
 	
 
 	///////// MATRIX CALCULATIONS
+	//calculate_cofactor(&matrix4, 0, 3, 4);
+	//calculate_determinant(&matrix4, 4);
+	int det = calculate_determinant(&matrix3, 3);
+	printf(GRN"Determinant: %d\n"RESET, det);
+	
 
 	// t_matrix submatrix = find_submatrix(&matrix3, 1, 1, 3);
 	// print_matrix(submatrix, "Submatrix in main", 2);
 
 	//calculate_minor(&matrix3, 1, 0, 3);
-	calculate_cofactor(&matrix3, 1, 0, 3);
 	//t_matrix result = transpose_matrix(&identity);
 	// print_matrix(identity, "Transpose Matrix");
 
@@ -134,7 +124,6 @@ int main(int argc, char **argv)
 	// Multiply matrix by identity matrix
 	//t_matrix result = matrix_multiply(matrix, identity);
 	//print_matrix(result);
-
 
 	//////// MINILIBX
 	data.mlx_ptr = mlx_init();
@@ -152,25 +141,3 @@ int main(int argc, char **argv)
 	mlx_loop(data.mlx_ptr);
 	return (0);	
 }
-
-// INPUT REFERENCE
-
-// Ambient lighting
-// A	ambient lighting ratio in range [0.0,1.0]: 0.2
-//		r, g, b
-
-// Camera
-// C	x, y, z,
-//		3d normalized orientation vector. In range [-1,1] for each x,y,z,
-//		FOV  Horizontal field of view in degrees in range [0,180]: 70
-
-// Light
-// L	x, y, z,
-//		light_brightnes_ratio,
-//		r, g, b
-
-// Sphere
-// sp 0.0,0.0,20.6 12.6 10,0,255
-// sp	x, y, z,
-// 		diameter,
-// 		r, g, b

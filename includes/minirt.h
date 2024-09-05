@@ -111,9 +111,10 @@ t_matrix	matrix_multiply(t_matrix a, t_matrix b);
 t_matrix	transpose_matrix(t_matrix *identity_matrix);
 t_matrix	find_submatrix(t_matrix *matrix, int row, int col, int mtrx_size);
 //double		calculate_determinant(double m[2][2]);
-double		calculate_determinant(double **m, int size);
+double		calculate_determinant_m2(double **m, int size);
+double		calculate_determinant(t_matrix *matrix, int size);
 double		calculate_minor(t_matrix *matrix, int row, int col, int mtrx_size);
-double calculate_cofactor(t_matrix *matrix, int row, int col, int mtrx_size);
+double		calculate_cofactor(t_matrix *matrix, int row, int col, int mtrx_size);
 
 int			compare_matrix(t_matrix a, t_matrix b);
 void		print_matrix(t_matrix matrix, char *str, int size);

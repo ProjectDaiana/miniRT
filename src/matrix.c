@@ -206,7 +206,7 @@ t_matrix	transpose_matrix(t_matrix *identity_matrix)
 	return (transposed);
 }
 
-double calculate_determinant(double **m, int size)
+double calculate_determinant_m2(double **m, int size)
 {
 	double determinant;
 
@@ -220,8 +220,15 @@ double calculate_determinant(double **m, int size)
 	return (0);
 }
 
+// double calculate_determinant(double m[2][2])
+// {
+// 	double determinant;
 
-// ATTENTION! It is returning a 4x4 matrix replacen the corresponding values with 0.000
+// 	determinant = m[0][0] * m[1][1] - m[0][1] * m[1][0];
+// 	printf(MAG"Determinant: %f\n"RESET, determinant);
+// 	return (determinant);
+// }
+
 t_matrix	find_submatrix(t_matrix *matrix, int row, int col, int mtrx_size)
 {
 	t_matrix submatrix;
@@ -268,21 +275,46 @@ double	calculate_minor(t_matrix *matrix, int row, int col, int mtrx_size)
 	
 	submatrix = find_submatrix(matrix, row, col, mtrx_size);
 	print_matrix(submatrix, "Submatrix in calculate_minor()", mtrx_size -1);
-	minor = calculate_determinant(submatrix.m, mtrx_size - 1);
+	minor = calculate_determinant(&submatrix, mtrx_size - 1);
  	printf(MAG"Minor: %f\n"RESET, minor);
  	return (minor);
  }
 
  double calculate_cofactor(t_matrix *matrix, int row, int col, int mtrx_size)
  {
-	 double minor;
-	 double cofactor;
+	double	minor;
+	double	cofactor;
 
-	 minor = calculate_minor(matrix, row, col, mtrx_size);
-	 if ((row + col) % 2 == 0)
-	 	cofactor = minor;
-	 else
-	 	cofactor = minor * -1;
-	 printf(MAG"Cofactor: %f\n"RESET, cofactor);
-	 return (cofactor);
+	minor = calculate_minor(matrix, row, col, mtrx_size);
+	if ((row + col) % 2 == 0)
+		cofactor = minor;
+	else
+		cofactor = minor * -1;
+	printf(MAG"Cofactor: %f\n"RESET, cofactor);
+	return (cofactor);
+ }
+
+ double calculate_determinant(t_matrix *matrix, int size)
+ {
+	int		i;
+	double	det;
+
+	det = 0.0;
+	i = 0;
+	if (size == 2)
+	{
+		det = matrix->m[0][0] * matrix->m[1][1] - matrix->m[0][1] * matrix->m[1][0];
+		printf(MAG"calculate_determinant(): %f\n"RESET, det);
+		return (det);
+	}
+	else
+	{
+		while (i < size)
+		{
+			det += matrix->m[0][i] * calculate_cofactor(matrix, 0, i, size);
+			i++;
+		}
+		printf(MAG"calculate_determinant(): %f\n"RESET, det);
+		return (det);
+	}
  }
