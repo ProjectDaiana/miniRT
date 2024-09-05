@@ -32,6 +32,25 @@ void	free_matrix(t_matrix *matrix)
 }
 
 //assign matrix
+
+void	assign_matrix_3(t_matrix *matrix, double m[3][3])
+{
+	int i;
+	int j;
+
+	i = 0;
+	while (i < matrix->size)
+	{
+		j = 0;
+		while (j < matrix->size)
+		{
+			matrix->m[i][j] = m[i][j];
+			j++;
+		}
+		i++;
+	}
+}
+
 void	assign_matrix(t_matrix *matrix, double m[4][4])
 {
 	int i;
@@ -187,13 +206,18 @@ t_matrix	transpose_matrix(t_matrix *identity_matrix)
 	return (transposed);
 }
 
-double calculate_determinant(double m[2][2])
+double calculate_determinant(double **m, int size)
 {
 	double determinant;
 
-	determinant = m[0][0] * m[1][1] - m[0][1] * m[1][0];
-	printf(MAG"Determinant: %f\n"RESET, determinant);
-	return (determinant);
+	if (size == 2)
+	{
+		determinant = m[0][0] * m[1][1] - m[0][1] * m[1][0];
+		//printf(MAG"calculate_determinant(): %f\n"RESET, determinant);
+		return (determinant);
+	}
+	print_error("Matrix size not supported");
+	return (0);
 }
 
 
@@ -236,18 +260,15 @@ t_matrix	find_submatrix(t_matrix *matrix, int row, int col, int mtrx_size)
 }
 
 
-// Determinant of the submatrix
+// Minor is the Determinant of the submatrix at(i,j)
 double	calculate_minor(t_matrix *matrix, int row, int col, int mtrx_size)
 {
-	t_matrix submatrix;
 	double minor;
-	double determinant;
-
+	t_matrix submatrix;
+	
 	submatrix = find_submatrix(matrix, row, col, mtrx_size);
-	determinant = calculate_determinant((double (*)[2])submatrix.m);
-	minor = determinant;
-	if ((row + col) % 2 != 0)
-		minor *= -1;
-	printf(MAG"Minor: %f\n"RESET, minor);
-	return (minor);
-}
+	print_matrix(submatrix, "Submatrix in calculate_minor()", mtrx_size -1);
+	minor = calculate_determinant(submatrix.m, mtrx_size - 1);
+ 	printf(MAG"Minor: %f\n"RESET, minor);
+ 	return (minor);
+ }

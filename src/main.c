@@ -82,31 +82,33 @@ int main(int argc, char **argv)
 	// };
 	// t_matrix matrix = create_matrix(m1);
 
-	t_matrix matrix4;
-	double m2[4][4] = {
-	{1, 2, 3, 4}, 
-	{5.5, 6.5, 7.5, 8.5}, 
-	{9, 10, 11, 12}, 
-	{13.5, 14, 15.5, 16.5}
-	};
-	matrix4 = create_matrix(4);
-	assign_matrix(&matrix4, m2);
-	print_matrix(matrix4, "Matrix 4", 4);
-	
-	// double m3[3][3] = {
-	// 	{3, 5, 0},
-	// 	{2, -1, -7},
-	// 	{6, -1, 5}
+	// t_matrix matrix4;
+	// double m2[4][4] = {
+	// {1, 2, 3, 4}, 
+	// {5.5, 6.5, 7.5, 8.5}, 
+	// {9, 10, 11, 12}, 
+	// {13.5, 14, 15.5, 16.5}
 	// };
-	// t_matrix matrix3 = create_matrix_3(m3);
-
+	// matrix4 = create_matrix(4);
+	// assign_matrix(&matrix4, m2);
+	// print_matrix(matrix4, "Matrix 4", 4);
+	
+	t_matrix matrix3;
+	double m3[3][3] = {
+		{3, 5, 0},
+		{2, -1, -7},
+		{6, -1, 5}
+	};
+	matrix3 = create_matrix(3);
+	assign_matrix_3(&matrix3, m3);
+	print_matrix(matrix3, "MAIN: Matrix 3", 3);
 
 	// double twobytwo_mtrx[2][2] = {
 	// 	{1, 5},
 	// 	{-3, 2}
 	// };
-	//double	determinant = calculate_determinant(twobytwo_mtrx);
-	//printf("Determinant: %f\n", determinant);
+	// double	determinant = calculate_determinant(twobytwo_mtrx);
+	// printf("Determinant: %f\n", determinant);
 
 	// t_tuple tup_a = {0.0, 0.0, 20.6, 0};
 	// printf("Tuple: %f, %f, %f, %f\n", tup_a.x, tup_a.y, tup_a.z, tup_a.w);
@@ -114,10 +116,10 @@ int main(int argc, char **argv)
 
 	///////// MATRIX CALCULATIONS
 
-	t_matrix submatrix = find_submatrix(&matrix4, 0, 2, 4);
-	print_matrix(submatrix, "Submatrix in main", 3);
+	// t_matrix submatrix = find_submatrix(&matrix3, 1, 1, 3);
+	// print_matrix(submatrix, "Submatrix in main", 2);
 
-	calculate_minor(&submatrix, 1, 0, 3);
+	calculate_minor(&matrix3, 1, 0, 3);
 
 	//t_matrix result = transpose_matrix(&identity);
 	// print_matrix(identity, "Transpose Matrix");
