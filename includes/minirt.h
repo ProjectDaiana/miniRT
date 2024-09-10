@@ -5,13 +5,13 @@
 # include "../lib/minilibx-linux/mlx.h"
 # include "../lib/libft/libft.h"
 
-#define  W_WIDTH 1200
-#define  W_HEIGHT 800
-#define  MLX_ERROR 1
-#define  BLU_PX 0x0000FF
-#define  RED_PX 0xFF0000
-#define  GRN_PX 0x00FF00
-#define  SCALE 1
+#define W_HEIGHT 800
+#define MLX_ERROR 1
+#define BLU_PX 0x0000FF
+#define RED_PX 0xFF0000
+#define GRN_PX 0x00FF00
+#define SCALE 1
+#define	PI 3.14159265358979323846
 
 # define RED "\e[0;31m"
 # define GRN "\e[0;32m"
@@ -40,7 +40,7 @@ typedef struct tuple
 	double x;
 	double y;
 	double z;
-	double w;
+	double w; // 1 for point, 0 for vector
 } t_tuple;
 
 typedef struct s_matrix
@@ -79,7 +79,9 @@ int	handle_no_event(void *data);
 int	handle_keypress(int keysym, t_data *data);
 int	handle_keyrelease(int keysym, void *data);
 
+// Utility functions
 double ft_sqr(double x);
+double double_to_degrees(double radians);
 
 // Vector functions
 double vect_length(double x, double y, double z);
@@ -120,6 +122,8 @@ int			is_invertible(double det);
 
 int			compare_matrix(t_matrix a, t_matrix b);
 void		print_matrix(t_matrix matrix, char *str, int size);
+
+t_matrix scaling(double x, double y, double z, int w);
 
 // Error functions
 void print_error(char *msg);

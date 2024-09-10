@@ -203,7 +203,7 @@ t_matrix	transpose_matrix(t_matrix *identity_matrix)
 	return (transposed);
 }
 
-// Determinant 2x2 matrix
+// Determinant for 2x2 matrix
 double calculate_determinant_m2(double **m, int size)
 {
 	double determinant;

@@ -59,7 +59,28 @@ int main(int argc, char **argv)
 	// 	{0, 0, 1, 0}, 
 	// 	{0, 0, 0, 1}
 	// };	
-	// t_matrix identity = create_matrix(identity_matrix);
+	// t_matrix identity = create_matrix(4);
+	// assign_matrix(&identity, identity_matrix);
+	// print_matrix(identity, "Identity Matrix", 4);
+
+	t_tuple p = {2, 3, 4, 1};
+
+	t_matrix transform = scaling(-1, 1, 1, 1);
+	print_matrix(transform, "Scaling Matrix", 4);
+
+	t_matrix inv = inverse_matrix(&transform);
+	print_matrix(inv, "Inverse Matrix", 4);
+
+
+	t_tuple res = multiply_matrix_by_tuple(&inv, &p);
+	printf("Result: %f, %f, %f, %f\n", res.x, res.y, res.z, res.w);
+
+
+	//t_matrix inv = inverse_matrix(&translation);
+
+	// t_tuple p = {-3, 4, 5, 1};
+	// t_tuple result = multiply_matrix_by_tuple(&translation, &p);
+	// printf("Result: %f, %f, %f, %f\n", result.x, result.y, result.z, result.w);
 
 	// double m1[4][4] = {
 	// 	{-6, 1, 1, 6}, 
@@ -69,17 +90,28 @@ int main(int argc, char **argv)
 	// };
 	// t_matrix matrix = create_matrix(m1);
 
-	t_matrix matrix4;
-	double m2[4][4] = {
-		{9, 3, 0, 9}, 
-		{-5, -2, -6, -3}, 
-		{-4, 9, 6, 4}, 
-		{-7, 6, 6, 2}
-	};
-	matrix4 = create_matrix(4);
-	assign_matrix(&matrix4, m2);
-	print_matrix(matrix4, "MAIN Matrix 4", 4);
+	// t_matrix matrix4;
+	// double m2[4][4] = {
+	// 	{3, -9, 7, 3}, 
+	// 	{3, -8, 2, -9}, 
+	// 	{-4, 4, 4, 1}, 
+	// 	{-6, 5, -1, 1}
+	// };
+	// matrix4 = create_matrix(4);
+	// assign_matrix(&matrix4, m2);
+	// print_matrix(matrix4, "MAIN Matrix 4", 4);
 	
+	// t_matrix matrix4b;
+	// double m3[4][4] = {
+	// 	{8, 2, 2, 2}, 
+	// 	{3, -1, 7, 0}, 
+	// 	{7, 0, 5, 4}, 
+	// 	{6, -2, 0, 5}
+	// };
+	// matrix4b = create_matrix(4);
+	// assign_matrix(&matrix4b, m3);
+	// print_matrix(matrix4b, "MAIN Matrix 4", 4);
+
 	// NOT INVERTIBLE MATRIX
 	// t_matrix matrix4;
 	// double m2[4][4] = {
@@ -113,9 +145,10 @@ int main(int argc, char **argv)
 	//calculate_cofactor(&matrix4, 0, 3, 4);
 	//calculate_determinant(&matrix4, 4);
 	
-	// Inverse Matrix
-	t_matrix inverse = inverse_matrix(&matrix4);
-	print_matrix(inverse, "Inverse Matrix", 4);
+	// // Inverse Matrix
+	// t_tuple tup = {1, 2, 3, 1};
+	// t_tuple res = multiply_matrix_by_tuple(&identity, &tup);
+	// printf("Result: %f, %f, %f, %f\n", res.x, res.y, res.z, res.w);
 
 	// t_matrix submatrix = find_submatrix(&matrix3, 1, 1, 3);
 	// print_matrix(submatrix, "Submatrix in main", 2);
