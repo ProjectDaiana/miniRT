@@ -23,7 +23,9 @@ Welcome to miniRT, a basic raytracing engine built from scratch using the MiniLi
 - [x] Added print_error(char *msg)
 - [x] Changed print_matrix() to while loop
 - [x] Inverse Matrix!!!!! 🎉
-- [ ] Test inverse_matrix() 🐱
+- [x] Test inverse_matrix()
+- [x] Scale, Skew, Rotate matrix x y z
+
 
 ## Input Reference
 #### Ambient lighting
