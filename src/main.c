@@ -65,15 +65,15 @@ int main(int argc, char **argv)
 
 	t_tuple p = {2, 3, 4, 1};
 
-	t_matrix transform = scaling(-1, 1, 1, 1);
-	print_matrix(transform, "Scaling Matrix", 4);
+	// t_matrix transform = scaling(-1, 1, 1, 1);
+	// print_matrix(transform, "Scaling Matrix", 4);
 
-	t_matrix inv = inverse_matrix(&transform);
-	print_matrix(inv, "Inverse Matrix", 4);
+	// t_matrix inv = inverse_matrix(&transform);
+	// print_matrix(inv, "Inverse Matrix", 4);
 
 
-	t_tuple res = multiply_matrix_by_tuple(&inv, &p);
-	printf("Result: %f, %f, %f, %f\n", res.x, res.y, res.z, res.w);
+	// t_tuple res = multiply_matrix_by_tuple(&inv, &p);
+	// printf("Result: %f, %f, %f, %f\n", res.x, res.y, res.z, res.w);
 
 
 	//t_matrix inv = inverse_matrix(&translation);
@@ -140,6 +140,26 @@ int main(int argc, char **argv)
 	// };
 	// double	determinant = calculate_determinant(twobytwo_mtrx);
 	// printf("Determinant: %f\n", determinant);	
+
+	//SKEW TESTS
+	t_matrix skew = skewing(0, 0, 0, 0, 0, 1);
+	t_tuple skw_p = multiply_matrix_by_tuple(&skew, &p);
+    printf("Result: %f, %f, %f, %f\n", skw_p.x, skw_p.y, skw_p.z, skw_p.w);
+
+	/// ROTATION TESTS //////////////////////////
+	//t_matrix half_quarter = rotation_x(PI / 4);
+	//t_matrix full_quarter = rotation_(PI / 2);
+	//t_matrix inv = inverse_matrix(&half_quarter);
+
+ 	//t_tuple result_half = multiply_matrix_by_tuple(&half_quarter, &p);
+//    t_tuple result_full = multiply_matrix_by_tuple(&full_quarter, &p);
+    
+    // Output the results
+//    printf(YEL"Result of half quarter rotation: (%f, %f, %f, %f)\n", result_half.x, result_half.y, result_half.z, result_half.w);
+    //printf(YEL"Result of full quarter rotation: (%f, %f, %f, %f)\n", result_full.x, result_full.y, result_full.z, result_full.w);
+	//check_rotation_results(result_half, result_full);	
+
+
 
 	///////// MATRIX CALCULATIONS TESTS //////////////////////////
 	//calculate_cofactor(&matrix4, 0, 3, 4);

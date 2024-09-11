@@ -6,12 +6,14 @@
 # include "../lib/libft/libft.h"
 
 #define W_HEIGHT 800
+#define W_WIDTH 800
 #define MLX_ERROR 1
 #define BLU_PX 0x0000FF
 #define RED_PX 0xFF0000
 #define GRN_PX 0x00FF00
 #define SCALE 1
 #define	PI 3.14159265358979323846
+#define SQRT2_DIV2 (sqrt(2) / 2)
 
 # define RED "\e[0;31m"
 # define GRN "\e[0;32m"
@@ -123,7 +125,18 @@ int			is_invertible(double det);
 int			compare_matrix(t_matrix a, t_matrix b);
 void		print_matrix(t_matrix matrix, char *str, int size);
 
-t_matrix scaling(double x, double y, double z, int w);
+t_matrix translation(double x, double y, double z, int w);
+t_matrix	scaling(double x, double y, double z, int w);
+t_matrix	rotation_x(double rad);
+t_matrix	rotation_y(double rad);
+t_matrix	rotation_z(double rad);
+t_matrix skewing(double x_y, double x_z, double y_x, double y_z, double z_x, double z_y);
+
 
 // Error functions
 void print_error(char *msg);
+
+
+/// TEST FUNCTIONS, DELETE LATER
+int check_rotation_results(t_tuple result_half, t_tuple result_full);
+
