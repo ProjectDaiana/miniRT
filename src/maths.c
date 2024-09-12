@@ -98,6 +98,8 @@ t_vector	vect_normalize(t_vector v)
 	return (result);
 }
 
+
+//not in matrices file
 t_vector	vect_reflect(t_vector v, t_vector n)
 {
 	t_vector	result;
@@ -108,6 +110,7 @@ t_vector	vect_reflect(t_vector v, t_vector n)
 	return (result);
 }
 
+//not in matrices file
 t_vector	vect_negate(t_vector v)
 {
 	t_vector	result;
