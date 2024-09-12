@@ -58,14 +58,3 @@ double cross_product_to_array(t_vector a, t_vector b)
 	printf("Cross Product: %f, %f, %f\n", result[0], result[1], result[2]);
 	return (*result);
 }
-
-t_proj tick(t_env *env, t_proj *proj)
-{
-	t_proj new_proj;
-
-	new_proj.position = vect_addition(proj->position, proj->velocity);
-	new_proj.velocity = vect_addition(proj->velocity, vect_addition(env->gravity, env->wind));
-	//printf(BLU"Projectile Position: (%f, %f, %f)\n" RESET, new_proj.position.x, new_proj.position.y, new_proj.position.z);
-	//printf(YEL"Projectile Velocity: (%f, %f, %f)\n" RESET, new_proj.velocity.x, new_proj.velocity.y, new_proj.velocity.z);
-	return new_proj;
-}

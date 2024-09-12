@@ -29,10 +29,10 @@ typedef struct s_vector
 	double x;
 	double y;
 	double z;
-	double nx;
-	double ny;
-	double nz;
-	double magnitude;
+	// double nx;
+	// double ny;
+	// double nz;
+	//double magnitude;
 	// double norm_vector;
 	//t_color *color;
 } t_vector;
@@ -48,25 +48,47 @@ typedef struct tuple
 typedef struct s_matrix
 {
 	double	**m;
-	int size;
+	//int size;
 } t_matrix;
 
 typedef struct s_color
 {
-	int r;
-	int g;
-	int b;
+	int	r;
+	int	g;
+	int	b;
 } t_color;
 
-typedef struct s_env {
-	t_vector gravity;
-	t_vector wind;
-} t_env;
+typedef struct
+{
+	int			hit;
+	double		t;
+	t_vector	point;
+	t_vector	normal;
+	//t_material	material;
+}				t_hit;
 
-typedef struct s_proj{
-	t_vector position;
-	t_vector velocity;
-} t_proj;
+typedef struct
+{
+	t_tuple	origin;
+	t_tuple	direction;
+}				t_ray;
+
+typedef struct
+{
+	double		ambient;
+	double		diffuse;
+	double		specular;
+	double		shininess;
+	double		reflective;
+	t_color		color;
+}				t_material;
+
+typedef struct
+{
+	t_vector	center;
+	double		radius;
+	//t_material	material;
+}				t_sphere;
 
 typedef struct data
 {
@@ -74,9 +96,12 @@ typedef struct data
 	void *win_ptr;
 	t_vector *vector;
 	t_tuple *tuple;
-//	t_proj proj;
-//	t_env env;
 } t_data;
+
+typedef struct {
+    double t1;
+    double t2;
+} t_intersections;
 
 int	handle_no_event(void *data);
 int	handle_keypress(int keysym, t_data *data);
@@ -94,7 +119,6 @@ t_vector normalize_vect(t_vector vector);
 //double dot_product(t_vector a, t_vector b);
 double cross_product_to_array(t_vector a, t_vector b);
 
-t_proj tick(t_env *env, t_proj *proj);
 void draw_clock(t_data *data);
 
 // Color functions
@@ -141,4 +165,11 @@ void print_error(char *msg);
 
 /// TEST FUNCTIONS, DELETE LATER
 int check_rotation_results(t_tuple result_half, t_tuple result_full);
+
+t_tuple position(t_tuple *origin, t_tuple *direction, double t);
+t_sphere sphere();
+t_ray ray(t_tuple *origin, t_tuple *direction);
+t_tuple point(double x, double y, double z, double w);
+t_intersections intersect(t_sphere s, t_ray r);
+void test_intersection(t_tuple origin, t_tuple direction);
 

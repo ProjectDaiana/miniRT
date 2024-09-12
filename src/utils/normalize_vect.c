@@ -19,7 +19,8 @@
 // 	return (0);
 // }
 
-t_vector normalize_vect(t_vector v) {
+t_vector	normalize_vect(t_vector v)
+{
     double mag = vect_length(v.x, v.y, v.z);
     if (mag == 0) return v;  // Avoid division by zero
     t_vector result;

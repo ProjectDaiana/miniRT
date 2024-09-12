@@ -22,3 +22,38 @@ int check_rotation_results(t_tuple result_half, t_tuple result_full)
     }
 	return (0);
 }
+
+void test_intersection(t_tuple origin, t_tuple direction)
+{
+    t_ray r = ray(&origin, &direction);
+    t_sphere s = sphere();
+
+    t_intersections xs = intersect(s, r);
+
+    printf("Intersections count: %d\n", xs.t1 >= 0 && xs.t2 >= 0 ? 2 : 0);
+    printf("xs[0] = %f\n", xs.t1);
+    printf("xs[1] = %f\n", xs.t2);
+
+    // Expected output
+    // Intersections count: 2
+    // xs[0] = 4.000000
+    // xs[1] = 6.000000
+}
+
+void draw_clock(t_data *data)
+{
+	t_tuple p = {0, 0, 1, 1};
+	int i = 0;
+
+	while (i < 12)
+	{
+		t_matrix transform = rotation_x(i * PI / 6);
+		t_tuple res = multiply_matrix_by_tuple(&transform, &p);
+
+		int x = (int)(res.y * SCALE) + W_WIDTH / 2;
+		int y = W_HEIGHT - (int)(res.z * SCALE) - W_HEIGHT / 2;
+		printf(BLU"Result: %f, %f, %f, %f\n"RESET, res.x, res.y, res.z, res.w);
+		mlx_pixel_put(data->mlx_ptr, data->win_ptr, x, y, 0xFFFFFF);
+		i++;
+	}
+}

@@ -39,24 +39,6 @@ int render(t_data *data)
     return (0);
 }
 
-void draw_clock(t_data *data)
-{
-	t_tuple p = {0, 0, 1, 1};
-	int i = 0;
-
-	while (i < 12)
-	{
-		t_matrix transform = rotation_x(i * PI / 6);
-		t_tuple res = multiply_matrix_by_tuple(&transform, &p);
-
-		int x = (int)(res.y * SCALE) + W_WIDTH / 2;
-		int y = W_HEIGHT - (int)(res.z * SCALE) - W_HEIGHT / 2;
-		printf(BLU"Result: %f, %f, %f, %f\n"RESET, res.x, res.y, res.z, res.w);
-		mlx_pixel_put(data->mlx_ptr, data->win_ptr, x, y, 0xFFFFFF);
-		i++;
-	}
-}
-
 int main(int argc, char **argv)
 {
 	(void)argc;
@@ -76,7 +58,7 @@ int main(int argc, char **argv)
 	};	
 	t_matrix identity = create_matrix(4);
 	assign_matrix(&identity, identity_matrix);
-	print_matrix(identity, "Identity Matrix", 4);
+	//print_matrix(identity, "Identity Matrix", 4);
 
 	//t_tuple p = {2, 3, 4, 1};
 
@@ -227,7 +209,17 @@ int main(int argc, char **argv)
 	//// Render the scene
 	// CLOCK EXERCISE
 	draw_clock(&data);
+	t_tuple origin = {0, 0, 5, 1};
+	t_tuple dir = {0, 0, 1, 1};
 
+	// RAYS
+	ray(&origin, &dir);
+	sphere(ray(&origin, &dir));
+	intersect(sphere(), ray(&origin, &dir));
+	test_intersection(origin, dir);
+	
+
+	//position(&origin, &dir, 2.5);
 	
 	mlx_hook(data.win_ptr, KeyPress, KeyPressMask, handle_keypress, &data);
 	mlx_hook(data.win_ptr, KeyRelease, KeyReleaseMask, &handle_keyrelease, &data);
