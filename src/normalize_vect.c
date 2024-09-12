@@ -1,4 +1,4 @@
-#include "minirt.h"
+// #include "minirt.h"
 
 // t_vector normalize_vect(t_vector *vector)
 // {
@@ -15,7 +15,7 @@
 // 		vector->ny = vector->y / vector->magnitude;
 // 		vector->nz = vector->z / vector->magnitude;
 // 		printf(YEL"Normalized Vector: %f, %f,
-//			%f\n" RESET,vector->nx,vector->ny,vector->nz);
+// 			%f\n" RESET,vector->nx,vector->ny,vector->nz);
 // 	}
 // 	return (0);
 // }
