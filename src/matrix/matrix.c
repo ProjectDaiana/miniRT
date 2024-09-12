@@ -154,6 +154,7 @@ int	compare_matrix(t_matrix a, t_matrix b)
 t_matrix matrix_multiply(t_matrix a, t_matrix b)
 {
 	t_matrix result;
+	result = create_matrix(4);
 	int i;
 	int j;
 

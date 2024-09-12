@@ -11,7 +11,7 @@
 #define BLU_PX 0x0000FF
 #define RED_PX 0xFF0000
 #define GRN_PX 0x00FF00
-#define SCALE 1
+#define SCALE 100
 #define	PI 3.14159265358979323846
 #define SQRT2_DIV2 (sqrt(2) / 2)
 
@@ -73,8 +73,9 @@ typedef struct data
 	void *mlx_ptr;
 	void *win_ptr;
 	t_vector *vector;
-	t_proj proj;
-	t_env env;
+	t_tuple *tuple;
+//	t_proj proj;
+//	t_env env;
 } t_data;
 
 int	handle_no_event(void *data);
@@ -94,6 +95,7 @@ t_vector normalize_vect(t_vector vector);
 double cross_product_to_array(t_vector a, t_vector b);
 
 t_proj tick(t_env *env, t_proj *proj);
+void draw_clock(t_data *data);
 
 // Color functions
 int rgb_to_int(t_color color);
@@ -125,8 +127,8 @@ int			is_invertible(double det);
 int			compare_matrix(t_matrix a, t_matrix b);
 void		print_matrix(t_matrix matrix, char *str, int size);
 
-t_matrix translation(double x, double y, double z, int w);
-t_matrix	scaling(double x, double y, double z, int w);
+t_matrix translation(double x, double y, double z);
+t_matrix	scaling(double x, double y, double z);
 t_matrix	rotation_x(double rad);
 t_matrix	rotation_y(double rad);
 t_matrix	rotation_z(double rad);

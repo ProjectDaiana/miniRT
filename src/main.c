@@ -24,22 +24,37 @@ int render(t_data *data)
     {
         // Clear window (optional, may not be necessary every frame)
         //mlx_clear_window(data->mlx_ptr, data->win_ptr);
+		draw_clock(data);
+
 		t_color color1 = {100, 0, 50};
 		t_color color2 = {2, 0, 3};
-
-        // Draw the projectile's position
-        int x = (int)(data->proj.position.x * SCALE) + W_WIDTH / 2;  // Scale and center x
-        int y = W_HEIGHT - (int)(data->proj.position.y * SCALE) - W_HEIGHT / 2; // Scale and invert y
-        if (x >= 0 && x < W_WIDTH && y >= 0 && y < W_HEIGHT)
+		int x = (int)(data->tuple->x * SCALE) + W_WIDTH / 2;
+        int y = (int)(data->tuple->y * SCALE) + W_HEIGHT / 2;
+		if (x >= 0 && x < W_WIDTH && y >= 0 && y < W_HEIGHT)
+		{
 			mlx_pixel_put(data->mlx_ptr, data->win_ptr, x, y, add_color(&color1, &color2));
-		//printf(BLU"Projectile Position: (%f, %f, %f)\n" RESET, data->proj.position.x, data->proj.position.y, data->proj.position.z);
-        // Update projectile
-        if (data->proj.position.y > 0) {
-			//printf(RED"Projectile Position: (%f, %f, %f)\n" RESET, data->proj.position.x, data->proj.position.y, data->proj.position.z);
-            data->proj = tick(&data->env, &data->proj);
-        }
+
+		}
     }
     return (0);
+}
+
+void draw_clock(t_data *data)
+{
+	t_tuple p = {0, 0, 1, 1};
+	int i = 0;
+
+	while (i < 12)
+	{
+		t_matrix transform = rotation_x(i * PI / 6);
+		t_tuple res = multiply_matrix_by_tuple(&transform, &p);
+
+		int x = (int)(res.y * SCALE) + W_WIDTH / 2;
+		int y = W_HEIGHT - (int)(res.z * SCALE) - W_HEIGHT / 2;
+		printf(BLU"Result: %f, %f, %f, %f\n"RESET, res.x, res.y, res.z, res.w);
+		mlx_pixel_put(data->mlx_ptr, data->win_ptr, x, y, 0xFFFFFF);
+		i++;
+	}
 }
 
 int main(int argc, char **argv)
@@ -53,17 +68,17 @@ int main(int argc, char **argv)
 
 	///////// MATRIX CREATION TESTS //////////////////////////
 
-	// double identity_matrix[4][4] = {
-	// 	{1, 0, 0, 0}, 
-	// 	{0, 1, 0, 0}, 
-	// 	{0, 0, 1, 0}, 
-	// 	{0, 0, 0, 1}
-	// };	
-	// t_matrix identity = create_matrix(4);
-	// assign_matrix(&identity, identity_matrix);
-	// print_matrix(identity, "Identity Matrix", 4);
+	double identity_matrix[4][4] = {
+		{1, 0, 0, 0}, 
+		{0, 1, 0, 0}, 
+		{0, 0, 1, 0}, 
+		{0, 0, 0, 1}
+	};	
+	t_matrix identity = create_matrix(4);
+	assign_matrix(&identity, identity_matrix);
+	print_matrix(identity, "Identity Matrix", 4);
 
-	t_tuple p = {2, 3, 4, 1};
+	//t_tuple p = {2, 3, 4, 1};
 
 	// t_matrix transform = scaling(-1, 1, 1, 1);
 	// print_matrix(transform, "Scaling Matrix", 4);
@@ -141,10 +156,21 @@ int main(int argc, char **argv)
 	// double	determinant = calculate_determinant(twobytwo_mtrx);
 	// printf("Determinant: %f\n", determinant);	
 
+	// CHAINING TRANSFORMATIONS TESTS
+	// t_tuple p = {1, 0, 1, 1};
+
+	// t_matrix a = rotation_x(PI / 2);
+	// t_matrix b = scaling(5, 5, 5);
+	// t_matrix c = translation(10, 5, 7);
+
+	// t_matrix t = matrix_multiply(matrix_multiply(c, b), a);
+	// t_tuple res = multiply_matrix_by_tuple(&t, &p);
+	// printf(GRN"Result: %f, %f, %f, %f\n"RESET, res.x, res.y, res.z, res.w);
+
 	//SKEW TESTS
-	t_matrix skew = skewing(0, 0, 0, 0, 0, 1);
-	t_tuple skw_p = multiply_matrix_by_tuple(&skew, &p);
-    printf("Result: %f, %f, %f, %f\n", skw_p.x, skw_p.y, skw_p.z, skw_p.w);
+	// t_matrix skew = skewing(0, 0, 0, 0, 0, 1);
+	// t_tuple skw_p = multiply_matrix_by_tuple(&skew, &p);
+    // printf("Result: %f, %f, %f, %f\n", skw_p.x, skw_p.y, skw_p.z, skw_p.w);
 
 	/// ROTATION TESTS //////////////////////////
 	//t_matrix half_quarter = rotation_x(PI / 4);
@@ -198,7 +224,11 @@ int main(int argc, char **argv)
 		free(data.mlx_ptr);
 		return (MLX_ERROR);
 	}
-	mlx_loop_hook(data.mlx_ptr, &render, &data);
+	//// Render the scene
+	// CLOCK EXERCISE
+	draw_clock(&data);
+
+	
 	mlx_hook(data.win_ptr, KeyPress, KeyPressMask, handle_keypress, &data);
 	mlx_hook(data.win_ptr, KeyRelease, KeyReleaseMask, &handle_keyrelease, &data);
 	mlx_loop(data.mlx_ptr);

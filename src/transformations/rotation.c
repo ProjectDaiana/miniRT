@@ -1,5 +1,6 @@
 #include "minirt.h"
 
+// Identity matrix is implicit in the matrix values assignment
 t_matrix	rotation_x(double rad)
 {
 	t_matrix rotation_matrix;

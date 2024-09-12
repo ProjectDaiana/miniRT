@@ -2,6 +2,7 @@
 	"files.associations": {
 		"stdio.h": "c",
 		"x.h": "c",
-		"minirt.h": "c"
+		"minirt.h": "c",
+		"mlx.h": "c"
 	}
 }

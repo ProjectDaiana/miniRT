@@ -1,6 +1,6 @@
 #include "minirt.h"
 
-t_matrix translation(double x, double y, double z, int w)
+t_matrix translation(double x, double y, double z)
 {
 	t_matrix translation_matrix;
 
@@ -8,15 +8,16 @@ t_matrix translation(double x, double y, double z, int w)
 	translation_matrix.m[0][0] = 1;
 	translation_matrix.m[1][1] = 1;
 	translation_matrix.m[2][2] = 1;
-	translation_matrix.m[3][0] = x;
-	translation_matrix.m[3][1] = y;
-	translation_matrix.m[3][2] = z;
-	translation_matrix.m[3][3] = w;
+	translation_matrix.m[3][3] = 1;
+	translation_matrix.m[0][3] = x;
+	translation_matrix.m[1][3] = y;
+	translation_matrix.m[2][3] = z;
+
 	print_matrix(translation_matrix, "Translation Matrix", 4);
 	return (translation_matrix);
 }
 
-t_matrix scaling(double x, double y, double z, int w)
+t_matrix scaling(double x, double y, double z)
 {
 	t_matrix scaling_matrix;
 
@@ -24,7 +25,7 @@ t_matrix scaling(double x, double y, double z, int w)
 	scaling_matrix.m[0][0] = x;
 	scaling_matrix.m[1][1] = y;
 	scaling_matrix.m[2][2] = z;
-	scaling_matrix.m[3][3] = w;
+	scaling_matrix.m[3][3] = 1;
 	print_matrix(scaling_matrix, "Scaling Matrix", 4);
 	return (scaling_matrix);
 }
