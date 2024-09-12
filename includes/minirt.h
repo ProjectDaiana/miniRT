@@ -125,7 +125,7 @@ t_matrix	inverse_matrix(t_matrix *matrix);
 int			is_invertible(double det);
 
 int			compare_matrix(t_matrix a, t_matrix b);
-void		print_matrix(t_matrix matrix, char *str, int size);
+void print_matrix(t_matrix matrix, char *str, int size);
 
 t_matrix translation(double x, double y, double z);
 t_matrix	scaling(double x, double y, double z);
