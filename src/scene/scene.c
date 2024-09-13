@@ -10,11 +10,9 @@ void	init_scene(t_scene *scene)
 	scene->sphere.material.specular = 0.3;
 	scene->sphere.material.shininess = 60;
 	scene->sphere.material.reflective = 0.1;
-
 	// Initialize light
 	scene->light.position = (t_vector){-5, 5, -5};
 	scene->light.color = (t_color){255, 255, 255};
-
 	// Initialize ambient light
 	scene->ambient_color = (t_color){255, 255, 255};
 	scene->ambient_intensity = 0.1;
@@ -22,21 +20,20 @@ void	init_scene(t_scene *scene)
 
 t_hit	intersect_scene(t_ray ray, t_scene *scene)
 {
-	t_hit	closest_hit;
-	t_hit	current_hit;
-	int		i;
+	t_hit closest_hit, current_hit;
+	int i;
 
 	closest_hit.hit = 0;
 	closest_hit.t = INFINITY;
-	i = 0;
-	while (i < scene->sphere_count)
+
+	for (i = 0; i < scene->sphere_count; i++)
 	{
 		current_hit = intersect_sphere(ray, scene->spheres[i]);
 		if (current_hit.hit && current_hit.t < closest_hit.t)
 		{
 			closest_hit = current_hit;
 		}
-		i++;
 	}
+
 	return (closest_hit);
 }

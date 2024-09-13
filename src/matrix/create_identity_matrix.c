@@ -2,7 +2,8 @@
 
 t_matrix	create_identity_matrix(void)
 {
-	t_matrix	identity;
+	t_matrix identity;
+	identity = create_matrix(4);
 
 	for (int i = 0; i < 4; i++)
 	{

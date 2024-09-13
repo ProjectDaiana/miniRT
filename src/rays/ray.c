@@ -1,146 +1,152 @@
-#include "minirt.h"
+// #include "minirt.h"
 
-t_ray	create_ray(double x, double y)
-{
-	t_ray	ray;
+// t_ray	create_ray(double x, double y)
+// {
+// 	t_ray	ray;
 
-	ray.origin = (t_vector){0, 2, -5}; // Camera position
-	ray.direction = normalize_vect((t_vector){x - 0.5, (y - 0.5) * -1, 1});
-	return (ray);
-}
+// 	ray.origin = (t_vector){0, 2, -5}; // Camera position
+// 	ray.direction = normalize_vect((t_vector){x - 0.5, (y - 0.5) * -1, 1});
+// 	return (ray);
+// }
+
+// t_hit	intersect_sphere(t_ray ray, t_sphere sphere)
+// {
+// 	t_hit		hit;
+// 	t_vector	oc;
+// 	double		a;
+// 	double		b;
+// 	double		c;
+// 	double		discriminant;
+// 	double		t;
+
+// 	oc = vect_subtraction(ray.origin, sphere.center);
+// 	a = dot_product(ray.direction, ray.direction);
+// 	b = 2.0 * dot_product(oc, ray.direction);
+// 	c = dot_product(oc, oc) - sphere.radius * sphere.radius;
+// 	discriminant = b * b - 4 * a * c;
+// 	hit.hit = 0;
+// 	if (discriminant >= 0)
+// 	{
+// 		t = (-b - sqrt(discriminant)) / (2.0 * a);
+// 		if (t > 0)
+// 		{
+// 			hit.hit = 1;
+// 			hit.t = t;
+// 			hit.point = vect_addition(ray.origin,
+// 					vect_multiplication(ray.direction, t));
+// 			hit.normal = normalize_vect(vect_subtraction(hit.point,
+// 						sphere.center));///Changed this from vect_normalize to normalize_vect
+// 			hit.material = sphere.material;
+// 		}
+// 	}
+// 	return (hit);
+// }
 
 // t_color	trace_ray(t_ray ray, t_scene *scene)
 // {
-// 	t_hit		hit;
-// 	t_color		color;
-// 	t_ray		reflect_ray;
-// 	t_color		reflect_color;
-// 	double		check_size;
-// 	double		t;
-// 	t_vector	point;
-// 	int			check_x;
-// 	int			check_z;
-// 	int			check_y;
+// 	t_hit hit;
+// 	t_color color;
+// 	double closest_t;
+// 	t_hit current_hit;
 
-// 	check_size = 1.0;
-// 	check_z = 0;
-// 	// hits sphere?
-// 	hit = intersect_sphere(ray, scene->sphere);
-// 	if (hit.hit)
+// 	color.r = 0;
+// 	color.g = 0;
+// 	color.b = 0;
+// 	closest_t = INFINITY;
+// 	for (int i = 0; i < scene->sphere_count; i++)
 // 	{
-// 		color = calculate_lighting(hit, scene, ray);
-// 		if (scene->sphere.material.reflective > 0)
+// 		current_hit = intersect_sphere(ray, scene->spheres[i]);
+// 		if (current_hit.hit && current_hit.t < closest_t)
 // 		{
-// 			reflect_ray.origin = hit.point;
-// 			reflect_ray.direction = vect_reflect(ray.direction, hit.normal);
-// 			reflect_color = trace_ray(reflect_ray, scene);
-// 			color = add_color(color, multiply_color_by_scalar(reflect_color,
-// 						scene->sphere.material.reflective));
+// 			hit = current_hit;
+// 			closest_t = current_hit.t;
+// 			color = calculate_lighting(hit, scene, ray);
+// 			printf("Hit sphere %d at t=%f\n", i, hit.t);
 // 		}
-// 		return (color);
 // 	}
-// 	// hits floor?
-// 	t = -ray.origin.y / ray.direction.y;
-// 	if (t > 0)
+// 	if (closest_t == INFINITY)
 // 	{
-// 		point = vect_addition(ray.origin, vect_multiplication(ray.direction,
-// 					t));
-// 		check_x = (int)(point.x / check_size) & 1;
-// 		check_z = (int)(point.z / check_size) & 1;
-// 		if ((check_x == 1 && check_z == 0) || (check_x == 0 && check_z == 1))
-// 			return ((t_color){255, 255, 255}); // White
-// 		else
-// 			return ((t_color){0, 0, 0}); // Black
+// 		// No hit, return background color
+// 		color = (t_color){50, 50, 50}; // Dark gray background
 // 	}
-// 	// hits wall?
-// 	t = (-ray.origin.z) / ray.direction.z;
-// 	if (t > 0) // will not hit the wall at <= 0
-// 	{
-// 		point = vect_addition(ray.origin, vect_multiplication(ray.direction,
-// 					t));
-// 		check_x = (int)(point.x / check_size) & 1;
-// 		check_y = (int)(point.y / check_size) & 1;
-// 		if ((check_x == 1 && check_y == 0) || (check_x == 0 && check_y == 1))
-// 			return ((t_color){255, 255, 255}); // White
-// 		else
-// 			return ((t_color){0, 0, 0}); // Black
-// 	}
-// 	return ((t_color){0, 0, 0});
-// 	// t = (5 - ray.origin.z) / ray.direction.z;
-// 	// 	if (t > 0) // will not hit the wall at <= 0
-// 	// 	{
-// 	// 		point = vect_addition(ray.origin, vect_multiplication(ray.direction,
-// 	// 					t));
-// 	// 		check_x = (int)(point.x / check_size) & 1;
-// 	// 		check_y = (int)(point.y / check_size) & 1;
-// 	// 		if ((check_x == 1 && check_z == 0) || (check_x == 0
-// 					&& check_z == 1))
-// 	// 			return ((t_color){255, 255, 255}); // White
-// 	// 		else
-// 	// 			return ((t_color){0, 0, 0}); // Black
-// 	// 	}
-// 	// 	return ((t_color){0, 0, 0});
+// 	return (color);
 // }
+
+#include "minirt.h"
+
+t_ray	create_ray(t_vector origin, t_vector direction)
+{
+	t_ray	ray;
+
+	ray.origin = origin;
+	ray.direction = normalize_vect(direction);
+	return (ray);
+}
+
+t_vector	ray_position(t_ray *ray, double t)
+{
+	return (vect_addition(ray->origin, vect_multiplication(ray->direction, t)));
+}
 
 t_hit	intersect_sphere(t_ray ray, t_sphere sphere)
 {
 	t_hit		hit;
-	t_vector	oc;
-	double		a;
-	double		b;
-	double		c;
-	double		discriminant;
-	double		t;
+	t_vector	sphere_to_ray;
+	double		t1;
+	double		t2;
 
-	oc = vect_subtraction(ray.origin, sphere.center);
+	double a, b, c, discriminant;
+	sphere_to_ray = vect_subtraction(ray.origin, sphere.center);
 	a = dot_product(ray.direction, ray.direction);
-	b = 2.0 * dot_product(oc, ray.direction);
-	c = dot_product(oc, oc) - sphere.radius * sphere.radius;
+	b = 2 * dot_product(sphere_to_ray, ray.direction);
+	c = dot_product(sphere_to_ray, sphere_to_ray) - sphere.radius
+		* sphere.radius;
 	discriminant = b * b - 4 * a * c;
 	hit.hit = 0;
 	if (discriminant >= 0)
 	{
-		t = (-b - sqrt(discriminant)) / (2.0 * a);
-		if (t > 0)
-		{
-			hit.hit = 1;
-			hit.t = t;
-			hit.point = vect_addition(ray.origin,
-					vect_multiplication(ray.direction, t));
-			hit.normal = normalize_vect(vect_subtraction(hit.point,
-						sphere.center));///Changed this from vect_normalize to normalize_vect
-			hit.material = sphere.material;
-		}
+		t1 = (-b - sqrt(discriminant)) / (2 * a);
+		t2 = (-b + sqrt(discriminant)) / (2 * a);
+		if (t1 > 0 && t1 < t2)
+			hit.t = t1;
+		else if (t2 > 0)
+			hit.t = t2;
+		else
+			return (hit);
+		hit.hit = 1;
+		hit.point = ray_position(&ray, hit.t);
+		hit.normal = normalize_vect(vect_subtraction(hit.point, sphere.center));
+		hit.material = sphere.material;
 	}
 	return (hit);
 }
 
-t_color	trace_ray(t_ray ray, t_scene *scene)
+t_vector	reflect(t_vector incident, t_vector normal)
 {
-	t_hit hit;
-	t_color color;
-	double closest_t;
-	t_hit current_hit;
+	return (vect_subtraction(incident, vect_multiplication(normal, 2
+				* dot_product(incident, normal))));
+}
 
-	color.r = 0;
-	color.g = 0;
-	color.b = 0;
-	closest_t = INFINITY;
-	for (int i = 0; i < scene->sphere_count; i++)
+t_color	trace_ray(t_ray ray, t_scene *scene, int depth)
+{
+	t_hit	hit;
+	t_color	color;
+			t_ray reflected_ray;
+	t_color	reflected_color;
+
+	hit = intersect_scene(ray, scene);
+	if (hit.hit)
 	{
-		current_hit = intersect_sphere(ray, scene->spheres[i]);
-		if (current_hit.hit && current_hit.t < closest_t)
+		color = calculate_lighting(hit, scene, ray);
+		if (depth > 0 && hit.material.reflective > 0)
 		{
-			hit = current_hit;
-			closest_t = current_hit.t;
-			color = calculate_lighting(hit, scene, ray);
-			printf("Hit sphere %d at t=%f\n", i, hit.t);
+			reflected_ray.origin = hit.point;
+			reflected_ray.direction = reflect(ray.direction, hit.normal);
+			reflected_color = trace_ray(reflected_ray, scene, depth - 1);
+			color = add_color(color, scale_color(reflected_color,
+						hit.material.reflective));
 		}
+		return (color);
 	}
-	if (closest_t == INFINITY)
-	{
-		// No hit, return background color
-		color = (t_color){50, 50, 50}; // Dark gray background
-	}
-	return (color);
+	return (scene->background_color);
 }

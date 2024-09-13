@@ -18,7 +18,7 @@ t_matrix inverse_matrix(t_matrix *matrix)
 	double determinant;
 	int i;
 	int j;
-	double cofactor;
+	// double cofactor;
 	double minor;
 	int sign;
 	int size;
@@ -35,7 +35,7 @@ t_matrix inverse_matrix(t_matrix *matrix)
 		{
 			sign = (i + j) % 2 == 0 ? 1 : -1;
 			minor = calculate_minor(matrix, i, j, size);
-			cofactor = calculate_cofactor(matrix, i, j, size);
+			// cofactor = calculate_cofactor(matrix, i, j, size);
 			inverse.m[j][i] = sign * minor / determinant;
 			j++;
 		}
