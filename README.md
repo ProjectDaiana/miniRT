@@ -38,11 +38,9 @@ Welcome to miniRT, a basic raytracing engine built from scratch using the MiniLi
 - [ ] Create image
 - [ ] Put pixel on screen
 
-- [x] Normalize vectors
-- [ ] Calculate dot product 🐱
-- [ ] Calculate cross product 🐱
-- [ ] Calcualate color of pixel
-
+- [x] transform(r,m)
+- [x] position(t_tuple *origin, t_tuple *direction, double t);
+- [x] Changed t_vector to t_tuple;
 
 ## Features
 - **Geometric Objects.** Supports rendering of basic geometric shapes including planes, spheres, and cylinders. These objects can be resized, translated, and rotated (except for spheres and lights, which cannot be rotated).
