@@ -6,7 +6,7 @@
 /*   By: darotche <darotche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/28 13:28:30 by darotche          #+#    #+#             */
-/*   Updated: 2024/07/06 19:30:29 by darotche         ###   ########.fr       */
+/*   Updated: 2024/09/12 21:20:46 by darotche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,5 +81,6 @@ int				ft_put_unsigned(unsigned int n);
 int				ft_putchar(char c);
 int				ft_putnbr(int n);
 int				ft_putstr(char *str);
+int				get_next_line(int fd, char **line);
 
 #endif

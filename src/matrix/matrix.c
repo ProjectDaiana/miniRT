@@ -1,5 +1,49 @@
 #include "minirt.h"
 
+
+
+// t_matrix create_matrix(double m[4][4])
+// {
+// 	t_matrix matrix;
+
+// 	int i;
+// 	int j;
+
+// 	i = 0;
+// 	while (i < 4)
+// 	{
+// 		j = 0;
+// 		while (j < 4)
+// 		{
+// 			matrix.m[i][j] = m[i][j];
+// 			j++;
+// 		}
+// 		i++;
+// 	}
+// 	return (matrix);
+//}
+
+// t_matrix create_matrix_3(double m[3][3])
+// {
+// 	t_matrix matrix;
+
+// 	int i;
+// 	int j;
+
+// 	i = 0;
+// 	while (i < 3)
+// 	{
+// 		j = 0;
+// 		while (j < 3)
+// 		{
+// 			matrix.m[i][j] = m[i][j];
+// 			j++;
+// 		}
+// 		i++;
+// 	}
+// 	return (matrix);
+// }
+
 t_matrix	create_matrix(int size)
 {
 	int i;
@@ -14,20 +58,6 @@ t_matrix	create_matrix(int size)
 		i++;
 	}
 	return (matrix);
-}
-
-
-void	free_matrix(t_matrix *matrix)
-{
-	int i;
-
-	i = 0;
-	while (i < matrix->size)
-	{
-		free(matrix->m[i]);
-		i++;
-	}
-	free(matrix->m);
 }
 
 void	assign_matrix_3(t_matrix *matrix, double m[3][3])
@@ -62,70 +92,6 @@ void	assign_matrix(t_matrix *matrix, double m[4][4])
 			matrix->m[i][j] = m[i][j];
 			j++;
 		}
-		i++;
-	}
-}
-
-
-// t_matrix create_matrix(double m[4][4])
-// {
-// 	t_matrix matrix;
-
-// 	int i;
-// 	int j;
-
-// 	i = 0;
-// 	while (i < 4)
-// 	{
-// 		j = 0;
-// 		while (j < 4)
-// 		{
-// 			matrix.m[i][j] = m[i][j];
-// 			j++;
-// 		}
-// 		i++;
-// 	}
-// 	return (matrix);
-//}
-
-t_matrix create_matrix_3(double m[3][3])
-{
-	t_matrix matrix;
-
-	int i;
-	int j;
-
-	i = 0;
-	while (i < 3)
-	{
-		j = 0;
-		while (j < 3)
-		{
-			matrix.m[i][j] = m[i][j];
-			j++;
-		}
-		i++;
-	}
-	return (matrix);
-}
-
-void print_matrix(t_matrix matrix, char *str, int size)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	j = 0;
-	printf(YEL"%s\n"RESET ,str);
-	while (i < size)
-	{
-		j = 0;
-		while (j < size)
-		{
-			printf("%f ", matrix.m[i][j]);
-			j++;
-		}
-		printf("\n");
 		i++;
 	}
 }
@@ -204,31 +170,6 @@ t_matrix	transpose_matrix(t_matrix *identity_matrix)
 	return (transposed);
 }
 
-// Determinant for 2x2 matrix
-double calculate_determinant_m2(double **m, int size)
-{
-	double determinant;
-
-	if (size == 2)
-	{
-		determinant = m[0][0] * m[1][1] - m[0][1] * m[1][0];
-		//printf(MAG"calculate_determinant(): %f\n"RESET, determinant);
-		return (determinant);
-	}
-	print_error("Matrix size not supported");
-	return (0);
-}
-
-// double calculate_determinant(double m[2][2])
-// {
-// 	double determinant;
-
-// 	determinant = m[0][0] * m[1][1] - m[0][1] * m[1][0];
-// 	printf(MAG"Determinant: %f\n"RESET, determinant);
-// 	return (determinant);
-// }
-
-
 t_matrix	find_submatrix(t_matrix *matrix, int row, int col, int mtrx_size)
 {
 	t_matrix submatrix;
@@ -265,7 +206,6 @@ t_matrix	find_submatrix(t_matrix *matrix, int row, int col, int mtrx_size)
 	}
 	return (submatrix);
 }
-
 
 // Minor is the Determinant of the submatrix at(i,j)
 double	calculate_minor(t_matrix *matrix, int row, int col, int mtrx_size)
@@ -320,3 +260,27 @@ double	calculate_minor(t_matrix *matrix, int row, int col, int mtrx_size)
 		return (det);
 	}
  }
+
+// Determinant for 2x2 matrix
+// double calculate_determinant_m2(double **m, int size)
+// {
+// 	double determinant;
+
+// 	if (size == 2)
+// 	{
+// 		determinant = m[0][0] * m[1][1] - m[0][1] * m[1][0];
+// 		//printf(MAG"calculate_determinant(): %f\n"RESET, determinant);
+// 		return (determinant);
+// 	}
+// 	print_error("Matrix size not supported");
+// 	return (0);
+// }
+
+// double calculate_determinant(double m[2][2])
+// {
+// 	double determinant;
+
+// 	determinant = m[0][0] * m[1][1] - m[0][1] * m[1][0];
+// 	printf(MAG"Determinant: %f\n"RESET, determinant);
+// 	return (determinant);
+// }

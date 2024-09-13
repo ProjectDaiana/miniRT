@@ -3,6 +3,8 @@
 		"stdio.h": "c",
 		"x.h": "c",
 		"minirt.h": "c",
-		"mlx.h": "c"
+		"mlx.h": "c",
+		"libft.h": "c",
+		"unistd.h": "c"
 	}
 }
