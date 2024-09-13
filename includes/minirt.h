@@ -32,7 +32,7 @@ typedef struct s_vector
 	// double nx;
 	// double ny;
 	// double nz;
-	//double magnitude;
+	double magnitude;
 	// double norm_vector;
 	//t_color *color;
 } t_vector;
@@ -48,7 +48,7 @@ typedef struct tuple
 typedef struct s_matrix
 {
 	double	**m;
-	//int size;
+	int size;
 } t_matrix;
 
 typedef struct s_color
@@ -130,7 +130,6 @@ int	hadamard_product(t_color *color1, t_color *color2);
 
 // Matrix functions
 t_tuple		multiply_matrix_by_tuple(t_matrix *matrix, t_tuple *tuple);
-
 //t_matrix	create_matrix(double m[4][4]);
 t_matrix	create_matrix_3(double m[3][3]);
 t_matrix	create_matrix(int size);
@@ -173,3 +172,4 @@ t_tuple point(double x, double y, double z, double w);
 t_intersections intersect(t_sphere s, t_ray r);
 void test_intersection(t_tuple origin, t_tuple direction);
 
+t_ray transform(t_ray *ray, t_matrix *matrix);	
