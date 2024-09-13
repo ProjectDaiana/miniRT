@@ -18,7 +18,18 @@ t_ray ray(t_tuple *origin, t_tuple *direction)
 	return (ray);
 }
 
+t_tuple position(t_tuple *origin, t_tuple *direction, double t)
+{
+	t_tuple ray;
 
+	ray.x = origin->x + t * direction->x;
+	ray.y = origin->y + t * direction->y;
+	ray.z = origin->z + t * direction->z;
+	ray.w = 1;
+	printf("Ray: %f, %f, %f, %f\n", ray.x, ray.y, ray.z, ray.w);
+	
+	return (ray);
+}
 
 // t_color	trace_ray(t_ray ray, t_scene *scene)
 // {
