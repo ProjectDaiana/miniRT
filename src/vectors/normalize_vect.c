@@ -1,6 +1,6 @@
 #include "minirt.h"
 
-// t_vector normalize_vect(t_vector *vector)
+// t_tuple normalize_vect(t_tuple *vector)
 // {
 // 	// Avoid division by zero
 // 	if (vector->magnitude == 0) {
@@ -19,9 +19,9 @@
 // 	return (0);
 // }
 
-t_vector normalize_vect(t_vector v)
+t_tuple	normalize_vect(t_tuple v)
 {
-	t_vector	result;
+	t_tuple	result;
     double		mag;
 	
 	mag = vect_length(v.x, v.y, v.z);

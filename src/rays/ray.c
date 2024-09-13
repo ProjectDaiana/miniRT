@@ -4,10 +4,21 @@ t_ray	create_ray(double x, double y)
 {
 	t_ray	ray;
 
-	ray.origin = (t_vector){0, 2, -5}; // Camera position
-	ray.direction = normalize_vect((t_vector){x - 0.5, (y - 0.5) * -1, 1});
+	ray.origin = (t_tuple){0, 2, -5, 0}; // Camera position
+	ray.direction = normalize_vect((t_tuple){x - 0.5, (y - 0.5) * -1, 1, 1});
 	return (ray);
 }
+
+t_ray ray(t_tuple *origin, t_tuple *direction)
+{
+	t_ray ray;
+
+	ray.origin = *origin;
+	ray.direction = *direction;
+	return (ray);
+}
+
+
 
 // t_color	trace_ray(t_ray ray, t_scene *scene)
 // {
@@ -17,7 +28,7 @@ t_ray	create_ray(double x, double y)
 // 	t_color		reflect_color;
 // 	double		check_size;
 // 	double		t;
-// 	t_vector	point;
+// 	t_tuple	point;
 // 	int			check_x;
 // 	int			check_z;
 // 	int			check_y;
@@ -85,7 +96,7 @@ t_ray	create_ray(double x, double y)
 t_hit	intersect_sphere(t_ray ray, t_sphere sphere)
 {
 	t_hit		hit;
-	t_vector	oc;
+	t_tuple	oc;
 	double		a;
 	double		b;
 	double		c;

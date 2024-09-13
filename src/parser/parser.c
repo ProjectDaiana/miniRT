@@ -14,7 +14,7 @@ int	parse_color(char *str, t_color *color)
 	return (1);
 }
 
-int	parse_vector(char *str, t_vector *vector)
+int	parse_vector(char *str, t_tuple *vector)
 {
 	char	**split;
 

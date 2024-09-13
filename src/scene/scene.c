@@ -3,7 +3,7 @@
 void	init_scene(t_scene *scene)
 {
 	// Initialize sphere
-	scene->sphere.center = (t_vector){0, 1, 5};          // Move sphere forward
+	scene->sphere.center = (t_tuple){0, 1, 5, 1};          // Move sphere forward
 	scene->sphere.radius = 2.0;                          // Make sphere larger
 	scene->sphere.material.color = (t_color){255, 0, 0}; // Red
 	scene->sphere.material.diffuse = 0.7;
@@ -12,7 +12,7 @@ void	init_scene(t_scene *scene)
 	scene->sphere.material.reflective = 0.1;
 
 	// Initialize light
-	scene->light.position = (t_vector){-5, 5, -5};
+	scene->light.position = (t_tuple){-5, 5, -5, 1};
 	scene->light.color = (t_color){255, 255, 255};
 
 	// Initialize ambient light

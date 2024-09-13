@@ -1,6 +1,6 @@
 #include "minirt.h"
 
-void init(t_data *data, t_vector *vector)
+void init(t_data *data, t_tuple *vector)
 {
 	data->mlx_ptr = NULL;
 	data->win_ptr = NULL;
@@ -23,7 +23,7 @@ void init(t_data *data, t_vector *vector)
 // 	(void)argc;
 // 	(void)argv;
 // 	static t_data data;
-// 	t_vector	vector;
+// 	t_tuple	vector;
 
 // 	init(&data, &vector);	
 
@@ -99,6 +99,14 @@ int	main(int argc, char **argv)
 	data.addr = mlx_get_data_addr(data.img_ptr, &data.bits_per_pixel,
 			&data.line_length, &data.endian);
 	printf("Rendering frame...\n");
+	//TRANSFORM TESTS
+	t_tuple origin = {1, 2, 3, 1};
+	t_tuple dir = {0, 1, 0, 0};
+	t_ray ray = {origin, dir};
+	t_matrix scale = scaling(2,3,4);
+	transform(&ray, &scale);
+	
+
 	render_img(&data);
 	return (0);
 }
