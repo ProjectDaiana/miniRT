@@ -243,8 +243,6 @@ void print_error(char *msg);
 void	free_split(char **split);
 void	free_matrix(t_matrix *matrix);
 
-
-
 /// TEST FUNCTIONS, DELETE LATER
 int check_rotation_results(t_tuple result_half, t_tuple result_full);
 void draw_clock(t_data *data);
