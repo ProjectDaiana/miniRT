@@ -9,8 +9,6 @@ t_ray	create_ray(double x, double y)
 	return (ray);
 }
 
-
-
 // t_color	trace_ray(t_ray ray, t_scene *scene)
 // {
 // 	t_hit		hit;
