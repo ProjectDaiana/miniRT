@@ -209,11 +209,12 @@ int main(int argc, char **argv)
 	//// Render the scene
 	// CLOCK EXERCISE
 	draw_clock(&data);
+
+	//TRANSFORM TESTS
 	t_tuple origin = {1, 2, 3, 1};
 	t_tuple dir = {0, 1, 0, 0};
 	t_ray ray = {origin, dir};
 	t_matrix scale = scaling(2,3,4);
-	
 	transform(&ray, &scale);
 
 	// RAYS
