@@ -74,43 +74,43 @@ typedef struct
 
 typedef struct
 {
-	t_vector		position;
+	t_tuple		position;
 	double			intensity;
 	t_color			color;
 }					t_light;
 
 typedef struct
 {
-	t_vector		center;
+	t_tuple		center;
 	double			radius;
 	t_material		material;
 }					t_sphere;
 
 typedef struct
 {
-	t_vector		origin;
-	t_vector		direction;
+	t_tuple		origin;
+	t_tuple		direction;
 }					t_ray;
 
 typedef struct
 {
 	int				hit;
 	double			t;
-	t_vector		point;
-	t_vector		normal;
+	t_tuple		point;
+	t_tuple		normal;
 	t_material		material;
 }					t_hit;
 
 typedef struct s_camera
 {
-	t_vector		position;
-	t_vector		rotation;
-	t_vector		orientation;
+	t_tuple		position;
+	t_tuple		rotation;
+	t_tuple		orientation;
 	double			fov;
-	t_vector		origin;
-	t_vector		lower_left_corner;
-	t_vector		horizontal;
-	t_vector		vertical;
+	t_tuple		origin;
+	t_tuple		lower_left_corner;
+	t_tuple		horizontal;
+	t_tuple		vertical;
 }					t_camera;
 
 typedef struct
@@ -156,7 +156,7 @@ typedef struct data
 	int				endian;
 	t_scene			scene;
 
-	t_vector		*vector;
+	t_tuple		*vector;
 	t_tuple			*tuple;
 	//	t_proj proj;
 	//	t_env env;
@@ -164,8 +164,8 @@ typedef struct data
 
 typedef struct s_plane
 {
-	t_vector		point;
-	t_vector		normal;
+	t_tuple		point;
+	t_tuple		normal;
 	t_material		material;
 }					t_plane;
 
@@ -196,13 +196,13 @@ int					handle_keyrelease(int keysym, void *data);
 int					parse_rt_file(char *filename, t_scene *scene);
 
 // Vector functions
-t_vector			vect_addition(t_vector a, t_vector b);
-t_vector			vect_subtraction(t_vector a, t_vector b);
-t_vector			vect_multiplication(t_vector a, double b);
-t_vector			normalize_vect(t_vector vector);
+t_tuple			vect_addition(t_tuple a, t_tuple b);
+t_tuple			vect_subtraction(t_tuple a, t_tuple b);
+t_tuple			vect_multiplication(t_tuple a, double b);
+t_tuple			normalize_vect(t_tuple vector);
 double				vect_length(double x, double y, double z);
-double				dot_product(t_vector a, t_vector b);
-double				cross_product_to_array(t_vector a, t_vector b);
+double				dot_product(t_tuple a, t_tuple b);
+double				cross_product_to_array(t_tuple a, t_tuple b);
 
 // Color & Lighting functions
 t_color				create_color(int r, int g, int b);
@@ -250,9 +250,9 @@ t_matrix			skewing(double x_y, double x_z, double y_x, double y_z,
 
 // Ray functions
 // t_ray	create_ray(double x, double y, t_camera *camera);
-t_ray				create_ray(t_vector origin, t_vector direction);
+t_ray				create_ray(t_tuple origin, t_tuple direction);
 t_hit				intersect_sphere(t_ray ray, t_sphere sphere);
-t_vector			ray_position(t_ray *ray, double t);
+t_tuple			ray_position(t_ray *ray, double t);
 t_color				trace_ray(t_ray ray, t_scene *scene, int depth);
 t_hit				intersect_sphere(t_ray ray, t_sphere sphere);
 
@@ -278,15 +278,15 @@ void				draw_clock(t_data *data);
 
 // added functions
 t_ray				create_camera_ray(t_camera camera, int x, int y);
-void				setup_camera(t_camera *camera, t_vector lookfrom,
-						t_vector lookat, t_vector vup, double vfov,
+void				setup_camera(t_camera *camera, t_tuple lookfrom,
+						t_tuple lookat, t_tuple vup, double vfov,
 						double aspect_ratio);
 t_hit				intersect_plane(t_ray ray, t_plane plane);
-t_color				pattern_at(t_pattern pattern, t_vector point);
-t_color				stripe_pattern(t_pattern pattern, t_vector point);
-t_color				checker_pattern(t_pattern pattern, t_vector point);
-t_vector			reflect(t_vector incident, t_vector normal);
-t_vector			cross_product(t_vector a, t_vector b);
+t_color				pattern_at(t_pattern pattern, t_tuple point);
+t_color				stripe_pattern(t_pattern pattern, t_tuple point);
+t_color				checker_pattern(t_pattern pattern, t_tuple point);
+t_tuple			reflect(t_tuple incident, t_tuple normal);
+t_tuple			cross_product(t_tuple a, t_tuple b);
 t_color				scale_color(t_color color, double factor);
 void				print_scene_info(t_scene *scene);
 int	close_window(t_data *data);

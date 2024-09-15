@@ -24,6 +24,7 @@ int	render_img(t_data *data)
 		close_window(data);
 		return (MLX_ERROR);
 	}
+	printf(BLU"OK\n"RESET);
 	mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->img_ptr, 0, 0);
 	mlx_hook(data->win_ptr, 17, 1L << 17, close_window, data);
 	mlx_hook(data->win_ptr, KeyPress, KeyPressMask, handle_keypress, data);
@@ -78,7 +79,7 @@ int	render_frame(t_data *data)
 {
 	t_ray	ray;
 	t_color	color;
-
+		
 	int x, y;
 	if (data->scene.sphere_count == 0)
 	{
@@ -92,7 +93,7 @@ int	render_frame(t_data *data)
 			}
 		}
 		return (0);
-	}
+	}	
 	for (y = 0; y < W_HEIGHT; y++)
 	{
 		for (x = 0; x < W_WIDTH; x++)

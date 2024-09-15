@@ -1,7 +1,7 @@
 #include "minirt.h"
 
 t_material default_material() {
-    t_material mat = {0.1, 0.9, 0.9, 200.0};  // Example material properties
+    t_material mat = {0.1, 0.9, 0.9, 200.0, 0.0, {255, 0, 0}};  // Example material properties
 	return mat;
 }
 

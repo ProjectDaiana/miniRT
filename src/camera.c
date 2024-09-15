@@ -4,25 +4,33 @@ t_ray	create_camera_ray(t_camera camera, int x, int y)
 {
 	double		u;
 	double		v;
-	t_vector	direction;
+	t_tuple	direction;
 
 	u = (double)x / (W_WIDTH - 1);
 	v = (double)(W_HEIGHT - 1 - y) / (W_HEIGHT - 1);
+	printf(MAG"u %f"RESET, u);
+	printf(MAG"v %f"RESET, v);
 	direction = normalize_vect(vect_subtraction(vect_addition(vect_addition(camera.lower_left_corner,
 						vect_multiplication(camera.horizontal, u)),
 					vect_multiplication(camera.vertical, v)), camera.origin));
+	// direction.x = 1.0;
+	// direction.y = 2.0;
+	// direction.z = 3.0;
+	// direction.w = 0;
+	//printf(MAG"create camera ray direction %f %f %f %f\n"RESET, direction.z, direction.y, direction.z, direction.w);
+	//printf(MAG"create camera ray origin %f %f %f %f\n"RESET, camera.origin.x, camera.origin.y, camera.origin.z, camera.origin.w);
 	return (create_ray(camera.origin, direction));
 }
 
-void	setup_camera(t_camera *camera, t_vector lookfrom, t_vector lookat,
-		t_vector vup, double vfov, double aspect_ratio)
+void	setup_camera(t_camera *camera, t_tuple lookfrom, t_tuple lookat,
+		t_tuple vup, double vfov, double aspect_ratio)
 {
 	double		theta;
 	double		half_height;
 	double		half_width;
-	t_vector	w;
-	t_vector	u;
-	t_vector	v;
+	t_tuple	w;
+	t_tuple	u;
+	t_tuple	v;
 
 	theta = vfov * M_PI / 180;
 	half_height = tan(theta / 2);

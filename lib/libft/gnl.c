@@ -55,7 +55,29 @@ static char	*ft_new_left_str(char *left_str)
 	free(left_str);
 	return (str);
 }
+#include <string.h>
+static char *ft_strjoin_gnl(char *s1, char *s2)
+{
+    char *result;
+    size_t len1, len2;
 
+    if (!s1 && !s2)
+        return (NULL);
+    len1 = s1 ? ft_strlen(s1) : 0;
+    len2 = s2 ? ft_strlen(s2) : 0;
+    result = malloc(len1 + len2 + 1);
+    if (!result)
+        return (NULL);
+    if (s1)
+        ft_memcpy(result, s1, len1);
+    if (s2)
+        ft_memcpy(result + len1, s2, len2);
+    result[len1 + len2] = '\0';
+    free(s1);
+    return (result);
+}
+
+#include <stdio.h>
 int	get_next_line(int fd, char **line)
 {
 	char *buff;
@@ -77,7 +99,7 @@ int	get_next_line(int fd, char **line)
 			return (-1);
 		}
 		buff[rd_bytes] = '\0';
-		left_str = ft_strjoin(left_str, buff);
+		left_str = ft_strjoin_gnl(left_str, buff);
 	}
 	free(buff);
 	*line = ft_get_line(left_str);

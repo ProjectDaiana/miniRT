@@ -14,7 +14,7 @@ int	parse_color(char *str, t_color *color)
 	return (1);
 }
 
-int	parse_vector(char *str, t_vector *vector)
+int	parse_vector(char *str, t_tuple *vector)
 {
 	char	**split;
 
@@ -212,6 +212,7 @@ int	parse_rt_file(char *filename, t_scene *scene)
 		printf("Error in get_next_line\n");
 		return (0);
 	}
+
 	printf("File parsed successfully\n");
 	print_scene_info(scene);
 	return (1);

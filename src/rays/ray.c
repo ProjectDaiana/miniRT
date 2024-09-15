@@ -4,15 +4,15 @@
 // {
 // 	t_ray	ray;
 
-// 	ray.origin = (t_vector){0, 2, -5}; // Camera position
-// 	ray.direction = normalize_vect((t_vector){x - 0.5, (y - 0.5) * -1, 1});
+// 	ray.origin = (t_tuple){0, 2, -5}; // Camera position
+// 	ray.direction = normalize_vect((t_tuple){x - 0.5, (y - 0.5) * -1, 1});
 // 	return (ray);
 // }
 
 // t_hit	intersect_sphere(t_ray ray, t_sphere sphere)
 // {
 // 	t_hit		hit;
-// 	t_vector	oc;
+// 	t_tuple	oc;
 // 	double		a;
 // 	double		b;
 // 	double		c;
@@ -74,16 +74,19 @@
 
 #include "minirt.h"
 
-t_ray	create_ray(t_vector origin, t_vector direction)
+t_ray	create_ray(t_tuple origin, t_tuple direction)
 {
 	t_ray	ray;
 
 	ray.origin = origin;
 	ray.direction = normalize_vect(direction);
+	printf("create ray origin %f %f %f %f",origin.x, origin.y, origin.z, origin.w);
+	printf("create ray origin %f %f %f %f",direction.x, direction.y, direction.z, direction.w);
+
 	return (ray);
 }
 
-t_vector	ray_position(t_ray *ray, double t)
+t_tuple	ray_position(t_ray *ray, double t)
 {
 	return (vect_addition(ray->origin, vect_multiplication(ray->direction, t)));
 }
@@ -91,12 +94,14 @@ t_vector	ray_position(t_ray *ray, double t)
 t_hit	intersect_sphere(t_ray ray, t_sphere sphere)
 {
 	t_hit		hit;
-	t_vector	sphere_to_ray;
+	t_tuple	sphere_to_ray;
 	double		t1;
 	double		t2;
 
 	double a, b, c, discriminant;
+
 	sphere_to_ray = vect_subtraction(ray.origin, sphere.center);
+	printf(GRN"sphere_to_ray %f %f %f %f\n"RESET, sphere_to_ray.x, sphere_to_ray.y, sphere_to_ray.z, sphere_to_ray.w);
 	a = dot_product(ray.direction, ray.direction);
 	b = 2 * dot_product(sphere_to_ray, ray.direction);
 	c = dot_product(sphere_to_ray, sphere_to_ray) - sphere.radius
@@ -107,6 +112,8 @@ t_hit	intersect_sphere(t_ray ray, t_sphere sphere)
 	{
 		t1 = (-b - sqrt(discriminant)) / (2 * a);
 		t2 = (-b + sqrt(discriminant)) / (2 * a);
+		printf(YEL"t1: %f"RESET, t1);
+		printf(YEL"t2: %f\n"RESET, t2);
 		if (t1 > 0 && t1 < t2)
 			hit.t = t1;
 		else if (t2 > 0)
@@ -121,7 +128,7 @@ t_hit	intersect_sphere(t_ray ray, t_sphere sphere)
 	return (hit);
 }
 
-t_vector	reflect(t_vector incident, t_vector normal)
+t_tuple	reflect(t_tuple incident, t_tuple normal)
 {
 	return (vect_subtraction(incident, vect_multiplication(normal, 2
 				* dot_product(incident, normal))));
@@ -137,6 +144,7 @@ t_color	trace_ray(t_ray ray, t_scene *scene, int depth)
 	hit = intersect_scene(ray, scene);
 	if (hit.hit)
 	{
+		printf(YEL"OK\n"RESET);
 		color = calculate_lighting(hit, scene, ray);
 		if (depth > 0 && hit.material.reflective > 0)
 		{
@@ -146,6 +154,7 @@ t_color	trace_ray(t_ray ray, t_scene *scene, int depth)
 			color = add_color(color, scale_color(reflected_color,
 						hit.material.reflective));
 		}
+		printf("Color: %d, %d, %d", color.r, color.g, color.b);
 		return (color);
 	}
 	return (scene->background_color);

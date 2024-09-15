@@ -5,6 +5,7 @@
 		"minirt.h": "c",
 		"mlx.h": "c",
 		"libft.h": "c",
-		"unistd.h": "c"
+		"unistd.h": "c",
+		"cmath": "c"
 	}
 }

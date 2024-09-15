@@ -1,6 +1,6 @@
 #include "minirt.h"
 
-t_color	stripe_pattern(t_pattern pattern, t_vector point)
+t_color	stripe_pattern(t_pattern pattern, t_tuple point)
 {
 	int	x;
 
@@ -8,7 +8,7 @@ t_color	stripe_pattern(t_pattern pattern, t_vector point)
 	return ((x % 2 == 0) ? pattern.a : pattern.b);
 }
 
-t_color	checker_pattern(t_pattern pattern, t_vector point)
+t_color	checker_pattern(t_pattern pattern, t_tuple point)
 {
 	int	sum;
 
@@ -16,7 +16,7 @@ t_color	checker_pattern(t_pattern pattern, t_vector point)
 	return ((sum % 2 == 0) ? pattern.a : pattern.b);
 }
 
-t_color	pattern_at(t_pattern pattern, t_vector point)
+t_color	pattern_at(t_pattern pattern, t_tuple point)
 {
 	switch (pattern.type)
 	{

@@ -3,7 +3,7 @@
 // t_color	calculate_lighting(t_hit hit, t_scene *scene, t_ray ray)
 // {
 // 	t_color ambient, diffuse, result;
-// 	t_vector light_dir;
+// 	t_tuple light_dir;
 // 	double diff;
 // 	(void)ray;
 
@@ -25,7 +25,7 @@
 t_color	calculate_lighting(t_hit hit, t_scene *scene, t_ray ray)
 {
 	t_color ambient, diffuse, specular, result;
-	t_vector light_dir, reflect_dir;
+	t_tuple light_dir, reflect_dir;
 	double diff, spec;
 
 	ambient = multiply_color_by_scalar(&scene->ambient_color,

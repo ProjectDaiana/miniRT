@@ -8,7 +8,7 @@ t_hit	intersect_plane(t_ray ray, t_plane plane)
 	hit.hit = 0;
 	if (fabs(denom) > 1e-6)
 	{
-		t_vector p0l0 = vect_subtraction(plane.point, ray.origin);
+		t_tuple p0l0 = vect_subtraction(plane.point, ray.origin);
 		hit.t = dot_product(p0l0, plane.normal) / denom;
 		if (hit.t >= 0)
 		{
