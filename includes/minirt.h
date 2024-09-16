@@ -262,7 +262,7 @@ int				is_invertible(double det);
 int				compare_matrix(t_matrix a, t_matrix b);
 void			print_matrix(t_matrix matrix, char *str, int size);
 
-t_matrix		translation(double x, double y, double z);
+t_matrix		m_translation(double x, double y, double z);
 t_matrix		scaling(double x, double y, double z);
 t_matrix		rotation_x(double rad);
 t_matrix		rotation_y(double rad);
