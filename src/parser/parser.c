@@ -1,179 +1,103 @@
 #include "minirt.h"
 
-int	parse_color(char *str, t_color *color)
-{
-	char	**split;
 
-	split = ft_split(str, ',');
-	if (!split || !split[0] || !split[1] || !split[2])
-		return (0);
-	color->r = ft_atoi(split[0]);
-	color->g = ft_atoi(split[1]);
-	color->b = ft_atoi(split[2]);
-	free_split(split);
-	return (1);
+void	parse_ambient(char *line, t_scene *scene)
+{
+	sscanf(line, "A %lf %d,%d,%d", &scene->ambient_intensity,
+		&scene->ambient_color.r, &scene->ambient_color.g,
+		&scene->ambient_color.b);
+	scene->ambient_color.r /= 255.0;
+	scene->ambient_color.g /= 255.0;
+	scene->ambient_color.b /= 255.0;
 }
 
-int	parse_vector(char *str, t_tuple *vector)
+void	parse_camera(char *line, t_scene *scene)
 {
-	char	**split;
-
-	split = ft_split(str, ',');
-	if (!split || !split[0] || !split[1] || !split[2])
-		return (0);
-	vector->x = atof(split[0]);
-	vector->y = atof(split[1]);
-	vector->z = atof(split[2]);
-	free_split(split);
-	return (1);
+	sscanf(line, "C %lf,%lf,%lf %lf,%lf,%lf %lf", &scene->camera.position.x,
+		&scene->camera.position.y, &scene->camera.position.z,
+		&scene->camera.orientation.x, &scene->camera.orientation.y,
+		&scene->camera.orientation.z, &scene->camera.fov);
 }
 
-int	parse_ambient(char **split, t_scene *scene)
+void	parse_light(char *line, t_scene *scene)
 {
-	if (!split[1] || !split[2])
-		return (0);
-	scene->ambient_intensity = atof(split[1]);
-	return (parse_color(split[2], &scene->ambient_color));
+	t_light	light;
+
+	sscanf(line, "L %lf,%lf,%lf %lf %d,%d,%d", &scene->light.position.x,
+		&scene->light.position.y, &scene->light.position.z,
+		&scene->light.intensity, &scene->light.color.r, &scene->light.color.g,
+		&scene->light.color.b);
+	light.color.r /= 255.0;
+	light.color.g /= 255.0;
+	light.color.b /= 255.0;
+	add_light(scene, &light);
 }
 
-// int	parse_camera(char **split, t_scene *scene)
-// {
-// 	if (!split[1] || !split[2] || !split[3])
-// 		return (0);
-// 	if (!parse_vector(split[1], &scene->camera.position))
-// 		return (0);
-// 	if (!parse_vector(split[2], &scene->camera.orientation))
-// 		return (0);
-// 	scene->camera.fov = atof(split[3]);
-// 	return (1);
-// }
-
-int	parse_camera(char **split, t_scene *scene)
+void	parse_sphere(char *line, t_scene *scene)
 {
-	if (!split[1] || !split[2] || !split[3])
-		return (0);
-	if (!parse_vector(split[1], &scene->camera.position))
-		return (0);
-	if (!parse_vector(split[2], &scene->camera.orientation))
-		return (0);
-	scene->camera.fov = atof(split[3]) * M_PI / 180.0; // Convert to radians
-	printf("Parsed camera: pos(%f, %f, %f), orient(%f, %f, %f), fov: %f\n",
-		scene->camera.position.x, scene->camera.position.y,
-		scene->camera.position.z, scene->camera.orientation.x,
-		scene->camera.orientation.y, scene->camera.orientation.z,
-		scene->camera.fov);
-	return (1);
+	t_sphere	sphere;
+
+	sscanf(line, "sp %lf,%lf,%lf %lf %d,%d,%d", &sphere.center.x,
+		&sphere.center.y, &sphere.center.z, &sphere.radius,
+		&sphere.material.color.r, &sphere.material.color.g,
+		&sphere.material.color.b);
+	sphere.material.color.r /= 255.0;
+	sphere.material.color.g /= 255.0;
+	sphere.material.color.b /= 255.0;
+	sphere.material.ambient = 0.1;
+	sphere.material.diffuse = 0.7;
+	sphere.material.specular = 0.2;
+	sphere.material.shininess = 200.0;
+	sphere.radius /= 2.0;
+	add_sphere(scene, &sphere);
 }
 
-int	parse_light(char **split, t_scene *scene)
+void	parse_scene(const char *filename, t_scene *scene)
 {
-	if (!split[1] || !split[2] || !split[3])
-		return (0);
-	if (!parse_vector(split[1], &scene->light.position))
-		return (0);
-	scene->light.intensity = atof(split[2]);
-	return (parse_color(split[3], &scene->light.color));
-}
+	FILE	*file;
+	char	line[256];
 
-// int	parse_sphere(char **split, t_scene *scene)
-// {
-// 	t_sphere	sphere;
 
-// 	if (!split[1] || !split[2] || !split[3])
-// 		return (0);
-// 	if (!parse_vector(split[1], &sphere.center))
-// 		return (0);
-// 	sphere.radius = atof(split[2]) / 2.0;
-// 	if (!parse_color(split[3], &sphere.material.color))
-// 		return (0);
-// 	sphere.material.ambient = scene->ambient_intensity;
-// 	sphere.material.diffuse = 0.7;
-// 	sphere.material.specular = 0.2;
-// 	sphere.material.shininess = 200.0;
-// 	scene->spheres[scene->sphere_count++] = sphere;
-// 	return (1);
-// }
-
-int	parse_sphere(char **split, t_scene *scene)
-{
-	t_sphere	*sphere;
-
-	if (scene->sphere_count >= MAX_SPHERES)
+	file = fopen(filename, "r");
+	if (!file)
 	{
-		printf("Error: Maximum number of spheres reached\n");
-		return (0);
-	}
-	sphere = &scene->spheres[scene->sphere_count];
-	if (!split[1] || !split[2] || !split[3])
-		return (0);
-	if (!parse_vector(split[1], &sphere->center))
-		return (0);
-	sphere->radius = atof(split[2]) / 2.0;
-	if (!parse_color(split[3], &sphere->material.color))
-		return (0);
-	sphere->material.ambient = scene->ambient_intensity;
-	sphere->material.diffuse = 0.7;
-	sphere->material.specular = 0.2;
-	sphere->material.shininess = 200.0;
-	scene->sphere_count++;
-	printf("Parsed sphere: center(%f, %f, %f), radius: %f\n", sphere->center.x,
-		sphere->center.y, sphere->center.z, sphere->radius);
-	return (1);
-}
-
-int	parse_line(char *line, t_scene *scene)
-{
-	char	**split;
-
-	split = ft_split(line, ' ');
-	if (!split || !split[0])
-		return (0);
-	if (ft_strcmp(split[0], "A") == 0)
-		return (parse_ambient(split, scene));
-	else if (ft_strcmp(split[0], "C") == 0)
-		return (parse_camera(split, scene));
-	else if (ft_strcmp(split[0], "L") == 0)
-		return (parse_light(split, scene));
-	else if (ft_strcmp(split[0], "sp") == 0)
-		return (parse_sphere(split, scene));
-	free_split(split);
-	return (0);
-}
-
-int	parse_rt_file(char *filename, t_scene *scene)
-{
-	int fd;
-	char *line;
-	int gnl_result;
-
-	printf("Attempting to open file: %s\n", filename);
-	fd = open(filename, O_RDONLY);
-	if (fd == -1)
-	{
-		perror("Error opening file");
-		return (0);
+		fprintf(stderr, "Error: Could not open file %s\n", filename);
+		exit(1);
 	}
 	printf("File opened successfully\n");
-
-	while ((gnl_result = get_next_line(fd, &line)) > 0)
+	// Initialize scene
+	ft_memset(scene, 0, sizeof(t_scene));
+	while (fgets(line, sizeof(line), file))
 	{
-		printf("Read line: %s\n", line);
-		if (!parse_line(line, scene))
+
+		printf("Parsing line: %s", line);
+		if (line[0] == 'A')
 		{
-			printf("Error parsing line: %s\n", line);
-			free(line);
-			close(fd);
-			return (0);
+			parse_ambient(line, scene);
+			printf(" Ambient light parsed\n");
 		}
-		free(line);
+		else if (line[0] == 'C')
+		{
+			parse_camera(line, scene);
+			printf(" Camera parsed\n");
+		}
+		else if (line[0] == 'L')
+		{
+			parse_light(line, scene);
+			printf(" Light parsed\n");
+		}
+		else if (line[0] == 's' && line[1] == 'p')
+		{
+			parse_sphere(line, scene);
+			printf(" Sphere parsed\n");
+		}
 	}
-
-	close(fd);
-	if (gnl_result == -1)
+	fclose(file);
+	if (scene->sphere_count == 0 || scene->light_count == 0)
 	{
-		printf("Error in get_next_line\n");
-		return (0);
+		fprintf(stderr,
+			"Error: Scene must contain at least one sphere and one light\n");
+		exit(1);
 	}
-	printf("File parsed successfully\n");
-	return (1);
+	printf("Scene parsed successfully\n");
 }

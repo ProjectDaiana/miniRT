@@ -1,52 +1,41 @@
 #include "minirt.h"
 
-// t_color	calculate_lighting(t_hit hit, t_scene *scene, t_ray ray)
-// {
-// 	t_color ambient, diffuse, specular, result;
-// 	t_tuple light_dir, view_dir, reflect_dir;
-// 	double diff, spec;
 
-// 	ambient = multiply_color_by_scalar(scene->ambient_color,
-// 			scene->ambient_intensity);
 
-// 	light_dir = vect_normalize(vect_subtraction(scene->light.position,
-// 				hit.point));
-
-// 	// Diffuse
-// 	diff = fmax(dot_product(hit.normal, light_dir), 0.0);
-// 	diffuse = multiply_color_by_scalar(scene->light.color, diff
-// 			* scene->sphere.material.diffuse);
-
-// 	// Specular
-// 	view_dir = vect_normalize(vect_negate(ray.direction));
-// 	reflect_dir = vect_reflect(vect_negate(light_dir), hit.normal);
-// 	spec = pow(fmax(dot_product(view_dir, reflect_dir), 0.0),
-// 			scene->sphere.material.shininess);
-// 	specular = multiply_color_by_scalar(scene->light.color, spec
-// 			* scene->sphere.material.specular);
-
-// 	result = add_color(ambient, add_color(diffuse, specular));
-// 	return (color_multiply(result, scene->sphere.material.color));
-// }
-
-t_color	calculate_lighting(t_hit hit, t_scene *scene, t_ray ray)
+t_color	lighting(t_material material, t_light light, t_tuple point,
+		t_tuple eye_v, t_tuple normal_v, int in_shadow)
 {
-	t_color ambient, diffuse, result;
-	t_tuple light_dir;
-	double diff;
-	(void)ray;
+	t_color effective_color = color_multiply_colors(material.color,
+			light.color);
+	t_tuple light_v = tuple_normalize(tuple_subtract(light.position, point));
+	t_color ambient = color_multiply(effective_color, material.ambient);
 
-	ambient = multiply_color_by_scalar(&scene->ambient_color,
-			scene->ambient_intensity);
+	if (in_shadow)
+		return (ambient);
 
-	light_dir = normalize_vect(vect_subtraction(scene->light.position,
-				hit.point));
+	double light_dot_normal = tuple_dot(light_v, normal_v);
+	t_color diffuse, specular;
 
-	// Diffuse
-	diff = fmax(dot_product(hit.normal, light_dir), 0.0);
-	diffuse = multiply_color_by_scalar(&scene->light.color, diff
-			* hit.material.diffuse);
+	if (light_dot_normal < 0)
+	{
+		diffuse = create_color(0, 0, 0);
+		specular = create_color(0, 0, 0);
+	}
+	else
+	{
+		diffuse = color_multiply(effective_color, material.diffuse
+				* light_dot_normal);
+		t_tuple reflect_v = tuple_reflect(tuple_negate(light_v), normal_v);
+		double reflect_dot_eye = tuple_dot(reflect_v, eye_v);
 
-	result = add_color(ambient, diffuse);
-	return (color_multiply(result, hit.material.color));
+		if (reflect_dot_eye <= 0)
+			specular = create_color(0, 0, 0);
+		else
+		{
+			double factor = pow(reflect_dot_eye, material.shininess);
+			specular = color_multiply(light.color, material.specular * factor);
+		}
+	}
+
+	return (color_add(color_add(ambient, diffuse), specular));
 }
