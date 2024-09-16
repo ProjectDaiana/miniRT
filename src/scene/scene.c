@@ -27,15 +27,12 @@ t_hit	intersect_scene(t_ray ray, t_scene *scene)
 	closest_hit.hit = 0;
 	closest_hit.t = INFINITY;
 	init_scene(scene);
-	printf("Ambient intensity %f\n",scene->ambient_intensity);
 	for (i = 0; i < scene->sphere_count; i++)
 	{
 		current_hit = intersect_sphere(ray, scene->spheres[i]);
-		printf(BLU"OKK %d\n"RESET, scene->sphere_count);
 		if (current_hit.hit && current_hit.t < closest_hit.t)
 		{
 			closest_hit = current_hit;
-			printf(BLU"OKK %d\n"RESET, scene->sphere_count);
 		}
 	}
 	return (closest_hit);

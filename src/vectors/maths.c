@@ -17,7 +17,7 @@ double	dot_product(t_tuple a, t_tuple b)
 
 t_tuple	vect_addition(t_tuple a, t_tuple b)
 {
-	t_tuple	result;
+	t_tuple result;
 
 	result.x = a.x + b.x;
 	result.y = a.y + b.y;

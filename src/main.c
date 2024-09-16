@@ -7,7 +7,59 @@ void	init(t_data *data, t_tuple *vector)
 	vector->x = 1.0;
 	vector->y = 2.0;
 	vector->z = 3.0;
+	// vector->nx = 0.0;
+	// vector->ny = 0.0;
+	// vector->nz = 0.0;
+	//vector->magnitude = 0.0;
+	// vector->color = (t_color *)malloc(sizeof(t_color));
+	// vector->color->r = 0;
+	// vector->color->g = 100;
+	// vector->color->b = 255;
+//	printf(YEL"Vector Magnitude: %f\n" RESET, vector->magnitude);
 }
+
+// int main(int argc, char **argv)
+// {
+// 	(void)argc;
+// 	(void)argv;
+// 	static t_data data;
+// 	t_tuple	vector;
+
+// 	init(&data, &vector);	
+
+// 	///////// MATRIX CREATION TESTS //////////////////////////
+
+// 	double identity_matrix[4][4] = {
+// 		{1, 0, 0, 0}, 
+// 		{0, 1, 0, 0}, 
+// 		{0, 0, 1, 0}, 
+// 		{0, 0, 0, 1}
+// 	};	
+// 	t_matrix identity = create_matrix(4);
+// 	assign_matrix(&identity, identity_matrix);
+// 	print_matrix(identity, "Identity Matrix", 4);
+
+	
+// 	//////// MINILIBX /////////////////////////////
+// 	data.mlx_ptr = mlx_init();
+// 	if (data.mlx_ptr == NULL)
+// 		return (MLX_ERROR);
+// 	data.win_ptr = mlx_new_window(data.mlx_ptr, W_WIDTH, W_HEIGHT, "miniRT");
+// 	if (data.win_ptr == NULL)
+// 	{
+// 		free(data.mlx_ptr);
+// 		return (MLX_ERROR);
+// 	}
+// 	//// Render the scene
+// 	// CLOCK EXERCISE
+// 	draw_clock(&data);
+
+// 	mlx_put_image_to_window(data.mlx_ptr, data.win_ptr, data.img_ptr, 0, 0);
+// 	mlx_hook(data.win_ptr, KeyPress, KeyPressMask, handle_keypress, &data);
+// 	mlx_hook(data.win_ptr, KeyRelease, KeyReleaseMask, &handle_keyrelease, &data);
+// 	mlx_loop(data.mlx_ptr);
+// 	return (0);	
+// }
 
 int	main(int argc, char **argv)
 {
@@ -45,8 +97,8 @@ int	main(int argc, char **argv)
 	}
 	data.scene = scene;
 	data.img_ptr = mlx_new_image(data.mlx_ptr, W_WIDTH, W_HEIGHT);
-	//data.addr = mlx_get_data_addr(data.img_ptr, &data.bits_per_pixel,
-	//		&data.line_length, &data.endian);
+	data.addr = mlx_get_data_addr(data.img_ptr, &data.bits_per_pixel,
+			&data.line_length, &data.endian);
 	printf("Rendering frame...\n");
  	draw_clock(&data);
 		

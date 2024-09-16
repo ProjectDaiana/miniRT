@@ -7,8 +7,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define W_HEIGHT 800
-#define W_WIDTH 800
+#define W_HEIGHT 300
+#define W_WIDTH 300
 #define MLX_ERROR 1
 #define MAX_SPHERES 10
 #define BLU_PX 0x0000FF
@@ -188,6 +188,10 @@ int					render_frame(t_data *data);
 void				my_mlx_pixel_put(t_data *data, int x, int y, int color);
 
 // Event functions
+int	handle_no_event(void *data);
+int	handle_keypress(int keysym, t_data *data);
+int	handle_keyrelease(int keysym, void *data);
+int	close_window(t_data *data);
 int					handle_no_event(void *data);
 int					handle_keypress(int keysym, t_data *data);
 int					handle_keyrelease(int keysym, void *data);
@@ -250,11 +254,14 @@ t_matrix			skewing(double x_y, double x_z, double y_x, double y_z,
 
 // Ray functions
 // t_ray	create_ray(double x, double y, t_camera *camera);
-t_ray				create_ray(t_tuple origin, t_tuple direction);
+t_ray				create_ray(t_tuple origin, t_tuple direction);\
 t_hit				intersect_sphere(t_ray ray, t_sphere sphere);
-t_tuple			ray_position(t_ray *ray, double t);
-t_color				trace_ray(t_ray ray, t_scene *scene, int depth);
+t_tuple				ray_position(t_ray *ray, double t);
 t_hit				intersect_sphere(t_ray ray, t_sphere sphere);
+//t_ray	create_ray(double x, double y, t_camera *camera);
+t_color	trace_ray(t_ray ray, t_scene *scene, int depth);
+t_ray	transform(t_ray *ray, t_matrix *matrix);
+
 
 // Scene functions
 void				init_scene(t_scene *scene);

@@ -24,12 +24,9 @@ int	render_img(t_data *data)
 		close_window(data);
 		return (MLX_ERROR);
 	}
-	printf(BLU"OK\n"RESET);
 	mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->img_ptr, 0, 0);
-	mlx_hook(data->win_ptr, 17, 1L << 17, close_window, data);
-	mlx_hook(data->win_ptr, KeyPress, KeyPressMask, handle_keypress, data);
-	mlx_hook(data->win_ptr, KeyRelease, KeyReleaseMask, handle_keyrelease,
-		data);
+	mlx_hook(data->win_ptr, 17, 1L << 17, close_window, &data);
+	mlx_hook(data->win_ptr, KeyPress, KeyPressMask, handle_keypress, &data);
 	mlx_loop(data->mlx_ptr);
 	return (0);
 }
@@ -89,7 +86,7 @@ int	render_frame(t_data *data)
 		{
 			for (int x = 0; x < W_WIDTH; x++)
 			{
-				my_mlx_pixel_put(data, x, y, 0x000000);
+				my_mlx_pixel_put(data, x, y, 0xFF0000);
 			}
 		}
 		return (0);
@@ -100,7 +97,7 @@ int	render_frame(t_data *data)
 		{
 			ray = create_camera_ray(data->scene.camera, x, y);
 			color = trace_ray(ray, &data->scene, MAX_REFLECTION_DEPTH);
-			my_mlx_pixel_put(data, x, y, rgb_to_int(color));
+		    my_mlx_pixel_put(data, x, y, rgb_to_int(color));
 		}
 	}
 	mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->img_ptr, 0, 0);
