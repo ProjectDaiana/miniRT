@@ -165,6 +165,7 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
 int	handle_no_event(void *data);
 int	handle_keypress(int keysym, t_data *data);
 int	handle_keyrelease(int keysym, void *data);
+int	close_window(t_data *data);
 
 //Parsing functions
 int	parse_rt_file(char *filename, t_scene *scene);
