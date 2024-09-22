@@ -1,5 +1,28 @@
 #include "minirt.h"
 
+void set_transform(t_sphere *sphere, t_matrix transform)
+{
+	sphere->transform = transform;
+}
+
+// t_sphere	create_sphere(void)
+// {
+// 	t_sphere	sphere;
+
+// 	sphere.center = create_point(0, 0, 0);
+// 	sphere.radius = 1.0;
+// 	sphere.transform = create_identity_matrix();
+	
+// 	t_matrix translations = m_translation(2, 3, 4);
+// 		sphere.transform = translations;
+// 	print_matrix(sphere.transform, "Sphere transform", 4);
+
+
+// 	return (sphere);
+// }
+
+
+
 t_sphere	create_sphere(void)
 {
 	t_sphere	sphere;

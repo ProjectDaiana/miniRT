@@ -40,3 +40,4 @@ void draw_clock(t_data *data)
 		i++;
 	}
 }
+

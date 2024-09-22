@@ -39,6 +39,44 @@ int	main(int argc, char **argv)
 	parse_scene(argv[1], &(data.scene));
 	printf("Scene parsed\n");
 	render(&data);
+
+	// TESTING
+	// t_ray ray = create_ray(create_point(1, 2, 3), create_vector(0, 1, 0));
+	// t_matrix m = m_translation(3, 4, 5);
+	// t_ray r2 = transform_ray(ray, m);
+	// printf(BLU"r2.origin.x: %f %f %f \n"RESET, r2.origin.x, r2.origin.y, r2.origin.z);
+	// printf(BLU"r2.direction.y: %f %f %f \n"RESET, r2.direction.x, r2.direction.y, r2.direction.z);
+	
+	// t_ray ray = create_ray(create_point(1, 2, 3), create_vector(0, 1, 0));
+	// t_matrix m = scaling(2, 3, 4);
+	// t_ray r2 = transform_ray(ray, m);
+	// printf(BLU"r2.origin.x: %f %f %f \n"RESET, r2.origin.x, r2.origin.y, r2.origin.z);
+	// printf(BLU"r2.direction.y: %f %f %f \n"RESET, r2.direction.x, r2.direction.y, r2.direction.z);
+
+	// t_ray ray = create_ray(create_point(0, 0, 5), create_vector(0, 0, 1));
+	// t_sphere sphere = create_sphere();
+	// set_transform(&sphere, scaling(2, 2, 2));
+	// t_ray r2 = transform_ray(ray, inverse_matrix(&sphere.transform));
+	// t_intersections xs = intersect_sphere(sphere, r2);
+	// printf(BLU"xs.count: %d\n"RESET, xs.count);
+	// if (xs.count > 0)
+	// {
+	// 	printf("xs.t[0]: %f\n", xs.t[0]);
+	// 	printf("xs.t[1]: %f\n", xs.t[1]);
+	// }
+
+	// t_ray ray = create_ray(create_point(0, 0, -5), create_vector(0, 0, 1));
+	// t_sphere sphere = create_sphere();
+	// set_transform(&sphere, m_translation(5, 0, 0));
+	// t_ray r2 = transform_ray(ray, inverse_matrix(&sphere.transform));
+	// t_intersections xs = intersect_sphere(sphere, r2);
+	// printf(BLU"xs.count: %d\n"RESET, xs.count);
+	// if (xs.count > 0)
+	// {
+	// 	printf("xs.t[0]: %f\n", xs.t[0]);
+	// 	printf("xs.t[1]: %f\n", xs.t[1]);
+	// }
+
 	mlx_hook(data.win_ptr, KeyPress, KeyPressMask, handle_keypress, &data);
 	mlx_hook(data.win_ptr, KeyRelease, KeyReleaseMask, &handle_keyrelease,
 		&data);

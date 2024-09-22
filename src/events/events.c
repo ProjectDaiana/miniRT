@@ -24,6 +24,19 @@ int	handle_keypress(int keysym, t_data *data)
 		free(data->mlx_ptr);
 		exit(0);
 	}
+	else if (keysym == XK_equal)
+	{
+		printf(MAG"Camera position"RESET);
+		data->scene.camera.position.z += 1;
+		render(data);
+	}
+	else if (keysym == XK_minus)
+	{
+		printf(MAG"Camera position: %f, %f, %f\n"RESET, data->scene.camera.position.x,
+			data->scene.camera.position.y, data->scene.camera.position.z);
+		data->scene.camera.position.z -= 1;
+		render(data);
+	}
 	printf("Keypress: %d\n", keysym);
 	return (0);
 }

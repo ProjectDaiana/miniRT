@@ -139,6 +139,7 @@ typedef struct s_sphere
 	double		radius;
 	t_material	material;
 	t_color		color;
+	t_matrix	transform;
 
 }				t_sphere;
 
@@ -243,6 +244,7 @@ t_color			color_multiply_colors(t_color c1, t_color c2);
 t_tuple			multiply_matrix_by_tuple(t_matrix *matrix, t_tuple *tuple);
 t_matrix		create_matrix_3(double m[3][3]);
 t_matrix		create_matrix(int size);
+t_matrix		create_identity_matrix(void);
 void			assign_matrix(t_matrix *matrix, double m[4][4]);
 void			assign_matrix_3(t_matrix *matrix, double m[3][3]);
 
@@ -352,6 +354,7 @@ t_intersections	intersect_world(t_scene *scene, t_ray ray);
 int				is_shadowed(t_scene *scene, t_tuple point, t_light *light);
 
 t_ray			transform_ray(t_ray ray, t_matrix transform);
+void			set_transform(t_sphere *sphere, t_matrix transform);
 t_tuple			matrix_multiply_tuple(t_matrix m, t_tuple t);
 t_color			ray_color(t_scene *scene, t_ray ray);
 t_ray			ray_for_pixel(t_camera *camera, int px,
