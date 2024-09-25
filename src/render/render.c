@@ -129,5 +129,4 @@ int	render(t_data *data)
 	mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->img.img, 0, 0);
 	free_canvas(&canvas);
 	return (0);
-
 }

@@ -217,6 +217,7 @@ typedef struct s_computations
 int				handle_no_event(void *data);
 int				handle_keypress(int keysym, t_data *data);
 int				handle_keyrelease(int keysym, void *data);
+int				close_window(t_data *data);
 
 // Utility functions
 double			ft_sqr(double x);

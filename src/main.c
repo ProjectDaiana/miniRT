@@ -78,7 +78,7 @@ int	main(int argc, char **argv)
 	// 	printf("xs.t[0]: %f\n", xs.t[0]);
 	// 	printf("xs.t[1]: %f\n", xs.t[1]);
 	// }
-
+	mlx_hook(data.win_ptr, 17, 1L << 17, close_window, &data);
 	mlx_hook(data.win_ptr, KeyPress, KeyPressMask, handle_keypress, &data);
 	mlx_hook(data.win_ptr, KeyRelease, KeyReleaseMask, &handle_keyrelease,
 		&data);
