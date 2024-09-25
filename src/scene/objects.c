@@ -32,4 +32,6 @@ void	add_cylinder(t_scene *scene, t_cylinder *cylinder)
 	scene->cylinders = realloc(scene->cylinders, scene->cylinder_count
 			* sizeof(t_cylinder));
 	scene->cylinders[scene->cylinder_count - 1] = *cylinder;
+	scene->cylinders[scene->cylinder_count - 1].max = scene->cylinders[scene->cylinder_count - 1].height / 2;
+	scene->cylinders[scene->cylinder_count - 1].min = 2;
 }

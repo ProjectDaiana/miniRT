@@ -105,7 +105,6 @@ int	render(t_data *data)
 			t_tuple transformed_direction = matrix_multiply_tuple(inv_view_transform,
 					direction);
 			transformed_direction = tuple_normalize(transformed_direction);
-
 			ray = create_ray(transformed_origin, transformed_direction);
 			color = ray_color(scene, ray);
 			write_pixel(&canvas, x, y, color);

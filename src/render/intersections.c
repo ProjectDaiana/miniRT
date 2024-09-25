@@ -56,7 +56,7 @@ t_intersections	intersect_cylinder(t_cylinder cylinder, t_ray ray)
 	double			discriminant;
 	double			t1;
 	double			t2;
-	double			temp;
+//	double			temp;
 	double			y1;
 	double			y2;
 	int				index;
@@ -76,17 +76,18 @@ t_intersections	intersect_cylinder(t_cylinder cylinder, t_ray ray)
 	{
 		t1 = (-b - sqrt(discriminant)) / (2 * a);
 		t2 = (-b + sqrt(discriminant)) / (2 * a);
-		if (t1 > t2)
-		{
-			temp = t1;
-			t1 = t2;
-			t2 = temp;
-		}
+		swap(&t1, &t2);
+		// if (t1 > t2)
+		// {
+		// 	temp = t1;
+		// 	t1 = t2;
+		// 	t2 = temp;
+		// }
 		y1 = ray.origin.y + t1 * ray.direction.y;
 		y2 = ray.origin.y + t2 * ray.direction.y;
-		if (y1 < cylinder.center.y || y1 > cylinder.center.y + cylinder.height)
+		if (y1 < cylinder.min || y1 > cylinder.min + cylinder.max)
 			t1 = INFINITY;
-		if (y2 < cylinder.center.y || y2 > cylinder.center.y + cylinder.height)
+		if (y2 < cylinder.min || y2 > cylinder.min + cylinder.max)
 			t2 = INFINITY;
 		if (t1 != INFINITY || t2 != INFINITY)
 		{
@@ -106,6 +107,7 @@ t_intersections	intersect_cylinder(t_cylinder cylinder, t_ray ray)
 				result.object[index] = &cylinder;
 			}
 		}
+
 	}
 	return (result);
 }

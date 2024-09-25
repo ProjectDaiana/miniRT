@@ -52,6 +52,25 @@ void	parse_sphere(char *line, t_scene *scene)
 	add_sphere(scene, &sphere);
 }
 
+void	parse_cylinder(char *line, t_scene *scene)
+{
+	t_cylinder	cylinder;
+
+	sscanf(line, "cy %lf,%lf,%lf %lf,%lf,%lf %lf %lf %d,%d,%d", &cylinder.center.x,
+		&cylinder.center.y, &cylinder.center.z, &cylinder.axis.x,
+		&cylinder.axis.y, &cylinder.axis.z, &cylinder.diameter,
+		&cylinder.height, &cylinder.color.r, &cylinder.color.g,
+		&cylinder.color.b);
+	cylinder.color.r /= 255.0;
+	cylinder.color.g /= 255.0;
+	cylinder.color.b /= 255.0;
+	cylinder.material.ambient = 0.1;
+	cylinder.material.diffuse = 0.7;
+	cylinder.material.specular = 0.2;
+	cylinder.material.shininess = 200.0;
+	add_cylinder(scene, &cylinder);
+}
+
 void	parse_scene(const char *filename, t_scene *scene)
 {
 	FILE	*file;
@@ -90,6 +109,15 @@ void	parse_scene(const char *filename, t_scene *scene)
 		{
 			parse_sphere(line, scene);
 			printf(" Sphere parsed\n");
+		}
+		else if (line[0] == 'c' && line[1] == 'y')
+		{
+			parse_cylinder(line, scene);
+			printf(" Cylinder parsed\n");
+			printf(GRN"Cylinder count: %d\n"RESET, scene->cylinder_count);
+			printf(GRN"cylinder diameter: %f\n"RESET, scene->cylinders[0].diameter);
+			printf(GRN"cylinder height: %f\n"RESET, scene->cylinders[0].height);
+			printf(GRN"cylinder axis: %f, %f, %f\n"RESET, scene->cylinders[0].axis.x, scene->cylinders[0].axis.y, scene->cylinders[0].axis.z);
 		}
 	}
 	fclose(file);

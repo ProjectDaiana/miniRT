@@ -159,6 +159,9 @@ typedef struct s_cylinder
 	double		height;
 	t_color		color;
 	t_matrix	transform;
+	t_material	material;
+	double		max;
+	double		min;
 }				t_cylinder;
 
 typedef struct
@@ -218,6 +221,9 @@ int				handle_keyrelease(int keysym, void *data);
 // Utility functions
 double			ft_sqr(double x);
 double			double_to_degrees(double radians);
+// utils
+void			my_mlx_pixel_put(t_img *img, int x, int y, int color);
+void			swap(double *a, double *b);
 
 // Vector functions
 double			vect_length(double x, double y, double z);
@@ -278,6 +284,7 @@ void			print_error(char *msg);
 /// TEST FUNCTIONS, DELETE LATER
 int				check_rotation_results(t_tuple result_half,
 					t_tuple result_full);
+void test_truncated_cylinders();
 
 t_tuple			point(double x, double y, double z, double w);
 void			test_intersection(t_tuple origin, t_tuple direction);
@@ -328,15 +335,18 @@ t_sphere		create_sphere(void);
 t_intersections	intersect_sphere(t_sphere sphere, t_ray ray);
 t_tuple			normal_at(t_sphere sphere, t_tuple world_point);
 
+// cylinder functions
+// t_cylinder		create_cylinder(void);
+// t_intersections	intersect_cylinder(t_cylinder cylinder, t_ray ray);
+// t_tuple			normal_at_cylinder(t_cylinder cylinder, t_tuple point);
+void	truncate_cylinder(t_cylinder *cylinder, double t1, double t2);
+
 // lighting functions
 t_color			lighting(t_material material, t_light light, t_tuple point,
 					t_tuple eye_v, t_tuple normal_v, int in_shadow);
 
 // parser functions
 void			parse_scene(const char *filename, t_scene *scene);
-
-// utils
-void			my_mlx_pixel_put(t_img *img, int x, int y, int color);
 
 // object functions
 void			add_light(t_scene *scene, t_light *light);
