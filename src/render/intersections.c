@@ -27,10 +27,16 @@ t_intersections	intersect_plane(t_plane plane, t_ray ray)
 	return (result);
 }
 
-t_tuple	normal_at_plane(t_plane plane, t_tuple point)
+// t_tuple	normal_at_plane(t_plane plane, t_tuple point)
+// {
+// 	(void)point;
+// 	return (plane.normal);
+// }
+
+t_tuple	normal_at_plane(t_plane *plane, t_tuple world_point)
 {
-	(void)point;
-	return (plane.normal);
+	(void)world_point;      // Unused parameter
+	return (plane->normal); // The normal is constant for a plane
 }
 
 t_tuple	normal_at_cylinder(t_cylinder cylinder, t_tuple point)
@@ -138,14 +144,11 @@ t_intersections	intersect_world(t_scene *scene, t_ray ray)
 	int				max_intersections;
 	t_intersections	sphere_xs;
 	t_intersections	plane_xs;
-	t_intersections	cylinder_xs;
 
 	result.count = 0;
 	result.t = NULL;
 	result.object = NULL;
-	// Allocate initial memory
-	max_intersections = scene->sphere_count * 2 + scene->plane_count
-		+ scene->cylinder_count * 2;
+	max_intersections = scene->sphere_count * 2 + scene->plane_count;
 	result.t = malloc(sizeof(double) * max_intersections);
 	result.object = malloc(sizeof(void *) * max_intersections);
 	// Intersect with spheres
@@ -170,18 +173,53 @@ t_intersections	intersect_world(t_scene *scene, t_ray ray)
 			result.count++;
 		}
 	}
-	// Intersect with cylinders
-	for (int i = 0; i < scene->cylinder_count; i++)
-	{
-		cylinder_xs = intersect_cylinder(scene->cylinders[i], ray);
-		for (int j = 0; j < cylinder_xs.count; j++)
-		{
-			result.t[result.count] = cylinder_xs.t[j];
-			result.object[result.count] = &scene->cylinders[i];
-			result.count++;
-		}
-	}
-	// Sort intersections
 	sort_intersections(&result);
+
 	return (result);
+}
+
+// t_compu	prepare_computations(double t, t_ray ray, t_intersections *xs)
+// {
+// 	t_compu	comps;
+
+// 	comps.t = t;
+// 	comps.point = position(ray, t);
+// 	comps.eyev = tuple_negate(ray.direction);
+// 	comps.normalv = normal_at(xs->object[0], comps.point);
+// 	if (tuple_dot(comps.normalv, comps.eyev) < 0)
+// 	{
+// 		comps.inside = 1;
+// 		comps.normalv = tuple_negate(comps.normalv);
+// 	}
+// 	else
+// 	{
+// 		comps.inside = 0;
+// 	}
+// 	comps.over_point = tuple_add(comps.point, tuple_multiply(comps.normalv,
+// 				EPSILON));
+// 	comps.object = xs->object[0];
+// 	return (comps);
+// }
+
+t_compu	prepare_computations(double t, t_ray ray, t_intersections *xs)
+{
+	t_compu	comps;
+
+	comps.t = t;
+	comps.object = xs->object[0];
+	comps.point = position(ray, t);
+	comps.eyev = tuple_negate(ray.direction);
+	comps.normalv = normal_at(comps.object, comps.point);
+	if (tuple_dot(comps.normalv, comps.eyev) < 0)
+	{
+		comps.inside = 1;
+		comps.normalv = tuple_negate(comps.normalv);
+	}
+	else
+	{
+		comps.inside = 0;
+	}
+	comps.over_point = tuple_add(comps.point, tuple_multiply(comps.normalv,
+				EPSILON));
+	return (comps);
 }

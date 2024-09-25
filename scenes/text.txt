@@ -2,4 +2,6 @@ A 0.2 255,255,255 // (intensity, color)
 C -10.0,0,20 0,0,1 70 //(Camera position (x,y,z), Camera orientation vector, Field of view in degrees)
 L -40.0,50.0,0.0 0.6 255,255,255 //(Light position (x,y,z), Light intensity 0 1, Light color)
 sp 0.0,0.0,20.6 12.6 255,0,0 //(Sphere position (x,y,z), Sphere diameter, Sphere color)
- 
+
+pl 0.0,0.0,-10.0 0.0,1.0,0.0 0,0,225
+pl 0.0,-1.0,0.0 0.0,1.0,0.0 0,0,225 // ok

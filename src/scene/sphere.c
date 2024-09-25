@@ -9,7 +9,6 @@ t_sphere	create_sphere(void)
 	return (sphere);
 }
 
-
 t_intersections	intersect_sphere(t_sphere sphere, t_ray ray)
 {
 	t_intersections	result;
@@ -40,13 +39,58 @@ t_intersections	intersect_sphere(t_sphere sphere, t_ray ray)
 	return (result);
 }
 
+// t_tuple	normal_at(t_sphere sphere, t_tuple world_point)
+// {
+// 	t_tuple	object_point;
+// 	t_tuple	object_normal;
 
-t_tuple	normal_at(t_sphere sphere, t_tuple world_point)
+// 	object_point = tuple_subtract(world_point, sphere.center);
+// 	object_normal = tuple_normalize(object_point);
+// 	return (object_normal);
+// }
+
+
+
+// t_tuple	normal_at_sphere(t_sphere sphere, t_tuple world_point)
+// {
+// 	t_tuple	object_point;
+// 	t_tuple	object_normal;
+// 	t_tuple	world_normal;
+
+// 	object_point = tuple_subtract(world_point, sphere.center);
+// 	object_normal = tuple_normalize(object_point);
+// 	world_normal = object_normal;
+// 	world_normal.w = 0;
+// 	return (world_normal);
+// }
+
+t_tuple	normal_at_sphere(t_sphere *sphere, t_tuple world_point)
 {
 	t_tuple	object_point;
 	t_tuple	object_normal;
 
-	object_point = tuple_subtract(world_point, sphere.center);
+	object_point = tuple_subtract(world_point, sphere->center);
 	object_normal = tuple_normalize(object_point);
-	return (object_normal);
+	t_tuple world_normal = object_normal; // For spheres,
+	world_normal.w = 0;                   // Ensure it's a vector, not a point
+	return (world_normal);
+}
+
+
+t_tuple	normal_at(void *object, t_tuple world_point)
+{
+	if (((t_sphere *)object)->radius > 0) // It's a sphere
+	{
+		return (normal_at_sphere((t_sphere *)object, world_point));
+	}
+	else if (((t_plane *)object)->normal.x != 0
+		|| ((t_plane *)object)->normal.y != 0
+		|| ((t_plane *)object)->normal.z != 0) // It's a plane
+	{
+		return (normal_at_plane((t_plane *)object, world_point));
+	}
+	// Add more conditions for other object types as needed
+
+	// Default case (should not happen)
+	return (create_vector(0, 0, 0));
 }

@@ -16,8 +16,6 @@ void	add_sphere(t_scene *scene, t_sphere *sphere)
 	scene->spheres[scene->sphere_count - 1] = *sphere;
 }
 
-
-
 void	add_plane(t_scene *scene, t_plane *plane)
 {
 	scene->plane_count++;
@@ -32,4 +30,19 @@ void	add_cylinder(t_scene *scene, t_cylinder *cylinder)
 	scene->cylinders = realloc(scene->cylinders, scene->cylinder_count
 			* sizeof(t_cylinder));
 	scene->cylinders[scene->cylinder_count - 1] = *cylinder;
+}
+
+// added
+t_plane	create_plane(t_tuple point, t_tuple normal, t_color color)
+{
+	t_plane plane;
+	plane.point = point;
+	plane.normal = tuple_normalize(normal);
+	plane.material.color = color;
+	plane.material.ambient = 0.1;
+	plane.material.diffuse = 0.9;
+	plane.material.specular = 0.9;
+	plane.material.shininess = 200.0;
+	plane.transform = create_identity_matrix();
+	return (plane);
 }
