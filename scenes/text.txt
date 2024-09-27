@@ -5,3 +5,13 @@ sp 0.0,0.0,20.6 12.6 255,0,0 //(Sphere position (x,y,z), Sphere diameter, Sphere
 
 pl 0.0,0.0,-10.0 0.0,1.0,0.0 0,0,225
 pl 0.0,-1.0,0.0 0.0,1.0,0.0 0,0,225 // ok
+
+
+// modify:
+
+is_shadowed()
+shade_hit()
+lighting()
+color_at()
+intersect_world()
+prepare_computations()

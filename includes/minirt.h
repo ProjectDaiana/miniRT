@@ -85,15 +85,7 @@ typedef struct
 	t_tuple			direction;
 }					t_ray;
 
-typedef struct
-{
-	double			ambient;
-	double			diffuse;
-	double			specular;
-	double			shininess;
-	double			reflective;
-	t_color			color;
-}					t_material;
+
 
 typedef struct s_canvas
 {
@@ -146,6 +138,33 @@ typedef struct
 	int				line_length;
 	int				endian;
 }					t_img;
+
+
+typedef enum e_pattern_type
+{
+    SOLID,
+    CHECKERS
+} t_pattern_type;
+
+typedef struct s_pattern
+{
+    t_pattern_type type;
+    t_color color1;
+    t_color color2;
+    t_matrix transform;
+} t_pattern;
+
+typedef struct
+{
+	double			ambient;
+	double			diffuse;
+	double			specular;
+	double			shininess;
+	double			reflective;
+	t_color			color;
+	t_pattern pattern;
+
+}					t_material;
 
 typedef struct s_sphere
 {
@@ -255,6 +274,9 @@ typedef struct s_world
 	t_light			*lights;
 	int				light_count;
 }					t_world;
+
+
+
 
 int					handle_no_event(void *data);
 int					handle_keypress(int keysym, t_data *data);
