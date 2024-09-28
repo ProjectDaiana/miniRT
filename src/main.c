@@ -41,7 +41,7 @@ int	main(int argc, char **argv)
 	render(&data);
 
 	// TESTING
-	test_truncated_cylinders();
+	//test_truncated_cylinders();
 
 	// t_ray ray = create_ray(create_point(1, 2, 3), create_vector(0, 1, 0));
 	// t_matrix m = m_translation(3, 4, 5);

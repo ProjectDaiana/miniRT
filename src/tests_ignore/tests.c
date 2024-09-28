@@ -23,23 +23,23 @@ int check_rotation_results(t_tuple result_half, t_tuple result_full)
 	return (0);
 }
 
-void draw_clock(t_data *data)
-{
-	t_tuple p = {0, 0, 1, 1};
-	int i = 0;
+// void draw_clock(t_data *data)
+// {
+// 	t_tuple p = {0, 0, 1, 1};
+// 	int i = 0;
 
-	while (i < 12)
-	{
-		t_matrix transform = rotation_x(i * M_PI / 6);
-		t_tuple res = multiply_matrix_by_tuple(&transform, &p);
+// 	while (i < 12)
+// 	{
+// 		t_matrix transform = rotation_x(i * M_PI / 6);
+// 		t_tuple res = multiply_matrix_by_tuple(&transform, &p);
 
-		int x = (int)(res.y * SCALE) + W_WIDTH / 2;
-		int y = W_HEIGHT - (int)(res.z * SCALE) - W_HEIGHT / 2;
-		printf(BLU"Result: %f, %f, %f, %f\n"RESET, res.x, res.y, res.z, res.w);
-		mlx_pixel_put(data->mlx_ptr, data->win_ptr, x, y, 0xFFFFFF);
-		i++;
-	}
-}
+// 		int x = (int)(res.y * SCALE) + W_WIDTH / 2;
+// 		int y = W_HEIGHT - (int)(res.z * SCALE) - W_HEIGHT / 2;
+// 		printf(BLU"Result: %f, %f, %f, %f\n"RESET, res.x, res.y, res.z, res.w);
+// 		mlx_pixel_put(data->mlx_ptr, data->win_ptr, x, y, 0xFFFFFF);
+// 		i++;
+// 	}
+// }
 
 void test_truncated_cylinders()
 {

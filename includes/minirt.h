@@ -153,15 +153,15 @@ typedef struct s_plane
 
 typedef struct s_cylinder
 {
-	t_tuple		center;
-	t_tuple		axis;
 	double		diameter;
 	double		height;
+	double		max;
+	double		min;
+	t_tuple		center;
+	t_tuple		axis;
 	t_color		color;
 	t_matrix	transform;
 	t_material	material;
-	double		max;
-	double		min;
 }				t_cylinder;
 
 typedef struct
@@ -248,7 +248,7 @@ t_color			color_multiply(t_color c, double scalar);
 t_color			color_multiply_colors(t_color c1, t_color c2);
 
 // Matrix functions
-t_tuple			multiply_matrix_by_tuple(t_matrix *matrix, t_tuple *tuple);
+t_tuple			multiply_matrix_by_tuple(t_matrix matrix, t_tuple tuple);
 t_matrix		create_matrix_3(double m[3][3]);
 t_matrix		create_matrix(int size);
 t_matrix		create_identity_matrix(void);
@@ -335,12 +335,16 @@ t_tuple			position(t_ray ray, double t);
 t_sphere		create_sphere(void);
 t_intersections	intersect_sphere(t_sphere sphere, t_ray ray);
 t_tuple			normal_at(t_sphere sphere, t_tuple world_point);
+t_tuple			normal_at_sphere(t_sphere sphere, t_tuple world_point);
+
 
 // cylinder functions
 // t_cylinder		create_cylinder(void);
 // t_intersections	intersect_cylinder(t_cylinder cylinder, t_ray ray);
 // t_tuple			normal_at_cylinder(t_cylinder cylinder, t_tuple point);
 void	truncate_cylinder(t_cylinder *cylinder, double t1, double t2);
+void	intersect_caps(t_cylinder cylinder, t_ray ray, t_intersections *result);
+
 
 // lighting functions
 t_color			lighting(t_material material, t_light light, t_tuple point,

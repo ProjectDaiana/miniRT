@@ -1,11 +1,11 @@
 #include "minirt.h"
 
-int	handle_no_event(void *data)
-{
-	(void)data;
-	/* This function needs to exist, but it is useless for the moment */
-	return (0);
-}
+// int	handle_no_event(void *data)
+// {
+// 	(void)data;
+// 	/* This function needs to exist, but it is useless for the moment */
+// 	return (0);
+// }
 
 int	close_window(t_data *data)
 {
@@ -72,6 +72,18 @@ int	handle_keypress(int keysym, t_data *data)
 		data->scene.camera.position.x += 1;
 		render(data);
 	}
+	// skewing
+	// if (keysym == XK_s)
+	// {
+	// 	t_matrix skew_matrix = skewing(1, 0, 0, 0, 0, 0); // Example skew
+	// 	t_matrix scale_matrix = scaling(0.5, 1, 1); // Example scaling
+		
+	// 	// Multiply the skew_matrix and scale_matrix to the existing camera transform
+	// 	data->scene.camera.transform = matrix_multiply(skew_matrix, data->scene.camera.transform);
+	// 	data->scene.camera.transform = matrix_multiply(scale_matrix, data->scene.camera.transform);
+	// 	print_matrix(data->scene.camera.transform, "Camera Transform After Skewing", 4);
+	// 	render(data);
+	// }
 	// reset camera position
 	else if (keysym == XK_r)
 	{

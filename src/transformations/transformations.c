@@ -13,7 +13,7 @@ t_matrix m_translation(double x, double y, double z)
 	translation_matrix.m[1][3] = y;
 	translation_matrix.m[2][3] = z;
 
-	print_matrix(translation_matrix, "Translation Matrix", 4);
+	//print_matrix(translation_matrix, "Translation Matrix", 4);
 	return (translation_matrix);
 }
 
@@ -26,7 +26,7 @@ t_matrix scaling(double x, double y, double z)
 	scaling_matrix.m[1][1] = y;
 	scaling_matrix.m[2][2] = z;
 	scaling_matrix.m[3][3] = 1;
-	print_matrix(scaling_matrix, "Scaling Matrix", 4);
+	//print_matrix(scaling_matrix, "Scaling Matrix", 4);
 	return (scaling_matrix);
 }
 // Reflection is esenncially the same thign as scaling by a negative value

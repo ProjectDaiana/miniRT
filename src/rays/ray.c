@@ -26,7 +26,8 @@ t_color	ray_color(t_scene *scene, t_ray ray)
 	if (xs.count > 0)
 	{
 		point = position(ray, xs.t[0]);
-		normal = normal_at(*(t_sphere *)xs.object[0], point);
+		//normal = normal_at(*(t_sphere *)xs.object[0], point);
+		normal = normal_at_cylinder(*(t_cylinder *)xs.object[0], point);
 		eye = tuple_negate(ray.direction);
 		in_shadow = is_shadowed(scene, point, &scene->light);
 		return (lighting(((t_sphere *)xs.object[0])->material, scene->light,
@@ -72,6 +73,7 @@ t_ray	ray_for_pixel(t_camera *camera, int px, int py)
 	y *= camera->half_height;
 	t_tuple pixel = create_point(x, y, -1); //
 	inverse_transform = inverse_matrix(&camera->transform);
+	print_matrix(inverse_transform, "Inverse Transform", 4);
 	world_pixel = matrix_multiply_tuple(inverse_transform, pixel);
 	origin = matrix_multiply_tuple(inverse_transform, create_point(0, 0, 0));
 	direction = tuple_normalize(tuple_subtract(world_pixel, origin));
