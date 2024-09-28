@@ -30,7 +30,9 @@ t_color	ray_color(t_scene *scene, t_ray ray)
 		normal = normal_at_cylinder(*(t_cylinder *)xs.object[0], point);
 		eye = tuple_negate(ray.direction);
 		in_shadow = is_shadowed(scene, point, &scene->light);
-		return (lighting(((t_sphere *)xs.object[0])->material, scene->light,
+		// return (lighting(((t_sphere *)xs.object[0])->material, scene->light,
+		// 		point, eye, normal, in_shadow));
+		return (lighting(((t_cylinder *)xs.object[0])->material, scene->light,
 				point, eye, normal, in_shadow));
 	}
 	return (create_color(0, 0, 0));

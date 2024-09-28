@@ -162,6 +162,7 @@ typedef struct s_cylinder
 	t_color		color;
 	t_matrix	transform;
 	t_material	material;
+
 }				t_cylinder;
 
 typedef struct
@@ -339,11 +340,11 @@ t_tuple			normal_at_sphere(t_sphere sphere, t_tuple world_point);
 
 
 // cylinder functions
-// t_cylinder		create_cylinder(void);
-// t_intersections	intersect_cylinder(t_cylinder cylinder, t_ray ray);
-// t_tuple			normal_at_cylinder(t_cylinder cylinder, t_tuple point);
+t_cylinder		create_cylinder(void);
+t_tuple			normal_at_cylinder(t_cylinder cylinder, t_tuple world_point);
+t_intersections	intersect_cylinder(t_cylinder cylinder, t_ray ray);
+void			intersect_caps(t_cylinder cylinder, t_ray ray, t_intersections *result);
 void	truncate_cylinder(t_cylinder *cylinder, double t1, double t2);
-void	intersect_caps(t_cylinder cylinder, t_ray ray, t_intersections *result);
 
 
 // lighting functions

@@ -64,6 +64,7 @@ void	parse_cylinder(char *line, t_scene *scene)
 	cylinder.color.r /= 255.0;
 	cylinder.color.g /= 255.0;
 	cylinder.color.b /= 255.0;
+	cylinder.material.color = cylinder.color;
 	cylinder.material.ambient = 0.1;
 	cylinder.material.diffuse = 0.7;
 	cylinder.material.specular = 0.2;
