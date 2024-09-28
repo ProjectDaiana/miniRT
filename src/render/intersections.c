@@ -58,7 +58,7 @@ t_intersections	intersect_cylinder(t_cylinder cylinder, t_ray ray)
 	c = tuple_dot(oc, oc) - pow(tuple_dot(oc, cylinder.axis), 2)
 		- pow(cylinder.diameter / 2, 2);
 	discriminant = b * b - 4 * a * c;
-	if (discriminant >= 0) // then calculate t1 and t2 and check if they are within the bounds of the cylinder 
+	if (discriminant > 0) // then calculate t1 and t2 and check if they are within the bounds of the cylinder 
 	{
 		t1 = (-b - sqrt(discriminant)) / (2 * a);
 		t2 = (-b + sqrt(discriminant)) / (2 * a);

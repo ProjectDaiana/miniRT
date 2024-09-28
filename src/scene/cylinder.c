@@ -2,12 +2,25 @@
 
 t_tuple	normal_at_cylinder(t_cylinder cylinder, t_tuple world_point)
 {
-	t_tuple	object_point;
-	t_tuple	object_normal;
+	t_tuple	obj_p;
+	t_tuple	obj_n;
+	double	dist;
+	double	radius;
 
-	object_point = tuple_subtract(world_point, cylinder.center);
-	object_normal = tuple_normalize(object_point);
-	return (object_normal);
+	radius = cylinder.diameter / 2;
+	obj_p = tuple_subtract(world_point, cylinder.center);
+	dist = obj_p.x * obj_p.x + obj_p.z * obj_p.z;
+	if (dist < (radius * radius))
+	{
+        if (obj_p.y >= cylinder.max- EPSILON)  // Top cap
+            return (create_vector(0, 1, 0));  // Normal points straight up for the top cap
+        else if (obj_p.y <= cylinder.min + EPSILON)  // Bottom cap
+            return (create_vector(0, -1, 0));  // Normal points straight down for the bottom cap
+    }
+	obj_n = create_vector(obj_p.x, 0, obj_p.z);
+	obj_n = tuple_normalize(obj_n);
+	printf("obj_n: %f, %f, %f\n", obj_n.x, obj_n.y, obj_n.z);
+	return (obj_n);
 }
 
 // t_tuple	normal_at_cylinder(t_cylinder cylinder, t_tuple point)
@@ -84,7 +97,6 @@ void intersect_caps(t_cylinder cylinder, t_ray ray, t_intersections *result)
     t_min = (cylinder.min - ray.origin.y) / ray.direction.y;
     if (check_cap(ray, t_min, cylinder))
 	{
-		printf(RED"BOTTOM CAP t_min: %f\n"RESET, t_min);
         result->count++;
         result->t = realloc(result->t, sizeof(double) * result->count);
         result->object = realloc(result->object, sizeof(void *) * result->count);
