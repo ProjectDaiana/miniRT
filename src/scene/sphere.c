@@ -63,19 +63,6 @@ t_intersections	intersect_sphere(t_sphere sphere, t_ray ray)
 	return (result);
 }
 
-
-// Does not work, DELETE LATER
-// t_tuple	normal_at_sphere(t_sphere sphere, t_tuple world_point)
-// {
-// 	t_tuple	object_point;
-// 	t_tuple	object_normal;
-
-// 	object_point = multiply_matrix_by_tuple(inverse_matrix(&sphere.transform), world_point);
-// 	object_normal = multiply_matrix_by_tuple(transpose_matrix(&sphere.transform), object_point);
-// 	return (tuple_normalize(object_normal));
-// }
-
-
 t_tuple	normal_at(t_sphere sphere, t_tuple world_point)
 {
 	t_tuple	object_point;

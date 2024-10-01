@@ -41,13 +41,20 @@ void intersect_caps(t_cylinder cylinder, t_ray ray, t_intersections *result)
 {
 	double	t_min;
 	double	t_max;
+
+	//ray.direction = tuple_normalize(ray.direction);
+	//printf("ray.direction: %f, %f, %f\n", ray.direction.x, ray.direction.y, ray.direction.z);
     // Check intersection with the bottom cap (min)
     t_min = (cylinder.min - ray.origin.y) / ray.direction.y;
     if (check_cap(ray, t_min, cylinder))
 	{
         result->count++;
+	//	free(result->t);
+		//free(result->object);
+		//result->t = ft_calloc(sizeof(double), result->count);
+		//result->object = ft_calloc(sizeof(void *), result->count);
         result->t = realloc(result->t, sizeof(double) * result->count);
-        result->object = realloc(result->object, sizeof(void *) * result->count);
+    	result->object = realloc(result->object, sizeof(void *) * result->count);
         result->t[result->count - 1] = t_min;
         result->object[result->count - 1] = &cylinder;
     }
@@ -56,11 +63,27 @@ void intersect_caps(t_cylinder cylinder, t_ray ray, t_intersections *result)
     if (check_cap(ray, t_max, cylinder))
 	{
         result->count++;
-        result->t = realloc(result->t, sizeof(double) * result->count);
-        result->object = realloc(result->object, sizeof(void *) * result->count);
+		// free(result->t);
+		// free(result->object);
+		// result->t = ft_calloc(sizeof(double), result->count);
+		// result->object = ft_calloc(sizeof(void *), result->count);
+		result->t = realloc(result->t, sizeof(double) * result->count);
+	    result->object = realloc(result->object, sizeof(void *) * result->count);
         result->t[result->count - 1] = t_max;
         result->object[result->count - 1] = &cylinder;
     }
+}
+
+void	calculate_t(double *t1, double *t2, double discriminant, double a, double b)
+{
+	*t1 = (-b - sqrt(discriminant)) / (2 * a);
+	*t2 = (-b + sqrt(discriminant)) / (2 * a);
+	if (*t1 > *t2)
+	{
+		double temp = *t1;
+		*t1 = *t2;
+		*t2 = temp;
+	}
 }
 
 void calculate_intersections(double a, double b, double c, t_intersections *result, t_cylinder cylinder, t_ray ray)	
@@ -76,9 +99,7 @@ void calculate_intersections(double a, double b, double c, t_intersections *resu
 	discriminant = b * b - 4 * a * c;
 	if (discriminant > 0)
 	{
-		t1 = (-b - sqrt(discriminant)) / (2 * a);
-		t2 = (-b + sqrt(discriminant)) / (2 * a);
-		swap(&t1, &t2);
+		calculate_t(&t1, &t2, discriminant, a, b);
 		origin_projection = tuple_dot(ray.origin, cylinder.axis);
 		direction_projection = tuple_dot(ray.direction, cylinder.axis);
 		y1 = origin_projection + t1 * direction_projection;
@@ -125,3 +146,26 @@ t_intersections	intersect_cylinder(t_cylinder cylinder, t_ray ray)
 	intersect_caps(cylinder, ray, &result);
 	return (result);
 }
+
+
+///////// Dinamic axis
+// int check_cap(t_ray ray, double t, t_cylinder cylinder)
+// {
+// 	t_tuple	point;
+// 	double	distance_from_axis;
+//     // Calculate the point of intersection
+//     point = tuple_add(ray.origin, tuple_multiply(ray.direction, t));
+//     // Compute the distance from the cylinder's axis (which is the center of the cap)
+
+//     if (compare_tuple(cylinder.axis, create_vector(0, 1, 0)))
+// 		distance_from_axis = pow(point.x - cylinder.center.x, 2) + pow(point.z - cylinder.center.z, 2);
+// 	else if (compare_tuple(cylinder.axis, create_vector(1, 0, 0)))
+// 		distance_from_axis = pow(point.y - cylinder.center.y, 2) + pow(point.z - cylinder.center.z, 2);
+// 	else
+// 		distance_from_axis = pow(point.x - cylinder.center.x, 2) + pow(point.y - cylinder.center.y, 2);
+
+// 	//distance_from_axis = pow(point.x - cylinder.center.x, 2) + pow(point.z - cylinder.center.z, 2);
+
+//     // If the distance from the axis is less than or equal to the radius squared, it's within the cap
+//     return (distance_from_axis <= pow(cylinder.diameter / 2, 2));
+// }

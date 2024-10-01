@@ -22,6 +22,7 @@ t_color	ray_color(t_scene *scene, t_ray ray)
 	t_tuple			eye;
 	int				in_shadow;
 
+	// normalize ray direction
 	xs = intersect_world(scene, ray);
 	if (xs.count > 0)
 	{

@@ -223,9 +223,9 @@ int				close_window(t_data *data);
 // Utility functions
 double			ft_sqr(double x);
 double			double_to_degrees(double radians);
-// utils
 void			my_mlx_pixel_put(t_img *img, int x, int y, int color);
-void			swap(double *a, double *b);
+int				compare_tuple(t_tuple a, t_tuple b);
+
 
 // Vector functions
 double			vect_length(double x, double y, double z);
