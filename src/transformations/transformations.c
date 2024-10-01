@@ -1,6 +1,6 @@
 #include "minirt.h"
 
-t_matrix m_translation(double x, double y, double z)
+t_matrix translation(double x, double y, double z)
 {
 	t_matrix translation_matrix;
 
@@ -14,6 +14,7 @@ t_matrix m_translation(double x, double y, double z)
 	translation_matrix.m[2][3] = z;
 
 	//print_matrix(translation_matrix, "Translation Matrix", 4);
+	// print_matrix(translation_matrix, "Translation Matrix", 4);
 	return (translation_matrix);
 }
 

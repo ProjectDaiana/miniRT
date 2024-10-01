@@ -14,6 +14,28 @@ t_tuple	position(t_ray ray, double t)
 	return (tuple_add(ray.origin, tuple_multiply(ray.direction, t)));
 }
 
+// t_color	ray_color(t_scene *scene, t_ray ray)
+// {
+// 	t_intersections	xs;
+// 	t_tuple			point;
+// 	t_tuple			normal;
+// 	t_tuple			eye;
+// 	int				in_shadow;
+
+// 	xs = intersect_world(scene, ray);
+// 	if (xs.count > 0)
+// 	{
+// 		point = position(ray, xs.t[0]);
+// 		normal = normal_at(*(t_sphere *)xs.object[0], point);
+// 		eye = tuple_negate(ray.direction);
+// 		in_shadow = is_shadowed(scene, point, &scene->light);
+// 		return (lighting(((t_sphere *)xs.object[0])->material, scene->light,
+// 				point, eye, normal, in_shadow));
+
+// 	}
+// 	return (create_color(0, 0, 0));
+// }
+
 t_color	ray_color(t_scene *scene, t_ray ray)
 {
 	t_intersections	xs;
@@ -21,20 +43,35 @@ t_color	ray_color(t_scene *scene, t_ray ray)
 	t_tuple			normal;
 	t_tuple			eye;
 	int				in_shadow;
+	t_material		material;
+	void			*object;
 
 	// normalize ray direction
 	xs = intersect_world(scene, ray);
 	if (xs.count > 0)
 	{
 		point = position(ray, xs.t[0]);
-		//normal = normal_at(*(t_sphere *)xs.object[0], point);
-		normal = normal_at_cylinder(*(t_cylinder *)xs.object[0], point);
+		object = xs.object[0];
+		if (((t_sphere *)object)->radius > 0) // It's a sphere
+		{
+			normal = normal_at(object, point);
+			material = ((t_sphere *)object)->material;
+		}
+		if (((t_plane *)object)->normal.x != 0) // It's a plane
+		
+		{
+			normal = normal_at(object, point);
+			material = ((t_plane *)object)->material;
+		}
+		if (((t_cylinder *)object)->diameter > 0) // It's a cylinder
+		{
+			normal = normal_at(object, point);
+			material = ((t_cylinder *)object)->material;
+		}
 		eye = tuple_negate(ray.direction);
 		in_shadow = is_shadowed(scene, point, &scene->light);
-		// return (lighting(((t_sphere *)xs.object[0])->material, scene->light,
-		// 		point, eye, normal, in_shadow));
-		return (lighting(((t_cylinder *)xs.object[0])->material, scene->light,
-				point, eye, normal, in_shadow));
+		return (lighting(material, scene->light, point, eye, normal,
+				in_shadow));
 	}
 	return (create_color(0, 0, 0));
 }
@@ -56,29 +93,3 @@ t_color	ray_color(t_scene *scene, t_ray ray)
 
 // 	return (create_ray(camera->position, direction));
 // }
-
-
-
-t_ray	ray_for_pixel(t_camera *camera, int px, int py)
-{
-	double		x;
-	double		y;
-	t_matrix	inverse_transform;
-	t_tuple		world_pixel;
-	t_tuple		origin;
-	t_tuple		direction;
-
-	x = (px + 0.5) / W_WIDTH;
-	y = (py + 0.5) / W_HEIGHT;
-	x = 2 * x - 1;
-	y = 1 - 2 * y;
-	x *= camera->half_width;
-	y *= camera->half_height;
-	t_tuple pixel = create_point(x, y, -1); //
-	inverse_transform = inverse_matrix(&camera->transform);
-	print_matrix(inverse_transform, "Inverse Transform", 4);
-	world_pixel = matrix_multiply_tuple(inverse_transform, pixel);
-	origin = matrix_multiply_tuple(inverse_transform, create_point(0, 0, 0));
-	direction = tuple_normalize(tuple_subtract(world_pixel, origin));
-	return (create_ray(origin, direction));
-}

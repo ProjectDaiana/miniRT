@@ -6,6 +6,7 @@
     "mlx.h": "c",
     "libft.h": "c",
     "unistd.h": "c",
-    "functional": "c"
+    "functional": "c",
+    "WORD.C": "cpp"
   }
 }
