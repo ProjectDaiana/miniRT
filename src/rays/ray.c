@@ -57,16 +57,15 @@ t_color	ray_color(t_scene *scene, t_ray ray)
 			normal = normal_at(object, point);
 			material = ((t_sphere *)object)->material;
 		}
-		if (((t_plane *)object)->normal.x != 0) // It's a plane
-		
+		else if (((t_cylinder *)object)->diameter > 0) // It's a cylinder
+		{
+			normal = normal_at_cylinder(*(t_cylinder *)object, point);
+			material = ((t_cylinder *)object)->material;
+		}
+		else //if (((t_plane *)object)->normal.x != 0) // It's a plane
 		{
 			normal = normal_at(object, point);
 			material = ((t_plane *)object)->material;
-		}
-		if (((t_cylinder *)object)->diameter > 0) // It's a cylinder
-		{
-			normal = normal_at(object, point);
-			material = ((t_cylinder *)object)->material;
 		}
 		eye = tuple_negate(ray.direction);
 		in_shadow = is_shadowed(scene, point, &scene->light);

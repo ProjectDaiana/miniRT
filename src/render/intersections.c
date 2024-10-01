@@ -67,6 +67,7 @@ t_intersections	intersect_world(t_scene *scene, t_ray ray)
 	int				max_intersections;
 	t_intersections	sphere_xs;
 	t_intersections	plane_xs;
+	t_intersections	cylinder_xs;
 
 	result.count = 0;
 	result.t = NULL;
@@ -93,6 +94,17 @@ t_intersections	intersect_world(t_scene *scene, t_ray ray)
 		{
 			result.t[result.count] = plane_xs.t[j];
 			result.object[result.count] = &scene->planes[i];
+			result.count++;
+		}
+	}
+	// Intersect with cylinders
+	for (int i = 0; i < scene->cylinder_count; i++)
+	{
+		cylinder_xs = intersect_cylinder(scene->cylinders[i], ray);
+		for (int j = 0; j < cylinder_xs.count; j++)
+		{
+			result.t[result.count] = cylinder_xs.t[j];
+			result.object[result.count] = &scene->cylinders[i];
 			result.count++;
 		}
 	}

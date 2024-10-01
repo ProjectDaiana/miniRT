@@ -28,13 +28,15 @@ int check_cap(t_ray ray, double t, t_cylinder cylinder)
 {
 	t_tuple	point;
 	double	distance_from_axis;
+	double	radius_squared;
+
     // Calculate the point of intersection
     point = tuple_add(ray.origin, tuple_multiply(ray.direction, t));
     // Compute the distance from the cylinder's axis (which is the center of the cap)
 	distance_from_axis = pow(point.x - cylinder.center.x, 2) + pow(point.z - cylinder.center.z, 2);
-
+	radius_squared = pow(cylinder.diameter / 2, 2);
     // If the distance from the axis is less than or equal to the radius squared, it's within the cap
-    return (distance_from_axis <= pow(cylinder.diameter / 2, 2));
+    return (distance_from_axis <= radius_squared + EPSILON);
 }
 
 void intersect_caps(t_cylinder cylinder, t_ray ray, t_intersections *result)
@@ -49,13 +51,19 @@ void intersect_caps(t_cylinder cylinder, t_ray ray, t_intersections *result)
     if (check_cap(ray, t_min, cylinder))
 	{
         result->count++;
-	//	free(result->t);
-		//free(result->object);
 		//result->t = ft_calloc(sizeof(double), result->count);
 		//result->object = ft_calloc(sizeof(void *), result->count);
-        result->t = realloc(result->t, sizeof(double) * result->count);
-    	result->object = realloc(result->object, sizeof(void *) * result->count);
-        result->t[result->count - 1] = t_min;
+		if (result->count == 1)
+		{
+			result->t = malloc(sizeof(double) * result->count);
+			result->object = malloc(sizeof(void *) * result->count);
+		}
+		else
+		{
+        	result->t = realloc(result->t, sizeof(double) * result->count);
+    		result->object = realloc(result->object, sizeof(void *) * result->count);
+		}
+		result->t[result->count - 1] = t_min;
         result->object[result->count - 1] = &cylinder;
     }
     // Check intersection with the top cap (max)
@@ -63,12 +71,18 @@ void intersect_caps(t_cylinder cylinder, t_ray ray, t_intersections *result)
     if (check_cap(ray, t_max, cylinder))
 	{
         result->count++;
-		// free(result->t);
-		// free(result->object);
-		// result->t = ft_calloc(sizeof(double), result->count);
-		// result->object = ft_calloc(sizeof(void *), result->count);
-		result->t = realloc(result->t, sizeof(double) * result->count);
-	    result->object = realloc(result->object, sizeof(void *) * result->count);
+		//result->t = ft_calloc(sizeof(double), result->count);
+		//result->object = ft_calloc(sizeof(void *), result->count);
+		if (result->count == 1)
+		{
+			result->t = malloc(sizeof(double) * result->count);
+			result->object = malloc(sizeof(void *) * result->count);
+		}
+		else
+		{
+			result->t = realloc(result->t, sizeof(double) * result->count);
+			result->object = realloc(result->object, sizeof(void *) * result->count);
+		}
         result->t[result->count - 1] = t_max;
         result->object[result->count - 1] = &cylinder;
     }
