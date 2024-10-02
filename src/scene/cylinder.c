@@ -2,25 +2,57 @@
 
 t_tuple	normal_at_cylinder(t_cylinder cylinder, t_tuple world_point)
 {
-	t_tuple	obj_p;
-	t_tuple	obj_n;
-	double	dist;
-	double	radius;
+   t_tuple obj_p;
+    t_tuple obj_n;
+    double dist;
+    double radius = cylinder.diameter / 2;
 
-	radius = cylinder.diameter / 2;
-	obj_p = tuple_subtract(world_point, cylinder.center);
-	dist = obj_p.x * obj_p.x + obj_p.z * obj_p.z;
-	if (dist < (radius * radius))
-	{
-        if (obj_p.y >= cylinder.max- EPSILON)  // Top cap
-            return (create_vector(0, 1, 0));  // Normal points straight up for the top cap
-        else if (obj_p.y <= cylinder.min + EPSILON)  // Bottom cap
-            return (create_vector(0, -1, 0));  // Normal points straight down for the bottom cap
+    obj_p = tuple_subtract(world_point, cylinder.center);
+    dist = obj_p.x * obj_p.x + obj_p.z * obj_p.z; // For Y-axis aligned cylinder
+    // Check which axis the cylinder is aligned with to compute the distance correctly
+    if (cylinder.axis.y == 1) // Y-axis aligned
+        dist = obj_p.x * obj_p.x + obj_p.z * obj_p.z;
+    else if (cylinder.axis.x == 1) // X-axis aligned
+        dist = obj_p.y * obj_p.y + obj_p.z * obj_p.z;
+    else if (cylinder.axis.z == 1) // Z-axis aligned
+        dist = obj_p.x * obj_p.x + obj_p.y * obj_p.y;
+
+    if (dist < radius * radius)
+    {
+        // Handle normals for caps
+        if (cylinder.axis.y == 1)
+        {
+            if (obj_p.y >= cylinder.max)
+                return (create_vector(0, 1, 0)); // Top cap normal
+            if (obj_p.y <= cylinder.min)
+                return (create_vector(0, -1, 0)); // Bottom cap normal
+        }
+        else if (cylinder.axis.x == 1)
+        {
+            if (obj_p.x >= cylinder.max)
+                return (create_vector(1, 0, 0)); // Top cap normal (X-axis)
+            if (obj_p.x <= cylinder.min)
+                return (create_vector(-1, 0, 0)); // Bottom cap normal (X-axis)
+        }
+        else if (cylinder.axis.z == 1)
+        {
+            if (obj_p.z >= cylinder.max)
+                return (create_vector(0, 0, 1)); // Top cap normal (Z-axis)
+            if (obj_p.z <= cylinder.min)
+                return (create_vector(0, 0, -1)); // Bottom cap normal (Z-axis)
+        }
     }
-	obj_n = create_vector(obj_p.x, 0, obj_p.z);
-	obj_n = tuple_normalize(obj_n);
-	//printf("obj_n: %f, %f, %f\n", obj_n.x, obj_n.y, obj_n.z);
-	return (obj_n);
+
+    // For the body of the cylinder, calculate the normal based on the axis
+    if (cylinder.axis.y == 1)
+        obj_n = create_vector(obj_p.x, 0, obj_p.z); // Y-axis aligned
+    else if (cylinder.axis.x == 1)
+        obj_n = create_vector(0, obj_p.y, obj_p.z); // X-axis aligned
+    else if (cylinder.axis.z == 1)
+        obj_n = create_vector(obj_p.x, obj_p.y, 0); // Z-axis aligned
+	else 
+		return (create_vector(0, 0, 0));
+    return tuple_normalize(obj_n);
 }
 
 // Caps in Y axis
@@ -28,15 +60,24 @@ int check_cap(t_ray ray, double t, t_cylinder cylinder)
 {
 	t_tuple	point;
 	double	distance_from_axis;
+	double	radius;
 	double	radius_squared;
 
-    // Calculate the point of intersection
+	radius = cylinder.diameter / 2;
+	radius_squared = (radius * radius) / 2;
+	printf(MAG"radius_squared: %f\n"RESET, radius_squared); // WARNING! Radius here and in intersect_cylinders differ 
     point = tuple_add(ray.origin, tuple_multiply(ray.direction, t));
     // Compute the distance from the cylinder's axis (which is the center of the cap)
-	distance_from_axis = pow(point.x - cylinder.center.x, 2) + pow(point.z - cylinder.center.z, 2);
-	radius_squared = pow(cylinder.diameter / 2, 2);
+	if (cylinder.axis.x == 1)
+		distance_from_axis = pow(point.y - cylinder.center.y, 2) + pow(point.z - cylinder.center.z, 2);
+	else if (cylinder.axis.y == 1)
+		distance_from_axis = pow(point.x - cylinder.center.x, 2) + pow(point.z - cylinder.center.z, 2);
+	else if (cylinder.axis.z == 1)
+		distance_from_axis = pow(point.x - cylinder.center.x, 2) + pow(point.y - cylinder.center.y, 2);
+	else
+		return (0);
     // If the distance from the axis is less than or equal to the radius squared, it's within the cap
-    return (distance_from_axis <= radius_squared + EPSILON);
+    return (distance_from_axis <= radius_squared);
 }
 
 void intersect_caps(t_cylinder cylinder, t_ray ray, t_intersections *result)
@@ -45,9 +86,24 @@ void intersect_caps(t_cylinder cylinder, t_ray ray, t_intersections *result)
 	double	t_max;
 
 	//ray.direction = tuple_normalize(ray.direction);
-	//printf("ray.direction: %f, %f, %f\n", ray.direction.x, ray.direction.y, ray.direction.z);
-    // Check intersection with the bottom cap (min)
-    t_min = (cylinder.min - ray.origin.y) / ray.direction.y;
+
+	if (cylinder.axis.x == 1)
+	{
+		t_min = (cylinder.min - ray.origin.x) / ray.direction.x;
+		t_max = (cylinder.max - ray.origin.x) / ray.direction.x;
+	}
+	else if (cylinder.axis.y == 1)
+	{
+		t_min = (cylinder.min - ray.origin.y) / ray.direction.y;
+		t_max = (cylinder.max - ray.origin.y) / ray.direction.y;
+	}
+	else if (cylinder.axis.z == 1)
+	{
+		t_min = (cylinder.min - ray.origin.z) / ray.direction.z;
+		t_max = (cylinder.max - ray.origin.z) / ray.direction.z;
+	}
+	else
+		return ;
     if (check_cap(ray, t_min, cylinder))
 	{
         result->count++;
@@ -66,8 +122,6 @@ void intersect_caps(t_cylinder cylinder, t_ray ray, t_intersections *result)
 		result->t[result->count - 1] = t_min;
         result->object[result->count - 1] = &cylinder;
     }
-    // Check intersection with the top cap (max)
-	t_max = (cylinder.max - ray.origin.y) / ray.direction.y;
     if (check_cap(ray, t_max, cylinder))
 	{
         result->count++;
@@ -90,9 +144,19 @@ void intersect_caps(t_cylinder cylinder, t_ray ray, t_intersections *result)
 
 void	calculate_t(double *t1, double *t2, double discriminant, double a, double b)
 {
+	if (fabs(a) < EPSILON)
+	{
+		*t1 = *t2 = INFINITY;  // Or handle it appropriately
+		return;
+	}
+	if (discriminant < 0)
+    {
+        *t1 = *t2 = INFINITY;  // No intersections
+        return;
+    }
 	*t1 = (-b - sqrt(discriminant)) / (2 * a);
 	*t2 = (-b + sqrt(discriminant)) / (2 * a);
-	if (*t1 > *t2)
+	if (fabs(*t1 - *t2) > EPSILON && *t1 > *t2)
 	{
 		double temp = *t1;
 		*t1 = *t2;
@@ -118,9 +182,9 @@ void calculate_intersections(double a, double b, double c, t_intersections *resu
 		direction_projection = tuple_dot(ray.direction, cylinder.axis);
 		y1 = origin_projection + t1 * direction_projection;
 		y2 = origin_projection + t2 * direction_projection;
-		if (y1 < cylinder.min || y1 > cylinder.max)
+		if (y1 < cylinder.min - EPSILON || y1 > cylinder.max)
 			t1 = INFINITY;
-		if (y2 < cylinder.min || y2 > cylinder.max)
+		if (y2 < cylinder.min - EPSILON || y2 > cylinder.max)
 			t2 = INFINITY;
 		result->count = (t1 != INFINITY) + (t2 != INFINITY);
 		result->t = malloc(sizeof(double) * result->count);
@@ -158,6 +222,7 @@ t_intersections	intersect_cylinder(t_cylinder cylinder, t_ray ray)
 		- pow(cylinder.diameter / 2, 2);
 	calculate_intersections(a, b, c, &result, cylinder, ray);
 	intersect_caps(cylinder, ray, &result);
+	printf(MAG"radius: %f\n"RESET, cylinder.diameter / 2);
 	return (result);
 }
 

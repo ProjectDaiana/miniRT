@@ -97,7 +97,7 @@ t_intersections	intersect_world(t_scene *scene, t_ray ray)
 			result.count++;
 		}
 	}
-	// Intersect with cylinders
+	//Intersect with cylinders
 	for (int i = 0; i < scene->cylinder_count; i++)
 	{
 		cylinder_xs = intersect_cylinder(scene->cylinders[i], ray);
