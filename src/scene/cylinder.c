@@ -5,7 +5,6 @@ t_tuple	normal_at_cylinder(t_cylinder cylinder, t_tuple world_point)
    t_tuple obj_p;
     t_tuple obj_n;
     double dist;
-    double radius = cylinder.diameter / 2;
 
     obj_p = tuple_subtract(world_point, cylinder.center);
     dist = obj_p.x * obj_p.x + obj_p.z * obj_p.z; // For Y-axis aligned cylinder
@@ -17,7 +16,7 @@ t_tuple	normal_at_cylinder(t_cylinder cylinder, t_tuple world_point)
     else if (cylinder.axis.z == 1) // Z-axis aligned
         dist = obj_p.x * obj_p.x + obj_p.y * obj_p.y;
 
-    if (dist < radius * radius)
+    if (dist < pow(cylinder.diameter / 2, 2))
     {
         // Handle normals for caps
         if (cylinder.axis.y == 1)
@@ -61,11 +60,10 @@ int check_cap(t_ray ray, double t, t_cylinder cylinder)
 	t_tuple	point;
 	double	distance_from_axis;
 	double	radius;
-	double	radius_squared;
 
 	radius = cylinder.diameter / 2;
-	radius_squared = (radius * radius) / 2;
-	printf(MAG"radius_squared: %f\n"RESET, radius_squared); // WARNING! Radius here and in intersect_cylinders differ 
+	printf("cylinder diameter: %f\n", cylinder.diameter);
+	printf(MAG"radius_squared: %f\n"RESET, radius * radius); // WARNING! Radius here and in intersect_cylinders differ 
     point = tuple_add(ray.origin, tuple_multiply(ray.direction, t));
     // Compute the distance from the cylinder's axis (which is the center of the cap)
 	if (cylinder.axis.x == 1)
@@ -77,7 +75,7 @@ int check_cap(t_ray ray, double t, t_cylinder cylinder)
 	else
 		return (0);
     // If the distance from the axis is less than or equal to the radius squared, it's within the cap
-    return (distance_from_axis <= radius_squared);
+    return (distance_from_axis <= pow(radius,2)/2);
 }
 
 void intersect_caps(t_cylinder cylinder, t_ray ray, t_intersections *result)
@@ -219,10 +217,11 @@ t_intersections	intersect_cylinder(t_cylinder cylinder, t_ray ray)
 	b = 2 * (tuple_dot(ray.direction, oc) - tuple_dot(ray.direction,
 				cylinder.axis) * tuple_dot(oc, cylinder.axis));
 	c = tuple_dot(oc, oc) - pow(tuple_dot(oc, cylinder.axis), 2)
-		- pow(cylinder.diameter / 2, 2);
+		- pow (cylinder.diameter / 2, 2);
 	calculate_intersections(a, b, c, &result, cylinder, ray);
 	intersect_caps(cylinder, ray, &result);
 	printf(MAG"radius: %f\n"RESET, cylinder.diameter / 2);
+	printf("cylinder diameter: %f\n", cylinder.diameter);
 	return (result);
 }
 
