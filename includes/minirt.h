@@ -276,6 +276,7 @@ typedef struct s_computations
 typedef struct s_world
 {
 	t_sphere		*spheres;
+	t_cylinder		*cylinders;
 	int				sphere_count;
 	t_light			*lights;
 	int				light_count;

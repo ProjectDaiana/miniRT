@@ -5,6 +5,7 @@ t_world	create_world(void)
 	t_world	world;
 
 	world.spheres = NULL;
+	world.cylinders = NULL;
 	world.lights = NULL;
 	return (world);
 }
@@ -35,7 +36,7 @@ t_color	shade_hit(t_scene *scene, t_compu comps)
 	for (int i = 0; i < scene->light_count; i++)
 	{
 		in_shadow = is_shadowed(scene, comps.over_point, &scene->lights[i]);
-		color = color_add(color, lighting(((t_sphere *)comps.object)->material,
+		color = color_add(color, lighting(((t_cylinder *)comps.object)->material,
 					scene->lights[i], comps.point, comps.eyev, comps.normalv,
 					in_shadow));
 	}
