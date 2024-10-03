@@ -112,12 +112,18 @@ void	parse_sphere(char *line, t_scene *scene)
 void	parse_cylinder(char *line, t_scene *scene)
 {
 	t_cylinder	cylinder;
+	double half_height;
 
 	sscanf(line, "cy %lf,%lf,%lf %lf,%lf,%lf %lf %lf %d,%d,%d", &cylinder.center.x,
 		&cylinder.center.y, &cylinder.center.z, &cylinder.axis.x,
 		&cylinder.axis.y, &cylinder.axis.z, &cylinder.diameter,
 		&cylinder.height, &cylinder.color.r, &cylinder.color.g,
 		&cylinder.color.b);
+	cylinder.axis = tuple_normalize(cylinder.axis);
+	half_height = cylinder.height / 2.0;
+	cylinder.min =  tuple_dot(cylinder.center, cylinder.axis) - half_height;
+	cylinder.max = tuple_dot(cylinder.center, cylinder.axis) + half_height;
+	
 	cylinder.color.r /= 255.0;
 	cylinder.color.g /= 255.0;
 	cylinder.color.b /= 255.0;
