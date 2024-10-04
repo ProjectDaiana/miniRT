@@ -182,6 +182,7 @@ int	render(t_data *data)
 			scene->camera.orientation);
 	t_tuple up = create_vector(0, 1, 0);
 	camera.transform = look_at(camera_position, camera_look_at, up);
+	print_matrix(camera.transform, "Camera Transform", 4);
 
 	// Render the scene
 	for (int y = 0; y < W_HEIGHT; y++)

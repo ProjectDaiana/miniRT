@@ -9,6 +9,7 @@ t_camera	create_camera(int hsize, int vsize, double field_of_view)
 	cam.width = vsize;
 	cam.fov = field_of_view;
 	cam.transform = create_identity_matrix();
+	print_matrix(cam.transform, "Camera Transform", 4);
 	half_view = tan(field_of_view / 2);
 	aspect = (double)hsize / vsize;
 	if (aspect >= 1)

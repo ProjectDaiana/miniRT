@@ -7,13 +7,6 @@
 // 	return (0);
 // }
 
-int	close_window(t_data *data)
-{
-	mlx_destroy_window(data->mlx_ptr, data->win_ptr);
-	mlx_destroy_display(data->mlx_ptr);
-	free(data->mlx_ptr);
-	exit (0);
-}
 // int	handle_keypress(int keysym, t_data *data)
 // {
 //     if (keysym == XK_Escape)
@@ -22,56 +15,59 @@ int	close_window(t_data *data)
 //     return (0);
 // }
 
+int	close_window(t_data *data)
+{
+	mlx_destroy_window(data->mlx_ptr, data->win_ptr);
+	mlx_destroy_display(data->mlx_ptr);
+	free(data->mlx_ptr);
+	exit (0);
+}
+
+void change_cam_position(t_data *data, double *direction, unsigned int key)
+{
+	t_tuple cam_look_at;
+	t_tuple up;
+
+	printf(MAG"Camera position: %f, %f, %f\n"RESET, data->scene.camera.position.x, data->scene.camera.position.y, data->scene.camera.position.z);
+	printf(MAG"Camera direction: %f\n"RESET, *direction);
+	if (key == XK_Up || key == XK_Right || key == XK_equal)
+		*direction += 1;
+	else if (key == XK_Down || key == XK_Left || key == XK_minus)
+		*direction -= 1;
+	cam_look_at = tuple_add(data->scene.camera.position,data->scene.camera.orientation);
+	up = create_vector(0, 1, 0);
+	data->scene.camera.transform = look_at(data->scene.camera.position, cam_look_at, up);
+	printf(MAG"NewCamera position: %f, %f, %f\n"RESET, data->scene.camera.position.x, data->scene.camera.position.y, data->scene.camera.position.z);
+	render(data);
+}
+
+void reset_cam_position(t_data *data)
+{
+	data->scene.camera.position.x = 0;
+	data->scene.camera.position.y = 0;
+	data->scene.camera.position.z = -5;
+	printf(MAG"RESET position: %f, %f, %f\n"RESET, data->scene.camera.position.x, data->scene.camera.position.y, data->scene.camera.position.z);
+	render(data);
+}
+
 int	handle_keypress(int keysym, t_data *data)
 {
 	if (keysym == XK_Escape)
-	{
-		mlx_destroy_window(data->mlx_ptr, data->win_ptr);
-		mlx_destroy_display(data->mlx_ptr);
-		free(data->mlx_ptr);
-		exit(0);
-	}
+		close_window(data);
 	else if (keysym == XK_equal)
-	{
-		printf(MAG"Camera position"RESET);
-		data->scene.camera.position.z += 1;
-		render(data);
-	}
+		change_cam_position(data, &data->scene.camera.position.z, keysym);
 	else if (keysym == XK_minus)
-	{
-		printf(MAG"Camera position: %f, %f, %f\n"RESET, data->scene.camera.position.x,
-			data->scene.camera.position.y, data->scene.camera.position.z);
-		data->scene.camera.position.z -= 1;
-		render(data);
-	}
+		change_cam_position(data, &data->scene.camera.position.z, keysym);
 	else if (keysym == XK_Up)
-	{
-		printf(MAG"Camera position: %f, %f, %f\n"RESET, data->scene.camera.position.x,
-			data->scene.camera.position.y, data->scene.camera.position.z);
-		data->scene.camera.position.y += 1;
-		render(data);
-	}
+		change_cam_position(data, &data->scene.camera.position.y, keysym);
 	else if (keysym == XK_Down)
-	{
-		printf(MAG"Camera position: %f, %f, %f\n"RESET, data->scene.camera.position.x,
-			data->scene.camera.position.y, data->scene.camera.position.z);
-		data->scene.camera.position.y -= 1;
-		render(data);
-	}
+		change_cam_position(data, &data->scene.camera.position.y, keysym);
 	else if (keysym == XK_Left)
-	{
-		printf(MAG"Camera position: %f, %f, %f\n"RESET, data->scene.camera.position.x,
-			data->scene.camera.position.y, data->scene.camera.position.z);
-		data->scene.camera.position.x -= 1;
-		render(data);
-	}
+		change_cam_position(data, &data->scene.camera.position.x, keysym);
 	else if (keysym == XK_Right)
-	{
-		printf(MAG"Camera position: %f, %f, %f\n"RESET, data->scene.camera.position.x,
-			data->scene.camera.position.y, data->scene.camera.position.z);
-		data->scene.camera.position.x += 1;
-		render(data);
-	}
+		change_cam_position(data, &data->scene.camera.position.x, keysym);
+	else if (keysym == XK_r)
+		reset_cam_position(data);
 	// skewing
 	// if (keysym == XK_s)
 	// {
@@ -84,16 +80,6 @@ int	handle_keypress(int keysym, t_data *data)
 	// 	print_matrix(data->scene.camera.transform, "Camera Transform After Skewing", 4);
 	// 	render(data);
 	// }
-	// reset camera position
-	else if (keysym == XK_r)
-	{
-		printf(MAG"Camera position: %f, %f, %f\n"RESET, data->scene.camera.position.x,
-			data->scene.camera.position.y, data->scene.camera.position.z);
-		data->scene.camera.position.x = 0;
-		data->scene.camera.position.y = 0;
-		data->scene.camera.position.z = -5;
-		render(data);
-	}
 	printf("Keypress: %d\n", keysym);
 	return (0);
 }
