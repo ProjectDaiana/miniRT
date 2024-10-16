@@ -81,6 +81,7 @@ Welcome to miniRT, a basic raytracing engine built from scratch using the MiniLi
 - [Ray Tracer Youtube](https://www.youtube.com/watch?v=RIgc5J_ZGu8&list=PLAqGIYgEAxrUO6ODA0pnLkM2UOijerFPv&index=1)
 - [Ray Tracing in one Weekend](https://raytracing.github.io/)
 - [The Ray Tracer Challenge](http://raytracerchallenge.com/)
+- [Understanding the dot product] (https://betterexplained.com/articles/vector-calculus-understanding-the-dot-product/)
 
 ## Maths 
 
