@@ -39,8 +39,7 @@ int check_cap(t_ray ray, double t, t_cylinder cylinder)
 
 void add_intersection(t_intersections *result, double t, t_cylinder *cylinder)
 {
-	result->count++;
-	if (result->count == 1)
+	if (result->count == 0)
 	{
 		result->t = malloc(sizeof(double) * result->count);
 		result->object = malloc(sizeof(void *) * result->count);
@@ -50,9 +49,11 @@ void add_intersection(t_intersections *result, double t, t_cylinder *cylinder)
 		result->t = realloc(result->t, sizeof(double) * result->count);
 		result->object = realloc(result->object, sizeof(void *) * result->count);
 	}
-	result->t[result->count - 1] = t;
-	result->object[result->count - 1] = cylinder;
+	result->t[result->count] = t;
+	result->object[result->count] = cylinder;
+	result->count++;
 }
+
 
 void intersect_caps(t_cylinder cylinder, t_ray ray, t_intersections *result)
 {
@@ -127,8 +128,6 @@ t_intersections	intersect_cylinder(t_cylinder cylinder, t_ray ray)
 	double			c;
 
 	result.count = 0;
-	result.t1 = 0;
-	result.t2 = 0;
 	oc = tuple_subtract(ray.origin, cylinder.center);
 	a = tuple_dot(ray.direction, ray.direction) - pow(tuple_dot(ray.direction,
 				cylinder.axis), 2);

@@ -31,40 +31,36 @@ void move_camera(t_data *data, t_tuple direction)
 	t_tuple cam_look_at;
 	t_tuple up;
 
-	printf(MAG"num of intersections: %d\n"RESET, data->xs.count);
-	data->camera.position.x += direction.x;
-	data->camera.position.y += direction.y;
-	data->camera.position.z += direction.z;
-	cam_look_at = tuple_add(data->camera.position,data->camera.orientation);
+	data->scene.camera.position.x += direction.x;
+	data->scene.camera.position.y += direction.y;
+	data->scene.camera.position.z += direction.z;
+	cam_look_at = tuple_add(data->scene.camera.position,data->scene.camera.orientation);
 	up = create_vector(0, 1, 0);
 	//free_matrix(&data->camera.transform);
-	data->camera.transform = look_at(data->camera.position, cam_look_at, up);
+	data->camera.transform = look_at(data->scene.camera.position, cam_look_at, up);
 	render(data);
-	printf(MAG"position: %f, %f, %f\n"RESET, data->camera.position.x, data->camera.position.y, data->camera.position.z);
+	printf(MAG"position: %f, %f, %f\n"RESET, data->scene.camera.position.x, data->scene.camera.position.y, data->scene.camera.position.z);
 }
 
 
 int	handle_keypress(int keysym, t_data *data)
 {
-	t_tuple direction;
-
-	direction = create_vector(0, 0, 0);
 	if (keysym == XK_Escape)
 		close_window(data);
-	else if(keysym == XK_Up)
-		direction.y = 1;
-	else if(keysym == XK_Down)
-		direction.y = -1;
-	else if(keysym == XK_Left)
-		direction.x = -1;
-	else if(keysym == XK_Right)
-		direction.x = 1;
-	else if(keysym == XK_w)
-		direction.z = 1;
-	else if(keysym == XK_s)
-		direction.z = -1;
-	printf("Keypress: %d\n", keysym);
-	move_camera(data, direction);
+	else if (keysym == XK_Up)
+		move_camera(data, create_vector(0, 0, 1));
+	else if (keysym == XK_Down)
+		move_camera(data, create_vector(0, 0, -1));
+	else if (keysym == XK_Left)
+		move_camera(data, create_vector(-1, 0, 0));
+	else if (keysym == XK_Right)
+		move_camera(data, create_vector(1, 0, 0));
+	else if (keysym == XK_w)
+		move_camera(data, create_vector(0, 1, 0));
+	else if (keysym == XK_s)
+		move_camera(data, create_vector(0, -1, 0));
+	else if(keysym == XK_r)
+		reset_cam_position(data);
 	return (0);
 }
 
@@ -74,3 +70,21 @@ int	handle_keyrelease(int keysym, void *data)
 	printf("Keyrelease: %d\n", keysym);
 	return (0);
 }
+
+
+	// else if (keysym == XK_w)
+	// 	data->scene.camera.position.z += 1;
+	// else if (keysym == XK_s)
+	// 	data->scene.camera.position.z -= 1;
+	// else if (keysym == XK_a)
+	// 	data->scene.camera.position.x -= 1;
+	// else if (keysym == XK_d)
+	// 	data->scene.camera.position.x += 1;
+	// else if (keysym == XK_q)
+	// 	data->scene.camera.position.y -= 1;
+	// else if (keysym == XK_e)
+	// 	data->scene.camera.position.y += 1;
+	// else if (keysym == XK_r)
+	// 	reset_cam_position(data);
+	// render(data);
+	// printf("Keypress: %d\n", keysym);

@@ -69,13 +69,11 @@ t_intersections	intersect_world(t_scene *scene, t_ray ray)
 	t_intersections	plane_xs;
 	t_intersections	cylinder_xs;
 
-	result.count = 0;
-	result.t = NULL;
-	result.object = NULL;
-	max_intersections = scene->sphere_count * 2 + scene->plane_count;
+	init_intersections(&result);
+	max_intersections = scene->sphere_count * 2 + scene->plane_count * 2 + scene->cylinder_count *2;
 	result.t = malloc(sizeof(double) * max_intersections);
 	result.object = malloc(sizeof(void *) * max_intersections);
-	// Intersect with spheres
+	//Intersect with spheres
 	for (int i = 0; i < scene->sphere_count; i++)
 	{
 		sphere_xs = intersect_sphere(scene->spheres[i], ray);
@@ -107,6 +105,7 @@ t_intersections	intersect_world(t_scene *scene, t_ray ray)
 			result.object[result.count] = &scene->cylinders[i];
 			result.count++;
 		}
+		free_intersections(&cylinder_xs);
 	}
 	sort_intersections(&result);
 

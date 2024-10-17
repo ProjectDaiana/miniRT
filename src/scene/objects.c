@@ -26,14 +26,14 @@ void	add_plane(t_scene *scene, t_plane *plane)
 
 void	add_cylinder(t_scene *scene, t_cylinder *cylinder)
 {
-	scene->cylinder_count++;
-	scene->cylinders = realloc(scene->cylinders, scene->cylinder_count * sizeof(t_cylinder));
+	scene->cylinders = realloc(scene->cylinders, sizeof(t_cylinder) * (scene->cylinder_count + 1));
 	if (!scene->cylinders)
     {
         fprintf(stderr, "Error: Memory allocation failed for cylinders\n");
         exit(1);
     }
-	scene->cylinders[scene->cylinder_count - 1] = *cylinder;
+	scene->cylinders[scene->cylinder_count] = *cylinder;
+	scene->cylinder_count++;
 }
 
 // added

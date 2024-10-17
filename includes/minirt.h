@@ -473,3 +473,6 @@ t_tuple				normal_at(void *object, t_tuple world_point);
 
 void				free_matrix(t_matrix *matrix);
 void				free_scene(t_scene *scene);
+void				free_intersections(t_intersections *xs);
+
+void init_intersections(t_intersections *result);
