@@ -176,6 +176,10 @@ int	render(t_data *data)
 	t_ray ray;
 	int color_int;
 
+	if (data->img.img){
+		mlx_destroy_image(data->mlx_ptr, data->img.img);
+		data->img.img = NULL;
+	}
 	// Set up camera transform
 	t_tuple camera_position = scene->camera.position;
 	t_tuple camera_look_at = tuple_add(camera_position,

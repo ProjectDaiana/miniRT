@@ -243,7 +243,8 @@ typedef struct data
 	t_img			img;
 	t_light			light;
 	t_scene			scene;
-
+	t_camera		camera;
+	t_intersections	xs;
 }					t_data;
 
 // typedef struct s_computations
@@ -469,3 +470,6 @@ t_matrix			look_at(t_tuple from, t_tuple to, t_tuple up);
 
 t_tuple				normal_at_plane(t_plane *plane, t_tuple world_point);
 t_tuple				normal_at(void *object, t_tuple world_point);
+
+void				free_matrix(t_matrix *matrix);
+void				free_scene(t_scene *scene);

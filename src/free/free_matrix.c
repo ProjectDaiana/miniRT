@@ -12,3 +12,27 @@ void	free_matrix(t_matrix *matrix)
 	}
 	free(matrix->m);
 }
+
+void free_scene(t_scene *scene)
+{
+    if (scene->cylinders)
+    {
+        free(scene->cylinders);
+        scene->cylinders = NULL;
+    }
+	if (scene->planes)
+	{
+		free(scene->planes);
+		scene->planes = NULL;
+	}
+	if (scene->spheres)
+	{
+		free(scene->spheres);
+		scene->spheres = NULL;
+	}
+	if (scene->lights)
+	{
+		free(scene->lights);
+		scene->lights = NULL;
+	}
+}	

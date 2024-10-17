@@ -184,11 +184,11 @@ void	parse_scene(const char *filename, t_scene *scene)
 			parse_light(line, scene);
 			printf(" Light parsed\n");
 		}
-		else if (line[0] == 's' && line[1] == 'p')
-		{
-			parse_sphere(line, scene);
-			printf(" Sphere parsed\n");
-		}
+		// else if (line[0] == 's' && line[1] == 'p')
+		// {
+		// 	parse_sphere(line, scene);
+		// 	printf(" Sphere parsed\n");
+		// }
 		else if (line[0] == 'c' && line[1] == 'y')
 		{
 			parse_cylinder(line, scene);
@@ -198,18 +198,18 @@ void	parse_scene(const char *filename, t_scene *scene)
 			printf(GRN"cylinder height: %f\n"RESET, scene->cylinders[0].height);
 			printf(GRN"cylinder axis: %f, %f, %f\n"RESET, scene->cylinders[0].axis.x, scene->cylinders[0].axis.y, scene->cylinders[0].axis.z);
 		}
-		else if (line[0] == 'p' && line[1] == 'l')
-		{
-			parse_plane(line, scene);
-			printf(" Plane parsed\n");
-		}
+		// else if (line[0] == 'p' && line[1] == 'l')
+		// {
+		// 	parse_plane(line, scene);
+		// 	printf(" Plane parsed\n");
+		// }
 	}
 	fclose(file);
-	if (scene->sphere_count == 0 || scene->light_count == 0)
-	{
-		fprintf(stderr,
-			"Error: Scene must contain at least one sphere and one light\n");
-		exit(1);
-	}
+	// if (scene->sphere_count == 0 || scene->light_count == 0)
+	// {
+	// 	fprintf(stderr,
+	// 		"Error: Scene must contain at least one sphere and one light\n");
+	// 	exit(1);
+	// }
 	printf("Scene parsed successfully\n");
 }
