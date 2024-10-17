@@ -1,6 +1,6 @@
 cc = cc
 NAME=minirt
-CFLAGS= -Wextra -Wall -Werror -I/usr/local/includes -I./includes
+CFLAGS= -g -Wextra -Wall -Werror -I/usr/local/includes -I./includes
 MLX = -L./lib/minilibx-linux -lmlx -lXext -lX11 -lm
 
 SRCDIR = src

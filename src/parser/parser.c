@@ -66,11 +66,13 @@ void	parse_camera(char *line, t_scene *scene)
 		ft_free_split(split);
 		return ;
 	}
-	scene->camera.position = create_point(ft_atof(pos[0]), ft_atof(pos[1]),
+	double fov = ft_atof(split[3]);
+	scene->camera = create_camera(W_WIDTH, W_HEIGHT, fov * M_PI / 180.0);
+	scene->camera->position = create_point(ft_atof(pos[0]), ft_atof(pos[1]),
 			ft_atof(pos[2]));
-	scene->camera.orientation = create_vector(ft_atof(orient[0]),
+	scene->camera->orientation = create_vector(ft_atof(orient[0]),
 			ft_atof(orient[1]), ft_atof(orient[2]));
-	scene->camera.fov = ft_atof(split[3]);
+	scene->camera->fov = ft_atof(split[3]);
 	ft_free_split(split);
 	ft_free_split(pos);
 	ft_free_split(orient);
@@ -108,7 +110,7 @@ void	parse_sphere(char *line, t_scene *scene)
 	sphere.radius /= 2.0;
 	add_sphere(scene, &sphere);
 }
-
+// Remember to
 void	parse_cylinder(char *line, t_scene *scene)
 {
 	t_cylinder	cylinder;
@@ -123,7 +125,8 @@ void	parse_cylinder(char *line, t_scene *scene)
 	half_height = cylinder.height / 2.0;
 	cylinder.min =  tuple_dot(cylinder.center, cylinder.axis) - half_height;
 	cylinder.max = tuple_dot(cylinder.center, cylinder.axis) + half_height;
-	
+	//cylinder.min = -half_height;
+	//cylinder.max = half_height;
 	cylinder.color.r /= 255.0;
 	cylinder.color.g /= 255.0;
 	cylinder.color.b /= 255.0;
@@ -133,6 +136,7 @@ void	parse_cylinder(char *line, t_scene *scene)
 	cylinder.material.specular = 0.2;
 	cylinder.material.shininess = 200.0;
 	add_cylinder(scene, &cylinder);
+	printf(GRN"cylinder count in parse_cylinder: %d\n"RESET, scene->cylinder_count);
 }
 
 void	parse_plane(char *line, t_scene *scene)
@@ -166,6 +170,8 @@ void	parse_scene(const char *filename, t_scene *scene)
 	printf("File opened successfully\n");
 	// Initialize scene
 	ft_memset(scene, 0, sizeof(t_scene));
+	scene->cylinders = NULL;
+    scene->cylinder_count = 0;
 	while (fgets(line, sizeof(line), file))
 	{
 		printf("Parsing line: %s", line);
@@ -205,11 +211,11 @@ void	parse_scene(const char *filename, t_scene *scene)
 		}
 	}
 	fclose(file);
-	if (scene->sphere_count == 0 || scene->light_count == 0)
-	{
-		fprintf(stderr,
-			"Error: Scene must contain at least one sphere and one light\n");
-		exit(1);
-	}
+	// if (scene->sphere_count == 0 || scene->light_count == 0)
+	// {
+	// 	fprintf(stderr,
+	// 		"Error: Scene must contain at least one sphere and one light\n");
+	// 	exit(1);
+	// }
 	printf("Scene parsed successfully\n");
 }

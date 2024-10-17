@@ -170,31 +170,37 @@ int	render(t_data *data)
 {
 	t_canvas canvas = create_canvas(W_WIDTH, W_HEIGHT);
 	t_scene *scene = &data->scene;
-	t_camera camera = create_camera(W_WIDTH, W_HEIGHT, scene->camera.fov * M_PI
-			/ 180.0);
+
+	// data->scene.camera = create_camera(W_WIDTH, W_HEIGHT, scene->camera->fov * M_PI
+	// 		/ 180.0);
 	t_color color;
 	t_ray ray;
 	int color_int;
 
+    if (data->img.img != NULL)
+    {
+		printf("Destroying previous image\n");
+        mlx_destroy_image(data->mlx_ptr, data->img.img);
+        data->img.img = NULL;  // Set to NULL to avoid dangling pointer issues
+	}
 	// Set up camera transform
-	t_tuple camera_position = scene->camera.position;
+	t_tuple camera_position = scene->camera->position;
 	t_tuple camera_look_at = tuple_add(camera_position,
-			scene->camera.orientation);
+			scene->camera->orientation);
 	t_tuple up = create_vector(0, 1, 0);
-	camera.transform = look_at(camera_position, camera_look_at, up);
-	print_matrix(camera.transform, "Camera Transform", 4);
-
+	data->scene.camera->transform = look_at(camera_position, camera_look_at, up);
+	//print_matrix(camera.transform, "Camera Transform", 4);
 	// Render the scene
 	for (int y = 0; y < W_HEIGHT; y++)
 	{
 		for (int x = 0; x < W_WIDTH; x++)
 		{
-			ray = ray_for_pixel(&camera, x, y);
+			ray = ray_for_pixel(data->scene.camera, x, y);
 			color = ray_color(scene, ray);
 			write_pixel(&canvas, x, y, color);
 		}
 	}
-
+	printf(BLU"Rendering scene...\n"RESET);
 	// Convert canvas to MLX image
 	data->img.img = mlx_new_image(data->mlx_ptr, W_WIDTH, W_HEIGHT);
 	data->img.addr = mlx_get_data_addr(data->img.img, &data->img.bits_per_pixel,
@@ -205,10 +211,12 @@ int	render(t_data *data)
 		{
 			color = pixel_at(&canvas, x, y);
 			color_int = rgb_to_int(color);
-			my_mlx_pixel_put(&data->img, x, y, color_int);
+			if (x > 0 && y > 0 && x < W_WIDTH && y < W_HEIGHT)
+				my_mlx_pixel_put(&data->img, x, y, color_int);
 		}
 	}
 	mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->img.img, 0, 0);
 	free_canvas(&canvas);
+	//free(camera.transform.m);
 	return (0);
 }

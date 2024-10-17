@@ -37,25 +37,49 @@ int check_cap(t_ray ray, double t, t_cylinder cylinder)
 	//return (distance_from_axis <= pow(cylinder.diameter / 2, 2));
 }
 
+// void add_intersection(t_intersections *result, double t, t_cylinder *cylinder)
+// {
+// 	result->count++;
+// 	if (result->count == 1)
+// 	{
+// 		result->t = malloc(sizeof(double) * result->count);
+// 		result->object = malloc(sizeof(void *) * result->count);
+// 	}
+// 	else
+// 	{
+// 		result->t = realloc(result->t, sizeof(double) * result->count);
+// 		result->object = realloc(result->object, sizeof(void *) * result->count);
+// 	}
+// 	result->t[result->count - 1] = t;
+// 	result->object[result->count - 1] = cylinder;
+// }
+
 void add_intersection(t_intersections *result, double t, t_cylinder *cylinder)
 {
-	result->count++;
-	if (result->count == 1)
+    if (result->count == 1 >= result->capacity)
 	{
-		result->t = malloc(sizeof(double) * result->count);
-		result->object = malloc(sizeof(void *) * result->count);
+		result->capacity *= 2;
+		result->t = realloc(result->t, sizeof(double) * result->capacity);
+		result->object = realloc(result->object, sizeof(void *) * result->capacity);
+		if (result->t == NULL || result->object == NULL)
+		{
+			fprintf(stderr, "Error: Memory allocation failed in add_intersection\n");
+			exit(1);
+		}
 	}
-	else
-	{
-		result->t = realloc(result->t, sizeof(double) * result->count);
-		result->object = realloc(result->object, sizeof(void *) * result->count);
-	}
-	result->t[result->count - 1] = t;
-	result->object[result->count - 1] = cylinder;
+    result->t[result->count] = t;
+    result->object[result->count] = cylinder;
+    result->count++;
 }
 
 void intersect_caps(t_cylinder cylinder, t_ray ray, t_intersections *result)
 {
+	if (!result)
+    {
+        fprintf(stderr, "Error: Null pointer passed to intersect_caps\n");
+        return;
+    }
+
 	double t_min;
 	double t_max;
 	double origin_projection;
@@ -92,6 +116,11 @@ void	calculate_t(double *t1, double *t2, double discriminant, double a, double b
 
 void intersect_body(double a, double b, double c, t_intersections *result, t_cylinder cylinder, t_ray ray)	
 {
+	if (!result)
+    {
+        fprintf(stderr, "Error: Null pointer passed to intersect_body\n");
+        return;
+    }
 	double	discriminant;
 	double	t1;
 	double	t2;
@@ -126,9 +155,7 @@ t_intersections	intersect_cylinder(t_cylinder cylinder, t_ray ray)
 	double			b;
 	double			c;
 
-	result.count = 0;
-	result.t1 = 0;
-	result.t2 = 0;
+	init_intersections(&result);
 	oc = tuple_subtract(ray.origin, cylinder.center);
 	a = tuple_dot(ray.direction, ray.direction) - pow(tuple_dot(ray.direction,
 				cylinder.axis), 2);
@@ -138,6 +165,12 @@ t_intersections	intersect_cylinder(t_cylinder cylinder, t_ray ray)
 		- pow (cylinder.diameter / 2, 2);
 	intersect_body(a, b, c, &result, cylinder, ray);
 	intersect_caps(cylinder, ray, &result);
+
+	//printf("Intersections count: %d\n", result.count);
+    // for (int i = 0; i < result.count; i++)
+    // {
+    //     printf("Intersection %d: t = %f\n", i, result.t[i]);
+    // }
 	//printf(MAG"radius: %f\n"RESET, cylinder.diameter / 2);
 	//printf("cylinder diameter: %f\n", cylinder.diameter);
 	return (result);

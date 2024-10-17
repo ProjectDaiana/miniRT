@@ -24,14 +24,29 @@ void	add_plane(t_scene *scene, t_plane *plane)
 	scene->planes[scene->plane_count - 1] = *plane;
 }
 
-void	add_cylinder(t_scene *scene, t_cylinder *cylinder)
+// void	add_cylinder(t_scene *scene, t_cylinder *cylinder)
+// {
+// 	scene->cylinder_count++;
+// 	scene->cylinders = realloc(scene->cylinders, scene->cylinder_count
+// 			* sizeof(t_cylinder));
+// 	scene->cylinders[scene->cylinder_count - 1] = *cylinder;
+// 	scene->cylinders[scene->cylinder_count - 1].max = scene->cylinders[scene->cylinder_count - 1].height / 2;
+// 	scene->cylinders[scene->cylinder_count - 1].min = -scene->cylinders[scene->cylinder_count - 1].height / 2;
+// }
+
+// Remember to remove min and max
+void add_cylinder(t_scene *scene, t_cylinder *cylinder)
 {
+    scene->cylinders = realloc(scene->cylinders, sizeof(t_cylinder) * (scene->cylinder_count + 1));
+    // Check if memory allocation was successful
+	if (!scene->cylinders)
+    {
+        fprintf(stderr, "Error: Memory allocation failed for cylinders\n");
+        exit(1);
+    }
+    // Add the new cylinder to the array
+	scene->cylinders[scene->cylinder_count] = *cylinder;
 	scene->cylinder_count++;
-	scene->cylinders = realloc(scene->cylinders, scene->cylinder_count
-			* sizeof(t_cylinder));
-	scene->cylinders[scene->cylinder_count - 1] = *cylinder;
-	scene->cylinders[scene->cylinder_count - 1].max = scene->cylinders[scene->cylinder_count - 1].height / 2;
-	scene->cylinders[scene->cylinder_count - 1].min = 2;
 }
 
 // added

@@ -1,28 +1,60 @@
 #include "minirt.h"
 
-t_camera	create_camera(int hsize, int vsize, double field_of_view)
-{
-	t_camera	cam;
+// t_camera	create_camera(int hsize, int vsize, double field_of_view)
+// {
+// 	t_camera	cam;
 
+// 	double half_view, aspect;
+// 	cam.height = hsize;
+// 	cam.width = vsize;
+// 	cam.fov = field_of_view;
+// 	cam.transform = create_identity_matrix();
+// 	print_matrix(cam.transform, "Camera Transform", 4);
+// 	half_view = tan(field_of_view / 2);
+// 	aspect = (double)hsize / vsize;
+// 	if (aspect >= 1)
+// 	{
+// 		cam.half_width = half_view;
+// 		cam.half_height = half_view / aspect;
+// 	}
+// 	else
+// 	{
+// 		cam.half_width = half_view * aspect;
+// 		cam.half_height = half_view;
+// 	}
+// 	cam.pixel_size = (cam.half_width * 2) / hsize;
+// 	return (cam);
+// }
+
+t_camera	*create_camera(int hsize, int vsize, double field_of_view)
+{
+	t_camera	*cam;
+
+	cam = malloc(sizeof(t_camera));
+    if (!cam)
+    {
+        fprintf(stderr, "Error: Memory allocation failed for camera\n");
+        exit(1);
+    }
 	double half_view, aspect;
-	cam.height = hsize;
-	cam.width = vsize;
-	cam.fov = field_of_view;
-	cam.transform = create_identity_matrix();
-	print_matrix(cam.transform, "Camera Transform", 4);
+	cam->height = hsize;
+	cam->width = vsize;
+	cam->fov = field_of_view;
+	cam->transform = create_identity_matrix();
+	print_matrix(cam->transform, "Camera Transform", 4);
 	half_view = tan(field_of_view / 2);
 	aspect = (double)hsize / vsize;
 	if (aspect >= 1)
 	{
-		cam.half_width = half_view;
-		cam.half_height = half_view / aspect;
+		cam->half_width = half_view;
+		cam->half_height = half_view / aspect;
 	}
 	else
 	{
-		cam.half_width = half_view * aspect;
-		cam.half_height = half_view;
+		cam->half_width = half_view * aspect;
+		cam->half_height = half_view;
 	}
-	cam.pixel_size = (cam.half_width * 2) / hsize;
+	cam->pixel_size = (cam->half_width * 2) / hsize;
 	return (cam);
 }
 

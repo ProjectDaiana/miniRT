@@ -6,10 +6,8 @@ t_intersections	intersect_plane(t_plane plane, t_ray ray)
 	t_tuple			p0l0;
 	double			t;
 	t_intersections	result;
-
+	
 	result.count = 0;
-	result.t1 = 0;
-	result.t2 = 0;
 	denom = tuple_dot(plane.normal, ray.direction);
 	if (fabs(denom) > EPSILON)
 	{
@@ -65,39 +63,41 @@ t_intersections	intersect_world(t_scene *scene, t_ray ray)
 {
 	t_intersections	result;
 	int				max_intersections;
-	t_intersections	sphere_xs;
-	t_intersections	plane_xs;
+	// t_intersections	sphere_xs;
+	// t_intersections	plane_xs;
 	t_intersections	cylinder_xs;
 
+	init_intersections(&result);
 	result.count = 0;
 	result.t = NULL;
 	result.object = NULL;
-	max_intersections = scene->sphere_count * 2 + scene->plane_count;
+	//max_intersections = scene->sphere_count * 2 + scene->plane_count;
+	max_intersections = scene->cylinder_count * 2;
 	result.t = malloc(sizeof(double) * max_intersections);
 	result.object = malloc(sizeof(void *) * max_intersections);
-	// Intersect with spheres
-	for (int i = 0; i < scene->sphere_count; i++)
-	{
-		sphere_xs = intersect_sphere(scene->spheres[i], ray);
-		for (int j = 0; j < sphere_xs.count; j++)
-		{
-			result.t[result.count] = sphere_xs.t[j];
-			result.object[result.count] = &scene->spheres[i];
-			result.count++;
-		}
-	}
-	// Intersect with planes
-	for (int i = 0; i < scene->plane_count; i++)
-	{
-		plane_xs = intersect_plane(scene->planes[i], ray);
-		for (int j = 0; j < plane_xs.count; j++)
-		{
-			result.t[result.count] = plane_xs.t[j];
-			result.object[result.count] = &scene->planes[i];
-			result.count++;
-		}
-	}
-	//Intersect with cylinders
+	// // Intersect with spheres
+	// for (int i = 0; i < scene->sphere_count; i++)
+	// {
+	// 	sphere_xs = intersect_sphere(scene->spheres[i], ray);
+	// 	for (int j = 0; j < sphere_xs.count; j++)
+	// 	{
+	// 		result.t[result.count] = sphere_xs.t[j];
+	// 		result.object[result.count] = &scene->spheres[i];
+	// 		result.count++;
+	// 	}
+	// }
+	// // Intersect with planes
+	// for (int i = 0; i < scene->plane_count; i++)
+	// {
+	// 	plane_xs = intersect_plane(scene->planes[i], ray);
+	// 	for (int j = 0; j < plane_xs.count; j++)
+	// 	{
+	// 		result.t[result.count] = plane_xs.t[j];
+	// 		result.object[result.count] = &scene->planes[i];
+	// 		result.count++;
+	// 	}
+	// }
+	// //Intersect with cylinders
 	for (int i = 0; i < scene->cylinder_count; i++)
 	{
 		cylinder_xs = intersect_cylinder(scene->cylinders[i], ray);
@@ -107,9 +107,9 @@ t_intersections	intersect_world(t_scene *scene, t_ray ray)
 			result.object[result.count] = &scene->cylinders[i];
 			result.count++;
 		}
+		free_intersections(&cylinder_xs);
 	}
 	sort_intersections(&result);
-
 	return (result);
 }
 

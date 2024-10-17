@@ -8,6 +8,8 @@
 	"unistd.h": "c",
 	"functional": "c",
 	"WORD.C": "cpp",
-	"limits": "c"
+	"limits": "c",
+	"type_traits": "c",
+	"new": "c"
 }
 }

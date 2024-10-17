@@ -211,7 +211,7 @@ typedef struct
 {
 	double			ambient_intensity;
 	t_color			ambient_color;
-	t_camera		camera;
+	t_camera		*camera;
 	t_light			light;
 	t_sphere		sphere;
 	t_light			*lights;
@@ -225,11 +225,20 @@ typedef struct
 	t_ambient_light	ambient_light;
 }					t_scene;
 
+// typedef struct s_intersections
+// {
+// 	int				count;
+// 	double			t1;
+// 	double			t2;
+// 	double			*t;
+// 	void			**object;
+// }					t_intersections;
+
+
 typedef struct s_intersections
 {
 	int				count;
-	double			t1;
-	double			t2;
+	int				capacity;
 	double			*t;
 	void			**object;
 }					t_intersections;
@@ -243,6 +252,8 @@ typedef struct data
 	t_img			img;
 	t_light			light;
 	t_scene			scene;
+	t_camera 		camera;
+	t_intersections xs;
 
 }					t_data;
 
@@ -412,6 +423,7 @@ t_tuple			normal_at_sphere(t_sphere *sphere, t_tuple world_point);
 
 // cylinder functions
 t_cylinder		create_cylinder(void);
+t_intersections	intersect_cylinder(t_cylinder cylinder, t_ray ray);
 t_tuple			normal_at_cylinder(t_cylinder cylinder, t_tuple world_point);
 void			intersect_caps(t_cylinder cylinder, t_ray ray, t_intersections *result);
 void	truncate_cylinder(t_cylinder *cylinder, double t1, double t2);
@@ -421,7 +433,8 @@ void	truncate_cylinder(t_cylinder *cylinder, double t1, double t2);
 // t_color			lighting(t_material material, t_light light, t_tuple point,
 // 					t_tuple eye_v, t_tuple normal_v, int in_shadow);
 t_color				lighting(t_material material, t_light light, t_tuple point,
-						t_tuple eye_v, t_tuple normal_v, int in_shadow);
+t_tuple eye_v, t_tuple normal_v, int in_shadow);
+t_color	shade_hit(t_scene *scene, t_compu comps);
 
 // parser functions
 void				parse_scene(const char *filename, t_scene *scene);
@@ -439,7 +452,7 @@ void				add_cylinder(t_scene *scene, t_cylinder *cylinder);
 // intersections
 t_intersections		intersect_plane(t_plane plane, t_ray ray);
 // t_tuple			normal_at_plane(t_plane plane, t_tuple point);
-t_intersections		intersect_cylinder(t_cylinder cylinder, t_ray ray);
+t_intersections		intersectinder(t_cylinder cylinder, t_ray ray);
 t_tuple				normal_at_cylinder(t_cylinder cylinder, t_tuple point);
 void				sort_intersections(t_intersections *xs);
 t_intersections		intersect_world(t_scene *scene, t_ray ray);
@@ -463,9 +476,15 @@ t_matrix			create_identity_matrix(void);
 // void			prepare_computations(t_intersections *xs, t_ray *ray,
 // 					t_hit *hit);
 
-t_camera			create_camera(int hsize, int vsize, double field_of_view);
+t_camera			*create_camera(int hsize, int vsize, double field_of_view);
 t_matrix			look_at(t_tuple from, t_tuple to, t_tuple up);
 
 
 t_tuple				normal_at_plane(t_plane *plane, t_tuple world_point);
 t_tuple				normal_at(void *object, t_tuple world_point);
+
+void	free_matrix(t_matrix *matrix);
+void free_intersections(t_intersections *intersections);
+void free_scene(t_scene *scene);
+void init_intersections(t_intersections *result);
+void free_all_intersections(t_intersections *intersections);

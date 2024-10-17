@@ -43,6 +43,8 @@ int	main(int argc, char **argv)
 	mlx_hook(data.win_ptr, KeyPress, KeyPressMask, handle_keypress, &data);
 	mlx_hook(data.win_ptr, KeyRelease, KeyReleaseMask, &handle_keyrelease, &data);
 	mlx_loop(data.mlx_ptr);
+
+	free_scene(&data.scene);
 	return (0);
 }
 
