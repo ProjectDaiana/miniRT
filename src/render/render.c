@@ -193,8 +193,8 @@ int	render(t_data *data)
 		for (int x = 0; x < W_WIDTH; x++)
 		{
 			ray = ray_for_pixel(&camera, x, y);
-		//	printf(GRN"color OK"RESET);
 			color = ray_color(scene, ray);
+			//printf(GRN"color OK"RESET);
 			write_pixel(&canvas, x, y, color);
 		}
 	}

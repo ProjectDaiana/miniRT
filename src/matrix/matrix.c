@@ -211,9 +211,8 @@ double	calculate_minor(t_matrix *matrix, int row, int col, int mtrx_size)
 	t_matrix	submatrix;
 
 	submatrix = find_submatrix(matrix, row, col, mtrx_size);
-	// print_matrix(submatrix, "Submatrix in calculate_minor()", mtrx_size - 1);
 	minor = calculate_determinant(&submatrix, mtrx_size - 1);
-	// printf(MAG "Minor: %f\n" RESET, minor);
+	free_mtrx(&submatrix); // Added to free the submatrix
 	return (minor);
 }
 

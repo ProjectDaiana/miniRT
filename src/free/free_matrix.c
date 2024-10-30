@@ -11,7 +11,20 @@ void	free_matrix(t_matrix *matrix, int size)
 		i++;
 	}
 	free(matrix->m);
-	matrix->m = NULL;
+	//matrix->m = NULL;
+}
+
+void	free_mtrx(t_matrix *matrix)
+{
+	int i;
+
+	i = 0;
+	while (i < matrix->size)
+	{
+		free(matrix->m[i]);
+		i++;
+	}
+	free(matrix->m);
 }
 
 void free_scene(t_scene *scene)

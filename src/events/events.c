@@ -37,7 +37,7 @@ void move_camera(t_data *data, t_tuple direction)
 	printf(MAG"position: %f, %f, %f\n"RESET, data->scene.camera.position.x, data->scene.camera.position.y, data->scene.camera.position.z);
 	//cam_look_at = tuple_add(data->scene.camera.position,data->scene.camera.orientation);
 	//up = create_vector(0, 1, 0);
-	//free_matrix(&data->scene.camera.transform, 4);
+	free_matrix(&data->scene.camera.transform, 4);
 	//print_matrix(data->camera.transform, "Camera Transform", 4);
 	//data->camera.transform = look_at(data->scene.camera.position, cam_look_at, up);
 	render(data);

@@ -74,7 +74,7 @@ t_color	ray_color(t_scene *scene, t_ray ray)
 		return (lighting(material, scene->light, point, eye, normal,
 				in_shadow));
 	}
-	free_intersections(&xs);
+	free_intersections(&xs);// Added
 	return (create_color(0, 0, 0));
 }
 

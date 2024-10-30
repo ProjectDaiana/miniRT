@@ -31,7 +31,6 @@ t_matrix	inverse_matrix(t_matrix *matrix)
 		j = 0;
 		while (j < size)
 		{
-	
 			cofactor = calculate_cofactor(matrix, i, j, size);
 			inverse.m[j][i] = cofactor / determinant;
 			j++;

@@ -165,10 +165,11 @@ t_intersections	intersect_world(t_scene *scene, t_ray ray)
 	t_intersections	plane_xs;
 	t_intersections	cylinder_xs;
 
-	init_intersections(&result);
+	//init_intersections(&result);
+	result.count = 0;
 	max_intersections = scene->sphere_count * 2 + scene->plane_count * 2 + scene->cylinder_count *2;
-	result.t = malloc(sizeof(double) * max_intersections);
-	result.object = malloc(sizeof(void *) * max_intersections);
+	result.t = ft_calloc(max_intersections, sizeof(double));
+	result.object = ft_calloc(max_intersections, sizeof(void *));
 	//Intersect with spheres
 	for (int i = 0; i < scene->sphere_count; i++)
 	{
@@ -203,7 +204,7 @@ t_intersections	intersect_world(t_scene *scene, t_ray ray)
 			result.object[result.count] = &scene->cylinders[i];
 			result.count++;
 		}
-	// //	free_intersections(&cylinder_xs); ////// Added
+		//free_intersections(&cylinder_xs); ////// Added. One of this is causing the free bad pointer error
 	}
 	sort_intersections(&result);
 

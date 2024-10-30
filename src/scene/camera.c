@@ -41,5 +41,6 @@ t_ray	ray_for_pixel(t_camera *cam, int px, int py)
 				0));
 	t_tuple direction = tuple_normalize(tuple_subtract(pixel, origin));
 
+	free_matrix(&inv_transform, 4);// added free here
 	return (create_ray(origin, direction));
 }
