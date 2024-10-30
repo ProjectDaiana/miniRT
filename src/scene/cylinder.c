@@ -26,8 +26,8 @@ int check_cap(t_ray ray, double t, t_cylinder cylinder)
 	t_tuple orthogonal_vect;
 	double	distance_from_axis;
 	double radius;
-	radius = cylinder.diameter / 2;
 
+	radius = cylinder.diameter / 2;
 	point = tuple_add(ray.origin, tuple_multiply(ray.direction, t));
 	to_point = tuple_subtract(point, cylinder.center);
 	axis_projection = tuple_multiply(cylinder.axis, tuple_dot(to_point, cylinder.axis));
@@ -96,9 +96,9 @@ void intersect_caps(t_cylinder cylinder, t_ray ray, t_intersections *result)
 	t_min = (cylinder.min - origin_projection) / direction_projection;
 	t_max = (cylinder.max - origin_projection) / direction_projection;
 	if (check_cap(ray, t_min, cylinder))
-		add_intersection(result, t_min);
+		add_intersection(result, t_min + EPSILON);
 	if (check_cap(ray, t_max, cylinder))
-		add_intersection(result, t_max);
+		add_intersection(result, t_max + EPSILON);
 }
 
 void	calculate_t(double *t1, double *t2, double discriminant, double a, double b)
