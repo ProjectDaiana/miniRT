@@ -48,6 +48,7 @@ t_color	ray_color(t_scene *scene, t_ray ray)
 
 	// normalize ray direction
 	xs = intersect_world(scene, ray);
+	// printf(RED"cy count: %d\n"RESET, scene->cylinder_count);
 	if (xs.count > 0)
 	{
 		point = position(ray, xs.t[0]);
@@ -68,10 +69,12 @@ t_color	ray_color(t_scene *scene, t_ray ray)
 			material = ((t_plane *)object)->material;
 		}
 		eye = tuple_negate(ray.direction);
-		in_shadow = is_shadowed(scene, point, &scene->light);
+	//	in_shadow = is_shadowed(scene, point, &scene->light);
+		in_shadow = 0;
 		return (lighting(material, scene->light, point, eye, normal,
 				in_shadow));
 	}
+	free_intersections(&xs);
 	return (create_color(0, 0, 0));
 }
 

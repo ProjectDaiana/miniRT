@@ -37,22 +37,49 @@ int check_cap(t_ray ray, double t, t_cylinder cylinder)
 	//return (distance_from_axis <= pow(cylinder.diameter / 2, 2));
 }
 
-void add_intersection(t_intersections *result, double t, t_cylinder *cylinder)
+void add_intersection(t_intersections *result, double t)
 {
+	//printf(BLU"count: %d\n"RESET, result->count);
 	if (result->count == 0)
 	{
-		result->t = malloc(sizeof(double) * result->count);
-		result->object = malloc(sizeof(void *) * result->count);
+		//printf(GRN"FT_CALLOC!!!!!! count: %d\n"RESET, result->count);
+		result->t = ft_calloc(1, sizeof(double));
+		//result->object = ft_calloc(1, sizeof(void *));
 	}
 	else
 	{
-		result->t = realloc(result->t, sizeof(double) * result->count);
-		result->object = realloc(result->object, sizeof(void *) * result->count);
+		//printf(MAG"ft_memcpy!!!!!! count: %d\n"RESET, result->count);
+		double *new_t = ft_calloc(result->count + 1, sizeof(double));
+		//void **new_object = ft_calloc(result->count + 1, sizeof(void *));
+		if(!new_t)
+		{
+			fprintf(stderr, "Error: Memory allocation failed in add_intersection\n");
+			exit(1);
+		}
+		ft_memcpy(new_t, result->t, sizeof(double) * result->count);
+		//ft_memcpy(new_object, result->object, sizeof(void *) * result->count);
+		free(result->t);
+		//free(result->object);
+		result->t = new_t;
+	//	result->object = new_object;
 	}
+    if (!result->t)
+    {
+        fprintf(stderr, "Error: Memory allocation failed in add_intersection\n");
+        exit(1);
+    }
 	result->t[result->count] = t;
-	result->object[result->count] = cylinder;
+	//result->object[result->count] = cylinder;
 	result->count++;
 }
+
+
+// void add_intersection(t_intersections *result, double t, t_cylinder *cylinder)
+// {
+// 	result->t[result->count] = t;
+// 	result->object[result->count] = cylinder;
+// 	result->count++;
+// }
 
 
 void intersect_caps(t_cylinder cylinder, t_ray ray, t_intersections *result)
@@ -69,9 +96,9 @@ void intersect_caps(t_cylinder cylinder, t_ray ray, t_intersections *result)
 	t_min = (cylinder.min - origin_projection) / direction_projection;
 	t_max = (cylinder.max - origin_projection) / direction_projection;
 	if (check_cap(ray, t_min, cylinder))
-		add_intersection(result, t_min, &cylinder);
+		add_intersection(result, t_min);
 	if (check_cap(ray, t_max, cylinder))
-		add_intersection(result, t_max, &cylinder);
+		add_intersection(result, t_max);
 }
 
 void	calculate_t(double *t1, double *t2, double discriminant, double a, double b)
@@ -111,10 +138,10 @@ void intersect_body(double a, double b, double c, t_intersections *result, t_cyl
 		y1 = origin_projection + t1 * direction_projection;
 		y2 = origin_projection + t2 * direction_projection;
 	    if (y1 >= cylinder.min && y1 <= cylinder.max) {
-        	add_intersection(result, t1, &cylinder);
+        	add_intersection(result, t1);
 		}
 		if (y2 >= cylinder.min && y2 <= cylinder.max) {
-			add_intersection(result, t2, &cylinder);
+			add_intersection(result, t2);
 		}
 	}
 }
@@ -128,6 +155,8 @@ t_intersections	intersect_cylinder(t_cylinder cylinder, t_ray ray)
 	double			c;
 
 	result.count = 0;
+	result.t = NULL;
+	result.object = NULL;
 	oc = tuple_subtract(ray.origin, cylinder.center);
 	a = tuple_dot(ray.direction, ray.direction) - pow(tuple_dot(ray.direction,
 				cylinder.axis), 2);

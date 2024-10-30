@@ -8,8 +8,8 @@ t_camera	create_camera(int hsize, int vsize, double field_of_view)
 	cam.height = hsize;
 	cam.width = vsize;
 	cam.fov = field_of_view;
-	cam.transform = create_identity_matrix();
-	print_matrix(cam.transform, "Camera Transform", 4);
+	//cam.transform = create_identity_matrix(); // We ca do this later in render when setting up the camera
+	//print_matrix(cam.transform, "Camera Transform", 4);
 	half_view = tan(field_of_view / 2);
 	aspect = (double)hsize / vsize;
 	if (aspect >= 1)

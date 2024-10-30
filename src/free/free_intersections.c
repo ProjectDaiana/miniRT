@@ -2,9 +2,15 @@
 
 void free_intersections(t_intersections *xs)
 {
-	if (xs->count > 0)
-	{
-		free(xs->t);
-		free(xs->object);
-	}
+    if (xs->t)
+    {
+        free(xs->t);
+        xs->t = NULL;
+    }
+    if (xs->object)
+    {
+        free(xs->object);
+        xs->object = NULL;
+    }
+    xs->count = 0;
 }

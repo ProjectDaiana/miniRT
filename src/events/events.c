@@ -28,37 +28,40 @@ void reset_cam_position(t_data *data)
 
 void move_camera(t_data *data, t_tuple direction)
 {
-	t_tuple cam_look_at;
-	t_tuple up;
+	// t_tuple cam_look_at;
+	// t_tuple up;
 
 	data->scene.camera.position.x += direction.x;
 	data->scene.camera.position.y += direction.y;
 	data->scene.camera.position.z += direction.z;
-	cam_look_at = tuple_add(data->scene.camera.position,data->scene.camera.orientation);
-	up = create_vector(0, 1, 0);
-	//free_matrix(&data->camera.transform);
-	data->camera.transform = look_at(data->scene.camera.position, cam_look_at, up);
-	render(data);
 	printf(MAG"position: %f, %f, %f\n"RESET, data->scene.camera.position.x, data->scene.camera.position.y, data->scene.camera.position.z);
+	//cam_look_at = tuple_add(data->scene.camera.position,data->scene.camera.orientation);
+	//up = create_vector(0, 1, 0);
+	//free_matrix(&data->scene.camera.transform, 4);
+	//print_matrix(data->camera.transform, "Camera Transform", 4);
+	//data->camera.transform = look_at(data->scene.camera.position, cam_look_at, up);
+	render(data);
 }
 
 
 int	handle_keypress(int keysym, t_data *data)
 {
+	printf("Keypress: %d\n", keysym);
+	//print_matrix(data->camera.transform, "Camera Transform", 4);
 	if (keysym == XK_Escape)
 		close_window(data);
 	else if (keysym == XK_Up)
-		move_camera(data, create_vector(0, 0, 1));
+		move_camera(data, create_vector(0, 1, 0));
 	else if (keysym == XK_Down)
-		move_camera(data, create_vector(0, 0, -1));
+		move_camera(data, create_vector(0, -1, 0));
 	else if (keysym == XK_Left)
 		move_camera(data, create_vector(-1, 0, 0));
 	else if (keysym == XK_Right)
 		move_camera(data, create_vector(1, 0, 0));
-	else if (keysym == XK_w)
-		move_camera(data, create_vector(0, 1, 0));
-	else if (keysym == XK_s)
-		move_camera(data, create_vector(0, -1, 0));
+	else if(keysym == XK_w)
+		move_camera(data,create_vector(0, 0, 1));
+	else if(keysym == XK_s)
+		move_camera(data, create_vector(0, 0, -1));
 	else if(keysym == XK_r)
 		reset_cam_position(data);
 	return (0);

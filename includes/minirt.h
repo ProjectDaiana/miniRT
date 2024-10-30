@@ -19,6 +19,7 @@
 #define MAX_SPHERES 10
 #define EPSILON 0.00001
 #define MAX_LIGHTS 10
+#define MAX_INTERSECTIONS 100
 
 #define RED "\e[0;31m"
 #define GRN "\e[0;32m"
@@ -234,6 +235,16 @@ typedef struct s_intersections
 	void			**object;
 }					t_intersections;
 
+
+// typedef struct s_intersections
+// {
+// 	int				count;
+// 	double			t1;
+// 	double			t2;
+// 	double			t[MAX_INTERSECTIONS];
+// 	void			*object[MAX_INTERSECTIONS];
+// }					t_intersections;
+
 typedef struct data
 {
 	void			*mlx_ptr;
@@ -417,6 +428,8 @@ t_tuple			normal_at_cylinder(t_cylinder cylinder, t_tuple world_point);
 void			intersect_caps(t_cylinder cylinder, t_ray ray, t_intersections *result);
 void	truncate_cylinder(t_cylinder *cylinder, double t1, double t2);
 
+void	add_intersection(t_intersections *result, double t);
+
 
 // lighting functions
 // t_color			lighting(t_material material, t_light light, t_tuple point,
@@ -471,7 +484,7 @@ t_matrix			look_at(t_tuple from, t_tuple to, t_tuple up);
 t_tuple				normal_at_plane(t_plane *plane, t_tuple world_point);
 t_tuple				normal_at(void *object, t_tuple world_point);
 
-void				free_matrix(t_matrix *matrix);
+void				free_matrix(t_matrix *matrix, int size);
 void				free_scene(t_scene *scene);
 void				free_intersections(t_intersections *xs);
 

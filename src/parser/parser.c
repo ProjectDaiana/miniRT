@@ -132,6 +132,7 @@ void	parse_cylinder(char *line, t_scene *scene)
 	cylinder.material.diffuse = 0.7;
 	cylinder.material.specular = 0.2;
 	cylinder.material.shininess = 200.0;
+	cylinder.material.reflective = 1.0;
 	add_cylinder(scene, &cylinder);
 }
 
@@ -193,10 +194,11 @@ void	parse_scene(const char *filename, t_scene *scene)
 		{
 			parse_cylinder(line, scene);
 			printf(" Cylinder parsed\n");
-			printf(GRN"Cylinder count: %d\n"RESET, scene->cylinder_count);
-			printf(GRN"cylinder diameter: %f\n"RESET, scene->cylinders[0].diameter);
-			printf(GRN"cylinder height: %f\n"RESET, scene->cylinders[0].height);
-			printf(GRN"cylinder axis: %f, %f, %f\n"RESET, scene->cylinders[0].axis.x, scene->cylinders[0].axis.y, scene->cylinders[0].axis.z);
+			printf(YEL"Cylinder count: %d\n"RESET, scene->cylinder_count);
+			printf(YEL"cylinder diameter: %f\n"RESET, scene->cylinders[0].diameter);
+			printf(YEL"cylinder height: %f\n"RESET, scene->cylinders[0].height);
+			printf(YEL"cylinder axis: %f, %f, %f\n"RESET, scene->cylinders[0].axis.x, scene->cylinders[0].axis.y, scene->cylinders[0].axis.z);
+			printf(YEL"cylinder color: %d, %d, %d\n"RESET, scene->cylinders[0].color.r, scene->cylinders[0].color.g, scene->cylinders[0].color.b);
 		}
 		else if (line[0] == 'p' && line[1] == 'l')
 		{
@@ -205,11 +207,11 @@ void	parse_scene(const char *filename, t_scene *scene)
 		}
 	}
 	fclose(file);
-	if (scene->sphere_count == 0 || scene->light_count == 0)
-	{
-		fprintf(stderr,
-			"Error: Scene must contain at least one sphere and one light\n");
-		exit(1);
-	}
+	// if (scene->sphere_count == 0 || scene->light_count == 0)
+	// {
+	// 	fprintf(stderr,
+	// 		"Error: Scene must contain at least one sphere and one light\n");
+	// 	exit(1);
+	// }
 	printf("Scene parsed successfully\n");
 }

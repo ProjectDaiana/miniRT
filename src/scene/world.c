@@ -31,7 +31,7 @@ t_color	shade_hit(t_scene *scene, t_compu comps)
 {
 	t_color	color;
 	int		in_shadow;
-
+	
 	color = create_color(0, 0, 0);
 	for (int i = 0; i < scene->light_count; i++)
 	{

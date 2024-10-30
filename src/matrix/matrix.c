@@ -10,7 +10,7 @@ t_matrix	create_matrix(int size)
 	matrix.m = ft_calloc(size, sizeof(double *));
 	while (i < size)
 	{
-		matrix.m[i] = malloc(sizeof(double) * size);
+		matrix.m[i] = ft_calloc(size, sizeof(double));
 		i++;
 	}
 	return (matrix);

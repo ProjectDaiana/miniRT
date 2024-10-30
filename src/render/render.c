@@ -141,6 +141,7 @@ t_matrix	look_at(t_tuple from, t_tuple to, t_tuple up)
 	t_tuple		true_up;
 	t_matrix	orientation;
 	t_matrix	translation_matrix;
+	t_matrix	rotation_matrix;///// Changed
 
 	forward = tuple_normalize(tuple_subtract(to, from));
 	left = tuple_cross(tuple_normalize(up), forward);
@@ -163,7 +164,10 @@ t_matrix	look_at(t_tuple from, t_tuple to, t_tuple up)
 	orientation.m[3][2] = 0;
 	orientation.m[3][3] = 1;
 	translation_matrix = translation(-from.x, -from.y, -from.z);
-	return (matrix_multiply(orientation, translation_matrix));
+	rotation_matrix = matrix_multiply(orientation, translation_matrix);////// Changed 
+	free_matrix(&orientation, 4);////// Changed 
+	free_matrix(&translation_matrix, 4);////// Changed 
+	return (rotation_matrix);////// Changed 
 }
 
 int	render(t_data *data)
@@ -178,22 +182,24 @@ int	render(t_data *data)
 
 	// Set up camera transform
 	t_tuple camera_position = scene->camera.position;
-	t_tuple camera_look_at = tuple_add(camera_position,
-			scene->camera.orientation);
+	t_tuple camera_look_at = tuple_add(camera_position, scene->camera.orientation);
 	t_tuple up = create_vector(0, 1, 0);
-	camera.transform = look_at(camera_position, camera_look_at, up);
+	camera.transform = look_at(data->scene.camera.position, camera_look_at, up);
 	print_matrix(camera.transform, "Camera Transform", 4);
-
+	printf(GRN"Starting render...\n"RESET);
 	// Render the scene
 	for (int y = 0; y < W_HEIGHT; y++)
 	{
 		for (int x = 0; x < W_WIDTH; x++)
 		{
 			ray = ray_for_pixel(&camera, x, y);
+		//	printf(GRN"color OK"RESET);
 			color = ray_color(scene, ray);
 			write_pixel(&canvas, x, y, color);
 		}
 	}
+	free_matrix(&camera.transform, 4);
+	printf(GRN"Render complete. Converting to MLX image...\n"RESET);
 
 	// Convert canvas to MLX image
 	data->img.img = mlx_new_image(data->mlx_ptr, W_WIDTH, W_HEIGHT);
