@@ -32,6 +32,16 @@ t_sphere	create_sphere(void)
 	return (sphere);
 }
 
+t_intersections create_intersections(int count)
+{
+	t_intersections	result;
+
+	result.count = count;
+	result.t = NULL;
+	result.object = NULL;
+	return (result);
+}
+
 t_intersections	intersect_sphere(t_sphere sphere, t_ray ray)
 {
 	t_intersections	result;
@@ -49,6 +59,8 @@ t_intersections	intersect_sphere(t_sphere sphere, t_ray ray)
 	if (discriminant < 0)
 	{
 		result.count = 0;
+		result.t = NULL;
+		result.object = NULL;
 	}
 	else
 	{

@@ -1,0 +1,5 @@
+{
+	MiniLibX suppression
+	Memcheck:Leak
+    obj:./lib/minilibx-linux/libmlx.so
+}

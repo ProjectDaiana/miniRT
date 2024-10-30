@@ -122,8 +122,29 @@ void	add_intersection_to_world(t_intersections *xs, double t, void *object)
 	}
 	else
 	{
-		xs->t = realloc(xs->t, sizeof(double) * (xs->count + 1));
-		xs->object = realloc(xs->object, sizeof(void *) * (xs->count + 1));
+		// xs->t = realloc(xs->t, sizeof(double) * (xs->count + 1));
+		// xs->object = realloc(xs->object, sizeof(void *) * (xs->count + 1));
+		
+		/// Replacing realloc with ft_calloc and ft_memcpy
+		double *new_t = ft_calloc(xs->count + 1, sizeof(double));
+        void **new_object = ft_calloc(xs->count + 1, sizeof(void *));
+        if (!new_t || !new_object)
+        {
+            fprintf(stderr, "Error: Memory allocation failed in add_intersection_to_world\n");
+            exit(1);
+        }
+
+        // Copy existing data to the new memory
+        ft_memcpy(new_t, xs->t, sizeof(double) * xs->count);
+        ft_memcpy(new_object, xs->object, sizeof(void *) * xs->count);
+
+        // Free the old memory
+        free(xs->t);
+        free(xs->object);
+
+        // Update the pointers to the new memory
+        xs->t = new_t;
+        xs->object = new_object;
 	}
 	if (!xs->t || !xs->object)
     {
