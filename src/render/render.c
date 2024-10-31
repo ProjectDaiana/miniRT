@@ -165,8 +165,8 @@ t_matrix	look_at(t_tuple from, t_tuple to, t_tuple up)
 	orientation.m[3][3] = 1;
 	translation_matrix = translation(-from.x, -from.y, -from.z);
 	rotation_matrix = matrix_multiply(orientation, translation_matrix);////// Changed 
-	free_matrix(&orientation, 4);////// Changed 
-	free_matrix(&translation_matrix, 4);////// Changed 
+	free_mtrx(&orientation);////// Changed 
+	free_mtrx(&translation_matrix);////// Changed 
 	return (rotation_matrix);////// Changed 
 }
 
@@ -198,7 +198,7 @@ int	render(t_data *data)
 			write_pixel(&canvas, x, y, color);
 		}
 	}
-	free_matrix(&camera.transform, 4);
+	free_mtrx(&camera.transform);
 	printf(GRN"Render complete. Converting to MLX image...\n"RESET);
 
 	// Convert canvas to MLX image

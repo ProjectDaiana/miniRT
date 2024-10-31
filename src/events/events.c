@@ -9,8 +9,9 @@
 
 int	close_window(t_data *data)
 {
+	free_canvas(&data->canvas);
 	free_scene(&data->scene);
-	free(data->camera.transform.m);
+	free_mtrx(&data->camera.transform);
 	mlx_destroy_window(data->mlx_ptr, data->win_ptr);
 	mlx_destroy_display(data->mlx_ptr);
 	free(data->mlx_ptr);
@@ -37,7 +38,7 @@ void move_camera(t_data *data, t_tuple direction)
 	printf(MAG"position: %f, %f, %f\n"RESET, data->scene.camera.position.x, data->scene.camera.position.y, data->scene.camera.position.z);
 	//cam_look_at = tuple_add(data->scene.camera.position,data->scene.camera.orientation);
 	//up = create_vector(0, 1, 0);
-	free_matrix(&data->scene.camera.transform, 4);
+	free_mtrx(&data->scene.camera.transform);
 	//print_matrix(data->camera.transform, "Camera Transform", 4);
 	//data->camera.transform = look_at(data->scene.camera.position, cam_look_at, up);
 	render(data);

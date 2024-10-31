@@ -68,17 +68,17 @@ typedef struct s_color
 // 	t_vector	normal;
 // }				t_hit;
 
-typedef struct s_hit
-{
-	int				hit;
-	double			t;
-	t_tuple			point;
-	t_tuple			normal;
-	t_tuple			eyev;
-	t_tuple			normalv;
-	t_tuple			over_point;
-	int				inside;
-}					t_hit;
+// typedef struct s_hit
+// {
+// 	int				hit;
+// 	double			t;
+// 	t_tuple			point;
+// 	t_tuple			normal;
+// 	t_tuple			eyev;
+// 	t_tuple			normalv;
+// 	t_tuple			over_point;
+// 	int				inside;
+// }					t_hit;
 
 typedef struct
 {
@@ -196,7 +196,7 @@ typedef struct s_cylinder
 	t_tuple		center;
 	t_tuple		axis;
 	t_color		color;
-	t_matrix	transform;
+	//t_matrix	transform;
 	t_material	material;
 
 }				t_cylinder;
@@ -256,6 +256,7 @@ typedef struct data
 	t_scene			scene;
 	t_camera		camera;
 	t_intersections	xs;
+	t_canvas		canvas;
 }					t_data;
 
 // typedef struct s_computations
