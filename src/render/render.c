@@ -170,6 +170,28 @@ t_matrix	look_at(t_tuple from, t_tuple to, t_tuple up)
 	return (rotation_matrix);////// Changed 
 }
 
+/// New 
+void *render_section(void *arg)
+{
+    t_thread_data *data = (t_thread_data *)arg;
+    t_canvas *canvas = data->canvas;
+    t_scene *scene = data->scene;
+    t_camera *camera = data->camera;
+    t_color color;
+    t_ray ray;
+
+    for (int y = data->start_y; y < data->end_y; y++)
+    {
+        for (int x = 0; x < W_WIDTH; x++)
+        {
+            ray = ray_for_pixel(camera, x, y);
+            color = ray_color(scene, ray);
+            write_pixel(canvas, x, y, color);
+        }
+    }
+    return NULL;
+}
+
 int	render(t_data *data)
 {
 	t_canvas canvas = create_canvas(W_WIDTH, W_HEIGHT);
@@ -177,7 +199,7 @@ int	render(t_data *data)
 	t_camera camera = create_camera(W_WIDTH, W_HEIGHT, scene->camera.fov * M_PI
 			/ 180.0);
 	t_color color;
-	t_ray ray;
+	//t_ray ray;
 	int color_int;
 
 	// Set up camera transform
@@ -187,19 +209,47 @@ int	render(t_data *data)
 	camera.transform = look_at(data->scene.camera.position, camera_look_at, up);
 	print_matrix(camera.transform, "Camera Transform", 4);
 	printf(GRN"Starting render...\n"RESET);
-	// Render the scene
-	for (int y = 0; y < W_HEIGHT; y++)
-	{
-		for (int x = 0; x < W_WIDTH; x++)
-		{
-			ray = ray_for_pixel(&camera, x, y);
-			color = ray_color(scene, ray);
-			//printf(GRN"color OK"RESET);
-			write_pixel(&canvas, x, y, color);
-		}
-	}
-	free_mtrx(&camera.transform);
-	printf(GRN"Render complete. Converting to MLX image...\n"RESET);
+	// Render the scene without threads
+	// for (int y = 0; y < W_HEIGHT; y++)
+	// {
+	// 	for (int x = 0; x < W_WIDTH; x++)
+	// 	{
+	// 		ray = ray_for_pixel(&camera, x, y);
+	// 		color = ray_color(scene, ray);
+	// 		//printf(GRN"color OK"RESET);
+	// 		write_pixel(&canvas, x, y, color);
+	// 	}
+	// }
+	// free_mtrx(&camera.transform);
+	// printf(GRN"Render complete. Converting to MLX image...\n"RESET);
+
+	// Rendering using threads
+	// Number of threads to use
+    int num_threads = 16;
+    pthread_t threads[num_threads];
+    t_thread_data thread_data[num_threads];
+
+    // Divide the canvas into sections and create threads
+    int rows_per_thread = W_HEIGHT / num_threads;
+    for (int i = 0; i < num_threads; i++)
+    {
+        thread_data[i].canvas = &canvas;
+        thread_data[i].scene = scene;
+        thread_data[i].camera = &camera;
+        thread_data[i].start_y = i * rows_per_thread;
+        thread_data[i].end_y = (i + 1) * rows_per_thread;
+        if (i == num_threads - 1)
+        {
+            thread_data[i].end_y = W_HEIGHT; // Ensure the last thread covers the remaining rows
+        }
+        pthread_create(&threads[i], NULL, render_section, &thread_data[i]);
+    }
+
+    // Wait for all threads to complete
+    for (int i = 0; i < num_threads; i++)
+    {
+        pthread_join(threads[i], NULL);
+    }
 
 	// Convert canvas to MLX image
 	data->img.img = mlx_new_image(data->mlx_ptr, W_WIDTH, W_HEIGHT);

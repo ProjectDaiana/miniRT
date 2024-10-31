@@ -6,6 +6,7 @@
 #include <math.h>
 #include <stdio.h>
 #include <string.h>
+#include <pthread.h>
 
 #define W_HEIGHT 800
 #define W_WIDTH 800
@@ -258,6 +259,14 @@ typedef struct data
 	t_intersections	xs;
 	t_canvas		canvas;
 }					t_data;
+
+typedef struct {
+    t_canvas *canvas;
+    t_scene *scene;
+    t_camera *camera;
+    int start_y;
+    int end_y;
+} t_thread_data;
 
 // typedef struct s_computations
 // {
