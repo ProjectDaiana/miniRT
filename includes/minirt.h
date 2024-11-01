@@ -37,7 +37,6 @@ typedef struct s_vector
 	double			y;
 	double			z;
 	double			magnitude;
-
 }					t_vector;
 
 typedef struct tuple

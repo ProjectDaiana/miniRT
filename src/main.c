@@ -20,7 +20,6 @@ int	main(int argc, char **argv)
 		printf("Usage: %s <scene_file.rt>\n", argv[0]);
 		return (1);
 	}
-	printf("Initializing data...\n");
 	init(&data, &vector);
 	data.mlx_ptr = mlx_init();
 	if (data.mlx_ptr == NULL)

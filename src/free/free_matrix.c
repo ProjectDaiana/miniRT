@@ -1,19 +1,19 @@
 #include "minirt.h"
 
-void	free_matrix(t_matrix *matrix, int size)
-{
-	int i;
+// void	free_matrix(t_matrix *matrix, int size)
+// {
+// 	int i;
 
-	i = 0;
-	while (i < size)
-	{
-		free(matrix->m[i]);
-		matrix->m[i] = NULL;
-		i++;
-	}
-	free(matrix->m);
-	matrix->m = NULL;
-}
+// 	i = 0;
+// 	while (i < size)
+// 	{
+// 		free(matrix->m[i]);
+// 		matrix->m[i] = NULL;
+// 		i++;
+// 	}
+// 	free(matrix->m);
+// 	matrix->m = NULL;
+// }
 
 void	free_mtrx(t_matrix *matrix)
 {

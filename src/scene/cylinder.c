@@ -25,21 +25,20 @@ int check_cap(t_ray ray, double t, t_cylinder cylinder)
 	t_tuple	axis_projection;
 	t_tuple orthogonal_vect;
 	double	distance_from_axis;
-	double radius;
+	//double radius;
 
-	radius = cylinder.diameter / 2;
+	//radius = cylinder.diameter / 2;
 	point = tuple_add(ray.origin, tuple_multiply(ray.direction, t));
 	to_point = tuple_subtract(point, cylinder.center);
 	axis_projection = tuple_multiply(cylinder.axis, tuple_dot(to_point, cylinder.axis));
 	orthogonal_vect = tuple_subtract(to_point, axis_projection);
 	distance_from_axis = tuple_dot(orthogonal_vect, orthogonal_vect);
-	return (distance_from_axis <= pow(radius, 2));
-	//return (distance_from_axis <= pow(cylinder.diameter / 2, 2));
+	//return (distance_from_axis <= pow(radius, 2));
+	return (distance_from_axis <= pow(cylinder.diameter / 2, 2));
 }
 
 void add_intersection(t_intersections *result, double t)
 {
-	//printf(BLU"count: %d\n"RESET, result->count);
 	if (result->count == 0)
 	{
 		//printf(GRN"FT_CALLOC!!!!!! count: %d\n"RESET, result->count);
@@ -92,70 +91,70 @@ void intersect_caps(t_cylinder cylinder, t_ray ray, t_intersections *result)
 		add_intersection(result, t_max + EPSILON);
 }
 
-void	calculate_t(double *t1, double *t2, double discriminant, double a, double b)
+void	calculate_t(double *t, double discriminant, double a, double b)
 {
 	if (fabs(a) < EPSILON)
 	{
-		*t1 = *t2 = INFINITY;  // Or handle it appropriately
+		t[0] = t[1] = INFINITY;  // Or handle it appropriately
 		return;
 	}
-	*t1 = (-b - sqrt(discriminant)) / (2 * a);
-	*t2 = (-b + sqrt(discriminant)) / (2 * a);
-	if (fabs(*t1 - *t2) > EPSILON && *t1 > *t2)
+	t[0] = (-b - sqrt(discriminant)) / (2 * a);
+	t[1] = (-b + sqrt(discriminant)) / (2 * a);
+	if (fabs(t[0] - t[1]) > EPSILON && t[0] > t[1])
 	{
-		double temp = *t1;
-		*t1 = *t2;
-		*t2 = temp;
+		double temp = t[0];
+		t[0] = t[1];
+		t[1] = temp;
 	}
 }
 
-void intersect_body(double a, double b, double c, t_intersections *result, t_cylinder cylinder, t_ray ray)	
+void intersect_body(t_tuple abc, t_intersections *result, t_cylinder cylinder, t_ray ray)	
 {
 	double	discriminant;
-	double	t1;
-	double	t2;
 	double origin_projection;
 	double direction_projection;
-	double y1;
-	double y2;
+	double *y;
+	double *t;
 
-	discriminant = b * b - 4 * a * c;
+	y = malloc(2 * sizeof(double));
+	t = malloc(2 * sizeof(double));
+	discriminant = abc.y * abc.y - 4 * abc.x * abc.z;
 	if (discriminant > 0)
 	{
-		calculate_t(&t1, &t2, discriminant, a, b);// Dont forget to change this!!
+		calculate_t(t, discriminant, abc.x, abc.y);// Dont forget to change this!!
 		//tuple_dot(tuple_subtract(ray.origin, cylinder.center), axis_normal);
 		origin_projection = tuple_dot(tuple_subtract(ray.origin, cylinder.center), cylinder.axis);
 		direction_projection = tuple_dot(ray.direction, cylinder.axis);
-		y1 = origin_projection + t1 * direction_projection;
-		y2 = origin_projection + t2 * direction_projection;
-	    if (y1 >= cylinder.min && y1 <= cylinder.max) {
-        	add_intersection(result, t1);
+		y[0] = origin_projection + t[0] * direction_projection;
+		y[1] = origin_projection + t[1] * direction_projection;
+	    if (y[0] >= cylinder.min && y[0] <= cylinder.max) {
+        	add_intersection(result, t[0]);
 		}
-		if (y2 >= cylinder.min && y2 <= cylinder.max) {
-			add_intersection(result, t2);
+		if (y[1] >= cylinder.min && y[1] <= cylinder.max) {
+			add_intersection(result, t[1]);
 		}
 	}
+	free(y);
+	free(t);
 }
 
 t_intersections	intersect_cylinder(t_cylinder cylinder, t_ray ray)
 {
 	t_intersections	result;
 	t_tuple			oc;
-	double			a;
-	double			b;
-	double			c;
+	t_tuple abc;
 
 	result.count = 0;
 	result.t = NULL;
 	result.object = NULL;
 	oc = tuple_subtract(ray.origin, cylinder.center);
-	a = tuple_dot(ray.direction, ray.direction) - pow(tuple_dot(ray.direction,
+	abc.x = tuple_dot(ray.direction, ray.direction) - pow(tuple_dot(ray.direction,
 				cylinder.axis), 2);
-	b = 2 * (tuple_dot(ray.direction, oc) - tuple_dot(ray.direction,
+	abc.y = 2 * (tuple_dot(ray.direction, oc) - tuple_dot(ray.direction,
 				cylinder.axis) * tuple_dot(oc, cylinder.axis));
-	c = tuple_dot(oc, oc) - pow(tuple_dot(oc, cylinder.axis), 2)
+	abc.z = tuple_dot(oc, oc) - pow(tuple_dot(oc, cylinder.axis), 2)
 		- pow (cylinder.diameter / 2, 2);
-	intersect_body(a, b, c, &result, cylinder, ray);
+	intersect_body(abc, &result, cylinder, ray);
 	intersect_caps(cylinder, ray, &result);
 	//printf(MAG"radius: %f\n"RESET, cylinder.diameter / 2);
 	//printf("cylinder diameter: %f\n", cylinder.diameter);
