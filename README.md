@@ -52,18 +52,17 @@ Welcome to miniRT, a basic raytracing engine built from scratch using the MiniLi
 [Subject](https://cdn.intra.42.fr/pdf/pdf/137465/en.subject.pdf)
 
 ## To Do
-- [ ] Read file
-- [ ] Check if file is valid
-- [ ] Parse file
-- [x] Create window
-- [x] Handle keypress ESC
-- [ ] Handle X button
-- [ ] Create image
-- [ ] Put pixel on screen
-
-- [x] transform(r,m)
-- [x] position(t_tuple *origin, t_tuple *direction, double t);
-- [x] Changed t_vector to t_tuple;
+- [ ] Check for forbidden functions
+- [ ] Check behaviour of camera movements
+- [ ] left wall changing colors
+- [ ] change functions in parser
+- [ ] finish reflections
+- [ ] Check that rendering works everytime. Some times it is not rendering cylinder or sphere
+- [ ] Check for race conditions
+- [ ] Check for leaks
+- [ ] Norminette
+- [ ] Evaluate
+- [ ] Celebrate
 
 ## Features
 - **Geometric Objects.** Supports rendering of basic geometric shapes including planes, spheres, and cylinders. These objects can be resized, translated, and rotated (except for spheres and lights, which cannot be rotated).
