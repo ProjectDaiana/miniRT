@@ -121,7 +121,7 @@ void intersect_body(t_tuple abc, t_intersections *result, t_cylinder cylinder, t
 	discriminant = abc.y * abc.y - 4 * abc.x * abc.z;
 	if (discriminant > 0)
 	{
-		calculate_t(t, discriminant, abc.x, abc.y);// Dont forget to change this!!
+		calculate_t(t, discriminant, abc.x, abc.y);//
 		//tuple_dot(tuple_subtract(ray.origin, cylinder.center), axis_normal);
 		origin_projection = tuple_dot(tuple_subtract(ray.origin, cylinder.center), cylinder.axis);
 		direction_projection = tuple_dot(ray.direction, cylinder.axis);

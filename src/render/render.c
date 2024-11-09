@@ -209,6 +209,7 @@ int	render(t_data *data)
 	camera.transform = look_at(data->scene.camera.position, camera_look_at, up);
 	print_matrix(camera.transform, "Camera Transform", 4);
 	printf(GRN"Starting render...\n"RESET);
+	
 	// Render the scene without threads
 	// for (int y = 0; y < W_HEIGHT; y++)
 	// {
@@ -224,7 +225,6 @@ int	render(t_data *data)
 	// printf(GRN"Render complete. Converting to MLX image...\n"RESET);
 
 	// Rendering using threads
-	// Number of threads to use
     int num_threads = 16;
     pthread_t threads[num_threads];
     t_thread_data thread_data[num_threads];
