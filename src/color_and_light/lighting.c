@@ -4,30 +4,32 @@ t_color	lighting(t_material material, t_light light, t_tuple point,
 		t_tuple eye_v, t_tuple normal_v, int in_shadow)
 {
 	t_color color;
+	t_color ambient, diffuse, specular;
+	t_tuple lightv;
+	double light_dot_normal, reflect_dot_eye;
 	
-	if (material.pattern.type == CHECKERS)
-		color = pattern_at(material.pattern, point);
-	else
-		color = material.color;
+	// Get base color
+	color = (material.pattern.type == CHECKERS) ? 
+		pattern_at(material.pattern, point) : material.color;
 	
-	t_color effective_color = color_multiply_colors(color, light.color);
-	effective_color = color_multiply(effective_color, light.intensity);
+	// Calculate ambient (not affected by intensity)
+	ambient = color_multiply(color_multiply_colors(color, light.color), 
+		material.ambient);
 	
 	if (in_shadow)
-		return color_multiply(effective_color, material.ambient);
+		return ambient;
 
-	t_tuple lightv = tuple_normalize(tuple_subtract(light.position, point));
-	double light_dot_normal = tuple_dot(lightv, normal_v);
+	// Calculate diffuse and specular
+	lightv = tuple_normalize(tuple_subtract(light.position, point));
+	light_dot_normal = fmax(tuple_dot(lightv, normal_v), 0.0);
 	
-	if (light_dot_normal < 0)
-		return color_multiply(effective_color, material.ambient);
+	// Diffuse calculation with smoother transition
+	diffuse = color_multiply(color_multiply_colors(color, light.color),
+		material.diffuse * pow(light_dot_normal, 1.1) * light.intensity);
 		
-	t_color diffuse = color_multiply(effective_color, 
-		material.diffuse * light_dot_normal);
-		
+	// Specular calculation with improved falloff
 	t_tuple reflectv = tuple_reflect(tuple_negate(lightv), normal_v);
-	double reflect_dot_eye = tuple_dot(reflectv, eye_v);
-	t_color specular = create_color(0, 0, 0);
+	reflect_dot_eye = fmax(tuple_dot(reflectv, eye_v), 0.0);
 	
 	if (reflect_dot_eye > 0)
 	{
@@ -35,10 +37,10 @@ t_color	lighting(t_material material, t_light light, t_tuple point,
 		specular = color_multiply(light.color, 
 			material.specular * factor * light.intensity);
 	}
+	else
+		specular = create_color(0, 0, 0);
 	
-	return color_add(color_add(
-		color_multiply(effective_color, material.ambient),
-		diffuse),
-		specular);
+	// Blend components
+	return color_add(color_add(ambient, diffuse), specular);
 }
 

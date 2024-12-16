@@ -6,11 +6,11 @@ t_sphere	create_sphere(void)
 
 	sphere.center = create_point(0, 0, 0);
 	sphere.radius = 1.0;
-	sphere.material.ambient = 0.1;    // Low ambient for glass-like look
-	sphere.material.diffuse = 0.7;    // Low diffuse for glass-like look
-	sphere.material.specular = 0.9;   // High specular for shininess
-	sphere.material.shininess = 300;  // High shininess for sharp reflections
-	sphere.material.reflective = 0.9; // High reflectivity for glass-like look
+	sphere.material.ambient = 0.1;
+	sphere.material.diffuse = 0.7;
+	sphere.material.specular = 0.9;
+	sphere.material.shininess = 350;
+	sphere.material.reflective = 0.9;
 	return (sphere);
 }
 // ok
@@ -127,11 +127,11 @@ t_tuple	normal_at_sphere(t_sphere *sphere, t_tuple world_point)
     object_point = tuple_subtract(world_point, sphere->center);
     object_normal = tuple_normalize(object_point);
     
-    // Convert to world space (for a sphere, object space and world space are the same)
-    t_tuple world_normal = object_normal;
-    world_normal.w = 0;  // Ensure it's a vector
+    // Ensure the normal is always pointing outward
+    if (tuple_dot(object_normal, tuple_subtract(world_point, sphere->center)) < 0)
+        object_normal = tuple_negate(object_normal);
     
-    return world_normal;
+    return object_normal;
 }
 
 t_tuple	normal_at(void *object, t_tuple world_point)

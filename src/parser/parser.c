@@ -159,10 +159,10 @@ void	parse_sphere(char *line, t_scene *scene)
 	sphere.material.color = create_color(ft_atof(color[0]) / 255.0,
 			ft_atof(color[1]) / 255.0, ft_atof(color[2]) / 255.0);
 	sphere.material.ambient = 0.1;
-	sphere.material.diffuse = 0.9;    // Increased for better diffuse reflection
-	sphere.material.specular = 0.9;   // High specular for shininess
-	sphere.material.shininess = 200;  // Adjusted for smoother highlights
-	sphere.material.reflective = 0.0; // Disabled reflection for now
+	sphere.material.diffuse = 0.9;
+	sphere.material.specular = 0.8;
+	sphere.material.shininess = 200;
+	sphere.material.reflective = 0.0;
 	
 	add_sphere(scene, &sphere);
 	ft_free_split(split);
@@ -180,10 +180,10 @@ void	parse_plane(char *line, t_scene *scene)
 		&point.z, &normal.x, &normal.y, &normal.z, &r, &g, &b);
 	plane = create_plane(point, normal, create_color(r / 255.0, g / 255.0, b
 				/ 255.0));
-	plane.material.ambient = 0.1;
-	plane.material.diffuse = 0.7;
-	plane.material.specular = 1.0;
-	plane.material.shininess = 400.0;
+	plane.material.ambient = 0.15;
+	plane.material.diffuse = 0.8;
+	plane.material.specular = 0.2;
+	plane.material.shininess = 150;
 	add_plane(scene, &plane);
 }
 

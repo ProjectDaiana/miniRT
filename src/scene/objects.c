@@ -42,10 +42,10 @@ t_plane	create_plane(t_tuple point, t_tuple normal, t_color color)
 	plane.normal = tuple_normalize(normal);
 	plane.material.color = color;
 	plane.material.ambient = 0.1;
-	plane.material.diffuse = 0.7;
+	plane.material.diffuse = 0.8;
 	plane.material.specular = 0.0;
 	plane.material.shininess = 200;
-	plane.material.reflective = 0.1;
+	plane.material.reflective = 0.05;
 	plane.transform = create_identity_matrix();
 	
 	// Toggle between these two blocks to switch patterns
@@ -60,7 +60,7 @@ t_plane	create_plane(t_tuple point, t_tuple normal, t_color color)
 		plane.material.pattern = create_checkers_pattern(color, color2);
 	#endif
 	
-	scale = scaling(2.0, 2.0, 2.0);
+	scale = scaling(1.0, 1.0, 1.0);
 	plane.material.pattern.transform = scale;
 	return (plane);
 }
