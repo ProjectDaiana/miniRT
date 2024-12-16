@@ -134,25 +134,6 @@ t_tuple	normal_at_sphere(t_sphere *sphere, t_tuple world_point)
     return world_normal;
 }
 
-// ok
-// t_tuple	normal_at(void *object, t_tuple world_point)
-// {
-// 	if (((t_sphere *)object)->radius > 0) // It's a sphere
-// 	{
-// 		return (normal_at_sphere((t_sphere *)object, world_point));
-// 	}
-// 	else if (((t_plane *)object)->normal.x != 0
-// 		|| ((t_plane *)object)->normal.y != 0
-// 		|| ((t_plane *)object)->normal.z != 0) // It's a plane
-// 	{
-// 		return (normal_at_plane((t_plane *)object, world_point));
-// 	}
-// 	// Add more conditions for other object types as needed
-
-// 	// Default case (should not happen)
-// 	return (create_vector(0, 0, 0));
-// }
-
 t_tuple	normal_at(void *object, t_tuple world_point)
 {
 	if (((t_sphere *)object)->radius > 0) // It's a sphere

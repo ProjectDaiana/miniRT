@@ -13,7 +13,6 @@ t_matrix translation(double x, double y, double z)
 	translation_matrix.m[1][3] = y;
 	translation_matrix.m[2][3] = z;
 
-	// print_matrix(translation_matrix, "Translation Matrix", 4);
 	return (translation_matrix);
 }
 
@@ -29,11 +28,6 @@ t_matrix scaling(double x, double y, double z)
 	print_matrix(scaling_matrix, "Scaling Matrix", 4);
 	return (scaling_matrix);
 }
-// Reflection is esenncially the same thign as scaling by a negative value
-// Scenario: Reflection is scaling by a negative value
-// Given transform ← scaling(-1, 1, 1)
-// And p ← point(2, 3, 4)
-// Then transform * p = point(-2, 3, 4)
 
 t_matrix skewing(double x_y, double x_z, double y_x, double y_z, double z_x, double z_y)
 {

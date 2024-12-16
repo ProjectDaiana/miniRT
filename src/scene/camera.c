@@ -25,7 +25,6 @@ t_camera	create_camera(int hsize, int vsize, double field_of_view)
 	return (cam);
 }
 
-// ok
 t_ray	ray_for_pixel(t_camera *cam, int px, int py)
 {
 	double xoffset = (px + 0.5) * cam->pixel_size;
