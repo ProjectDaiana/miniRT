@@ -203,7 +203,17 @@ void	parse_scene(const char *filename, t_scene *scene)
 	ft_memset(scene, 0, sizeof(t_scene));
 	while (fgets(line, sizeof(line), file))
 	{
-		printf("Parsing line: %s ", line);
+		// Remove trailing newline if present
+		char *newline = strchr(line, '\n');
+		if (newline)
+			*newline = '\0';
+
+		// Skip empty lines, comments, and whitespace-only lines
+		if (line[0] == '\n' || line[0] == '#' || line[0] == '\0' || line[0] == ' ')
+			continue;
+
+		printf("Parsing line: [%s]\n", line);  // Added brackets to see line boundaries
+
 		if (line[0] == 'A')
 		{
 			parse_ambient(line, scene);

@@ -42,10 +42,10 @@ t_plane	create_plane(t_tuple point, t_tuple normal, t_color color)
 	plane.normal = tuple_normalize(normal);
 	plane.material.color = color;
 	plane.material.ambient = 0.1;
-	plane.material.diffuse = 0.9;
+	plane.material.diffuse = 0.7;
 	plane.material.specular = 0.0;
 	plane.material.shininess = 200;
-	plane.material.reflective = 0.0;
+	plane.material.reflective = 0.1;
 	plane.transform = create_identity_matrix();
 	
 	// Toggle between these two blocks to switch patterns
