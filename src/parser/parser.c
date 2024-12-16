@@ -90,23 +90,89 @@ void	parse_light(char *line, t_scene *scene)
 	add_light(scene, &light);
 }
 
+// void	parse_sphere(char *line, t_scene *scene)
+// {
+// 	t_sphere	sphere;
+// 	int			ret;
+
+// 	ret = sscanf(line, "sp %lf,%lf,%lf %lf %d,%d,%d %lf", &sphere.center.x,
+// 			&sphere.center.y, &sphere.center.z, &sphere.radius,
+// 			&sphere.material.color.r, &sphere.material.color.g,
+// 			&sphere.material.color.b, &sphere.material.reflective);
+// 	printf("Parsing line: %s\n", line);
+// 	printf("sscanf read %d values\n", ret); // Should be 8
+// 	printf("Parsed values:\n");
+// 	printf("Position: %f,%f,%f\n", sphere.center.x, sphere.center.y,
+// 		sphere.center.z);
+// 	printf("Radius: %f\n", sphere.radius);
+// 	printf("Color: %d,%d,%d\n", sphere.material.color.r,
+// 		sphere.material.color.g, sphere.material.color.b);
+// 	printf("Reflective: %f\n", sphere.material.reflective);
+// 	if (ret != 8)
+// 		printf("Error: Failed to parse all sphere values (expected 8,						got			%d)\n",ret);
+// sphere.material.color.r/= 255.0;
+// sphere.material.color.g/= 255.0;
+// sphere.material.color.b
+//	/= 255.0;
+// 	sphere.material.ambient = 0.1;
+// 	sphere.material.diffuse = 0.7;
+// 	// sphere.material.specular = 0.2;
+// 	sphere.material.specular = 1.0;
+// 	sphere.material.shininess = 3000.0;
+// 	// sphere.material.reflective = 0.5;
+// 	sphere.radius /= 2.0;
+// 	add_sphere(scene, &sphere);
+// }
+
 void	parse_sphere(char *line, t_scene *scene)
 {
 	t_sphere	sphere;
+	char		**split;
+	char		**color;
+	char		**pos;
 
-	sscanf(line, "sp %lf,%lf,%lf %lf %d,%d,%d", &sphere.center.x,
-		&sphere.center.y, &sphere.center.z, &sphere.radius,
-		&sphere.material.color.r, &sphere.material.color.g,
-		&sphere.material.color.b);
-	sphere.material.color.r /= 255.0;
-	sphere.material.color.g /= 255.0;
-	sphere.material.color.b /= 255.0;
+	// char		*reflective_str;
+	split = ft_split(line, ' ');
+	if (!split || !split[1] || !split[2] || !split[3] || !split[4])
+	// Check for reflective value
+	{
+		fprintf(stderr, "Error: Invalid sphere format\n");
+		return ;
+	}
+	// Parse position
+	pos = ft_split(split[1], ',');
+	if (!pos || !pos[0] || !pos[1] || !pos[2])
+	{
+		fprintf(stderr, "Error: Invalid sphere position format\n");
+		ft_free_split(split);
+		return ;
+	}
+	sphere.center = create_point(ft_atof(pos[0]), ft_atof(pos[1]),
+			ft_atof(pos[2]));
+	// Parse radius
+	sphere.radius = ft_atof(split[2]) / 2.0;
+	// Parse color
+	color = ft_split(split[3], ',');
+	if (!color || !color[0] || !color[1] || !color[2])
+	{
+		fprintf(stderr, "Error: Invalid sphere color format\n");
+		ft_free_split(split);
+		ft_free_split(pos);
+		return ;
+	}
+	sphere.material.color = create_color(ft_atof(color[0]) / 255.0,
+			ft_atof(color[1]) / 255.0, ft_atof(color[2]) / 255.0);
+	// Parse reflective value
+	sphere.material.reflective = ft_atof(split[4]);
+	// Set other material properties
 	sphere.material.ambient = 0.1;
 	sphere.material.diffuse = 0.7;
-	sphere.material.specular = 0.2;
+	sphere.material.specular = 0.9;
 	sphere.material.shininess = 200.0;
-	sphere.radius /= 2.0;
 	add_sphere(scene, &sphere);
+	ft_free_split(split);
+	ft_free_split(pos);
+	ft_free_split(color);
 }
 
 void	parse_plane(char *line, t_scene *scene)
@@ -134,7 +200,7 @@ void	parse_scene(const char *filename, t_scene *scene)
 	file = fopen(filename, "r");
 	if (!file)
 	{
-		fprintf(stderr, "Error: Could not open file %s\n", filename);
+		fprintf(stderr, "Error: Could not open file %s\n ", filename);
 		exit(1);
 	}
 	printf("File opened successfully\n");
@@ -142,7 +208,7 @@ void	parse_scene(const char *filename, t_scene *scene)
 	ft_memset(scene, 0, sizeof(t_scene));
 	while (fgets(line, sizeof(line), file))
 	{
-		printf("Parsing line: %s", line);
+		printf("Parsing line: %s ", line);
 		if (line[0] == 'A')
 		{
 			parse_ambient(line, scene);
@@ -178,3 +244,4 @@ void	parse_scene(const char *filename, t_scene *scene)
 	}
 	printf("Scene parsed successfully\n");
 }
+

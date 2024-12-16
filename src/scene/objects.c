@@ -7,7 +7,7 @@ void	add_light(t_scene *scene, t_light *light)
 			* sizeof(t_light));
 	scene->lights[scene->light_count - 1] = *light;
 }
-
+// ok
 void	add_sphere(t_scene *scene, t_sphere *sphere)
 {
 	scene->sphere_count++;
@@ -35,7 +35,8 @@ void	add_cylinder(t_scene *scene, t_cylinder *cylinder)
 // added
 t_plane	create_plane(t_tuple point, t_tuple normal, t_color color)
 {
-	t_plane plane;
+	t_plane	plane;
+
 	plane.point = point;
 	plane.normal = tuple_normalize(normal);
 	plane.material.color = color;
@@ -43,6 +44,7 @@ t_plane	create_plane(t_tuple point, t_tuple normal, t_color color)
 	plane.material.diffuse = 0.9;
 	plane.material.specular = 0.9;
 	plane.material.shininess = 200.0;
+	plane.material.reflective = 0.0;
 	plane.transform = create_identity_matrix();
 	return (plane);
 }

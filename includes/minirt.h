@@ -19,6 +19,8 @@
 #define MAX_SPHERES 10
 #define EPSILON 0.00001
 #define MAX_LIGHTS 10
+#define MAX_REFLECTION_DEPTH 5
+#define EPSILON 0.00001
 
 #define RED "\e[0;31m"
 #define GRN "\e[0;32m"
@@ -85,8 +87,6 @@ typedef struct
 	t_tuple			direction;
 }					t_ray;
 
-
-
 typedef struct s_canvas
 {
 	int				width;
@@ -139,20 +139,19 @@ typedef struct
 	int				endian;
 }					t_img;
 
-
 typedef enum e_pattern_type
 {
-    SOLID,
-    CHECKERS
-} t_pattern_type;
+	SOLID,
+	CHECKERS
+}					t_pattern_type;
 
 typedef struct s_pattern
 {
-    t_pattern_type type;
-    t_color color1;
-    t_color color2;
-    t_matrix transform;
-} t_pattern;
+	t_pattern_type	type;
+	t_color			color1;
+	t_color			color2;
+	t_matrix		transform;
+}					t_pattern;
 
 typedef struct
 {
@@ -162,7 +161,7 @@ typedef struct
 	double			shininess;
 	double			reflective;
 	t_color			color;
-	t_pattern pattern;
+	t_pattern		pattern;
 
 }					t_material;
 
@@ -217,6 +216,7 @@ typedef struct
 	t_cylinder		*cylinders;
 	int				cylinder_count;
 	t_ambient_light	ambient_light;
+	int				max_spheres;
 }					t_scene;
 
 typedef struct s_intersections
@@ -274,9 +274,6 @@ typedef struct s_world
 	t_light			*lights;
 	int				light_count;
 }					t_world;
-
-
-
 
 int					handle_no_event(void *data);
 int					handle_keypress(int keysym, t_data *data);
@@ -394,10 +391,11 @@ t_intersections		intersect_sphere(t_sphere sphere, t_ray ray);
 // t_tuple			normal_at(t_sphere sphere, t_tuple world_point);
 
 // lighting functions
-// t_color			lighting(t_material material, t_light light, t_tuple point,
-// 					t_tuple eye_v, t_tuple normal_v, int in_shadow);
+
 t_color				lighting(t_material material, t_light light, t_tuple point,
 						t_tuple eye_v, t_tuple normal_v, int in_shadow);
+// t_color	lighting(t_material material, t_light light, t_tuple point,
+// 		t_tuple eye_v, t_tuple normal_v, int in_shadow, void *shape);
 
 // parser functions
 void				parse_scene(const char *filename, t_scene *scene);
@@ -423,7 +421,9 @@ int					is_shadowed(t_scene *scene, t_tuple point, t_light *light);
 t_ray				transform_ray(t_ray ray, t_matrix transform);
 t_tuple				matrix_multiply_tuple(t_matrix m, t_tuple t);
 t_color				ray_color(t_scene *scene, t_ray ray);
-t_ray				ray_for_pixel(t_camera *camera, int px, int py);
+t_ray ray_for_pixel(t_camera *camera, int px,
+						int py);
+
 t_tuple				tuple_reflect(t_tuple in, t_tuple normal);
 
 // added
@@ -443,3 +443,15 @@ t_tuple				normal_at(void *object, t_tuple world_point);
 
 t_tuple				normal_at_sphere(t_sphere *sphere, t_tuple world_point);
 t_tuple				normal_at_plane(t_plane *plane, t_tuple world_point);
+
+// pattern.c
+
+t_pattern			create_checkers_pattern(t_color c1, t_color c2);
+t_color				pattern_at_checkers(t_pattern pattern, t_tuple point);
+t_color				pattern_at(t_pattern pattern, t_tuple point);
+t_color				pattern_at_shape(t_pattern pattern, void *shape,
+						t_tuple world_point);
+t_color				reflected_color(t_scene *scene, t_compu comps,
+						int remaining);
+t_color				shade_hit(t_scene *scene, t_compu comps, int remaining);
+t_color				color_at(t_scene *scene, t_ray ray, int remaining);

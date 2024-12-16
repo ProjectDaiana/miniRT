@@ -384,6 +384,55 @@ t_matrix	look_at(t_tuple from, t_tuple to, t_tuple up)
 	return (matrix_multiply(orientation, translation_matrix));
 }
 
+// ok
+// int	render(t_data *data)
+// {
+// 	t_canvas	canvas;
+// 	t_scene		*scene;
+// 	t_camera	camera;
+// 	t_color		color;
+// 	t_ray		ray;
+// 	int			color_int;
+// 	t_tuple		camera_position;
+// 	t_tuple		camera_look_at;
+// 	t_tuple		up;
+
+// 	canvas = create_canvas(W_WIDTH, W_HEIGHT);
+// 	scene = &data->scene;
+// 	camera = create_camera(W_WIDTH, W_HEIGHT, scene->camera.fov * M_PI / 180.0);
+// 	// Set up camera transform
+// 	camera_position = scene->camera.position;
+// 	camera_look_at = tuple_add(camera_position, scene->camera.orientation);
+// 	up = create_vector(0, 1, 0);
+// 	camera.transform = look_at(camera_position, camera_look_at, up);
+// 	// Render the scene
+// 	for (int y = 0; y < W_HEIGHT; y++)
+// 	{
+// 		for (int x = 0; x < W_WIDTH; x++)
+// 		{
+// 			ray = ray_for_pixel(&camera, x, y);
+// 			color = ray_color(scene, ray, 0);
+// 			write_pixel(&canvas, x, y, color);
+// 		}
+// 	}
+// 	// Convert canvas to MLX image
+// 	data->img.img = mlx_new_image(data->mlx_ptr, W_WIDTH, W_HEIGHT);
+// 	data->img.addr = mlx_get_data_addr(data->img.img, &data->img.bits_per_pixel,
+// 			&data->img.line_length, &data->img.endian);
+// 	for (int y = 0; y < W_HEIGHT; y++)
+// 	{
+// 		for (int x = 0; x < W_WIDTH; x++)
+// 		{
+// 			color = pixel_at(&canvas, x, y);
+// 			color_int = rgb_to_int(color);
+// 			my_mlx_pixel_put(&data->img, x, y, color_int);
+// 		}
+// 	}
+// 	mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->img.img, 0, 0);
+// 	free_canvas(&canvas);
+// 	return (0);
+// }
+
 int	render(t_data *data)
 {
 	t_canvas canvas = create_canvas(W_WIDTH, W_HEIGHT);

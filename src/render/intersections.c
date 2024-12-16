@@ -174,18 +174,20 @@ t_intersections	intersect_world(t_scene *scene, t_ray ray)
 		}
 	}
 	sort_intersections(&result);
-
 	return (result);
 }
+
+// OK
 
 // t_compu	prepare_computations(double t, t_ray ray, t_intersections *xs)
 // {
 // 	t_compu	comps;
 
 // 	comps.t = t;
+// 	comps.object = xs->object[0];
 // 	comps.point = position(ray, t);
 // 	comps.eyev = tuple_negate(ray.direction);
-// 	comps.normalv = normal_at(xs->object[0], comps.point);
+// 	comps.normalv = normal_at(comps.object, comps.point);
 // 	if (tuple_dot(comps.normalv, comps.eyev) < 0)
 // 	{
 // 		comps.inside = 1;
@@ -197,7 +199,6 @@ t_intersections	intersect_world(t_scene *scene, t_ray ray)
 // 	}
 // 	comps.over_point = tuple_add(comps.point, tuple_multiply(comps.normalv,
 // 				EPSILON));
-// 	comps.object = xs->object[0];
 // 	return (comps);
 // }
 
@@ -216,10 +217,9 @@ t_compu	prepare_computations(double t, t_ray ray, t_intersections *xs)
 		comps.normalv = tuple_negate(comps.normalv);
 	}
 	else
-	{
 		comps.inside = 0;
-	}
 	comps.over_point = tuple_add(comps.point, tuple_multiply(comps.normalv,
 				EPSILON));
+	comps.reflectv = tuple_reflect(ray.direction, comps.normalv);
 	return (comps);
 }

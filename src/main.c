@@ -85,6 +85,7 @@
 
 #include "minirt.h"
 
+// ok
 void	init(t_data *data, t_vector *vector)
 {
 	data->mlx_ptr = NULL;
@@ -94,6 +95,8 @@ void	init(t_data *data, t_vector *vector)
 	vector->z = 3.0;
 	vector->magnitude = 0.0;
 }
+
+
 
 int	main(int argc, char **argv)
 {
@@ -123,6 +126,11 @@ int	main(int argc, char **argv)
 	printf("Parsing scene...\n");
 	parse_scene(argv[1], &(data.scene));
 	printf("Scene parsed\n");
+	if (!data.scene.spheres)
+	{
+		printf("Error: Scene initialization failed\n");
+		return (1);
+	}
 	render(&data);
 	mlx_hook(data.win_ptr, KeyPress, KeyPressMask, handle_keypress, &data);
 	mlx_hook(data.win_ptr, KeyRelease, KeyReleaseMask, &handle_keyrelease,

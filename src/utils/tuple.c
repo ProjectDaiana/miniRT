@@ -72,8 +72,18 @@ t_tuple	tuple_cross(t_tuple a, t_tuple b)
 			* b.y - a.y * b.x));
 }
 
+// t_tuple	tuple_reflect(t_tuple in, t_tuple normal)
+// {
+// 	return (tuple_subtract(in, tuple_multiply(normal, 2 * tuple_dot(in,
+// 					normal))));
+// }
+
 t_tuple	tuple_reflect(t_tuple in, t_tuple normal)
 {
-	return (tuple_subtract(in, tuple_multiply(normal, 2 * tuple_dot(in,
-					normal))));
+	double	dot;
+	t_tuple	scaled;
+
+	dot = tuple_dot(in, normal);
+	scaled = tuple_multiply(normal, 2.0 * dot);
+	return (tuple_normalize(tuple_subtract(in, scaled)));
 }
