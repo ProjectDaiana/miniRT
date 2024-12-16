@@ -6,6 +6,11 @@ t_sphere	create_sphere(void)
 
 	sphere.center = create_point(0, 0, 0);
 	sphere.radius = 1.0;
+	sphere.material.ambient = 0.1;    // Low ambient for glass-like look
+	sphere.material.diffuse = 0.7;    // Low diffuse for glass-like look
+	sphere.material.specular = 0.9;   // High specular for shininess
+	sphere.material.shininess = 300;  // High shininess for sharp reflections
+	sphere.material.reflective = 0.9; // High reflectivity for glass-like look
 	return (sphere);
 }
 // ok
@@ -44,39 +49,49 @@ t_intersections	intersect_sphere(t_sphere sphere, t_ray ray)
 {
 	t_intersections	result;
 	t_tuple			sphere_to_ray;
-	double			sqrt_discriminant;
-	double			two_a;
+	double			a, b, c, discriminant;
 
-	double a, b, c, discriminant;
 	// Initialize result
 	result.count = 0;
 	result.t = NULL;
 	result.object = NULL;
-	// Calculate vector from sphere center to ray origin
+
+	// Vector from sphere center to ray origin
 	sphere_to_ray = tuple_subtract(ray.origin, sphere.center);
+
 	// Calculate quadratic equation coefficients
 	a = tuple_dot(ray.direction, ray.direction);
-	// Should be 1 if ray direction is normalized
 	b = 2.0 * tuple_dot(ray.direction, sphere_to_ray);
-	c = tuple_dot(sphere_to_ray, sphere_to_ray) - (sphere.radius
-			* sphere.radius);
+	c = tuple_dot(sphere_to_ray, sphere_to_ray) - (sphere.radius * sphere.radius);
+
 	// Calculate discriminant
 	discriminant = (b * b) - (4.0 * a * c);
+
 	if (discriminant >= 0)
 	{
 		result.count = 2;
 		result.t = malloc(sizeof(double) * 2);
 		result.object = malloc(sizeof(void *) * 2);
-		sqrt_discriminant = sqrt(discriminant);
-		two_a = 2.0 * a;
-		result.t[0] = (-b - sqrt_discriminant) / two_a;
-		result.t[1] = (-b + sqrt_discriminant) / two_a;
+
+		double sqrt_disc = sqrt(discriminant);
+		double two_a = 2.0 * a;
+
+		// Calculate both intersection points
+		result.t[0] = (-b - sqrt_disc) / two_a;
+		result.t[1] = (-b + sqrt_disc) / two_a;
+
+		// Sort intersections (nearest first)
+		if (result.t[0] > result.t[1])
+		{
+			double temp = result.t[0];
+			result.t[0] = result.t[1];
+			result.t[1] = temp;
+		}
+
 		result.object[0] = &sphere;
 		result.object[1] = &sphere;
-		// Debug print
-		printf("Intersection points found: t1=%f, t2=%f\n", result.t[0],
-			result.t[1]);
 	}
+
 	return (result);
 }
 
@@ -105,14 +120,18 @@ t_intersections	intersect_sphere(t_sphere sphere, t_ray ray)
 
 t_tuple	normal_at_sphere(t_sphere *sphere, t_tuple world_point)
 {
-	t_tuple	object_point;
-	t_tuple	object_normal;
+    t_tuple	object_point;
+    t_tuple	object_normal;
 
-	object_point = tuple_subtract(world_point, sphere->center);
-	object_normal = tuple_normalize(object_point);
-	t_tuple world_normal = object_normal; // For spheres,
-	world_normal.w = 0;                   // Ensure it's a vector, not a point
-	return (world_normal);
+    // Calculate the normal in object space
+    object_point = tuple_subtract(world_point, sphere->center);
+    object_normal = tuple_normalize(object_point);
+    
+    // Convert to world space (for a sphere, object space and world space are the same)
+    t_tuple world_normal = object_normal;
+    world_normal.w = 0;  // Ensure it's a vector
+    
+    return world_normal;
 }
 
 // ok
@@ -147,7 +166,6 @@ t_tuple	normal_at(void *object, t_tuple world_point)
 		return (normal_at_plane((t_plane *)object, world_point));
 	}
 	// Add more conditions for other object types as needed
-
 	// Default case (should not happen)
 	return (create_vector(0, 0, 0));
 }

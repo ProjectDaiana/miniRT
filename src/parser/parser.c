@@ -120,6 +120,7 @@ void	parse_light(char *line, t_scene *scene)
 // 	sphere.material.specular = 1.0;
 // 	sphere.material.shininess = 3000.0;
 // 	// sphere.material.reflective = 0.5;
+// 	sphere.material.reflective = 0.0;
 // 	sphere.radius /= 2.0;
 // 	add_sphere(scene, &sphere);
 // }
@@ -131,15 +132,12 @@ void	parse_sphere(char *line, t_scene *scene)
 	char		**color;
 	char		**pos;
 
-	// char		*reflective_str;
 	split = ft_split(line, ' ');
 	if (!split || !split[1] || !split[2] || !split[3] || !split[4])
-	// Check for reflective value
 	{
 		fprintf(stderr, "Error: Invalid sphere format\n");
 		return ;
 	}
-	// Parse position
 	pos = ft_split(split[1], ',');
 	if (!pos || !pos[0] || !pos[1] || !pos[2])
 	{
@@ -147,11 +145,8 @@ void	parse_sphere(char *line, t_scene *scene)
 		ft_free_split(split);
 		return ;
 	}
-	sphere.center = create_point(ft_atof(pos[0]), ft_atof(pos[1]),
-			ft_atof(pos[2]));
-	// Parse radius
+	sphere.center = create_point(ft_atof(pos[0]), ft_atof(pos[1]), ft_atof(pos[2]));
 	sphere.radius = ft_atof(split[2]) / 2.0;
-	// Parse color
 	color = ft_split(split[3], ',');
 	if (!color || !color[0] || !color[1] || !color[2])
 	{
@@ -160,15 +155,15 @@ void	parse_sphere(char *line, t_scene *scene)
 		ft_free_split(pos);
 		return ;
 	}
+	
 	sphere.material.color = create_color(ft_atof(color[0]) / 255.0,
 			ft_atof(color[1]) / 255.0, ft_atof(color[2]) / 255.0);
-	// Parse reflective value
-	sphere.material.reflective = ft_atof(split[4]);
-	// Set other material properties
 	sphere.material.ambient = 0.1;
-	sphere.material.diffuse = 0.7;
-	sphere.material.specular = 0.9;
-	sphere.material.shininess = 200.0;
+	sphere.material.diffuse = 0.9;    // Increased for better diffuse reflection
+	sphere.material.specular = 0.9;   // High specular for shininess
+	sphere.material.shininess = 200;  // Adjusted for smoother highlights
+	sphere.material.reflective = 0.0; // Disabled reflection for now
+	
 	add_sphere(scene, &sphere);
 	ft_free_split(split);
 	ft_free_split(pos);
@@ -186,9 +181,9 @@ void	parse_plane(char *line, t_scene *scene)
 	plane = create_plane(point, normal, create_color(r / 255.0, g / 255.0, b
 				/ 255.0));
 	plane.material.ambient = 0.1;
-	plane.material.diffuse = 0.9;
-	plane.material.specular = 0.9;
-	plane.material.shininess = 200.0;
+	plane.material.diffuse = 0.7;
+	plane.material.specular = 1.0;
+	plane.material.shininess = 400.0;
 	add_plane(scene, &plane);
 }
 

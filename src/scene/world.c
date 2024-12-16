@@ -53,26 +53,19 @@ t_color	color_at(t_scene *scene, t_ray ray, int remaining)
 
 t_color	reflected_color(t_scene *scene, t_compu comps, int remaining)
 {
-	double	reflective;
-	t_ray	reflect_ray;
-	t_color	color;
-
 	if (remaining <= 0)
-	{
-		// printf("Max reflection depth reached\n");
-		return (create_color(0, 0, 0));
-	}
-	// Get reflective value based on object type
+		return create_color(0, 0, 0);
+
 	if (((t_sphere *)comps.object)->radius > 0)
-		reflective = ((t_sphere *)comps.object)->material.reflective;
-	else
-		reflective = ((t_plane *)comps.object)->material.reflective;
-	// printf("Calculating reflection with reflectivity: %f\n", reflective);
-	if (reflective == 0)
-		return (create_color(0, 0, 0));
-	reflect_ray = create_ray(comps.over_point, comps.reflectv);
-	color = color_at(scene, reflect_ray, remaining - 1);
-	return (color_multiply(color, reflective));
+	{
+		t_ray reflect_ray = create_ray(comps.over_point, comps.reflectv);
+		t_color color = color_at(scene, reflect_ray, remaining - 1);
+		
+		t_material material = ((t_sphere *)comps.object)->material;
+		return color_multiply(color, material.reflective * 0.5);
+	}
+	
+	return create_color(0, 0, 0);
 }
 
 t_color	shade_hit(t_scene *scene, t_compu comps, int remaining)
