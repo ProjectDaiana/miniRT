@@ -4,6 +4,7 @@
 #include <X11/keysym.h>
 #include <fcntl.h>
 #include <math.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
 
@@ -14,7 +15,7 @@
 #define RED_PX 0xFF0000
 #define GRN_PX 0x00FF00
 #define SCALE 100
-#define PI 3.14159265358979323846
+#define M_PI 3.14159265358979323846
 #define SQRT2_DIV2 (sqrt(2) / 2)
 #define MAX_SPHERES 10
 #define EPSILON 0.00001
@@ -275,6 +276,42 @@ typedef struct s_world
 	int				light_count;
 }					t_world;
 
+typedef struct s_light_data
+{
+	t_material		material;
+	t_light			light;
+	t_tuple			point;
+	t_tuple			eye_v;
+	t_tuple			normal_v;
+	int				in_shadow;
+}					t_light_data;
+
+typedef struct s_lighting_params
+{
+	t_material		material;
+	t_light			light;
+	t_tuple			point;
+	t_tuple			eye_v;
+	t_tuple			normal_v;
+	int				in_shadow;
+}					t_lighting_params;
+
+typedef struct s_submatrix_data
+{
+	int				col;
+	int				sub_i;
+}					t_submatrix_data;
+
+typedef struct s_skew_params
+{
+	double			x_y;
+	double			x_z;
+	double			y_x;
+	double			y_z;
+	double			z_x;
+	double			z_y;
+}					t_skew_params;
+
 int					handle_no_event(void *data);
 int					handle_keypress(int keysym, t_data *data);
 int					handle_keyrelease(int keysym, void *data);
@@ -332,9 +369,9 @@ t_matrix			scaling(double x, double y, double z);
 t_matrix			rotation_x(double rad);
 t_matrix			rotation_y(double rad);
 t_matrix			rotation_z(double rad);
-t_matrix			skewing(double x_y, double x_z, double y_x, double y_z,
-						double z_x, double z_y);
-
+// t_matrix			skewing(double x_y, double x_z, double y_x, double y_z,
+// 						double z_x, double z_y);
+t_matrix			skewing(t_skew_params params);
 // Error functions
 void				print_error(char *msg);
 
@@ -390,14 +427,6 @@ t_sphere			create_sphere(void);
 t_intersections		intersect_sphere(t_sphere sphere, t_ray ray);
 // t_tuple			normal_at(t_sphere sphere, t_tuple world_point);
 
-// lighting functions
-
-t_color				lighting(t_material material, t_light light, t_tuple point,
-						t_tuple eye_v, t_tuple normal_v, int in_shadow);
-// t_color	lighting(t_material material, t_light light, t_tuple point,
-// 		t_tuple eye_v, t_tuple normal_v, int in_shadow, void *shape);
-
-// parser functions
 void				parse_scene(const char *filename, t_scene *scene);
 
 // utils
@@ -421,8 +450,7 @@ int					is_shadowed(t_scene *scene, t_tuple point, t_light *light);
 t_ray				transform_ray(t_ray ray, t_matrix transform);
 t_tuple				matrix_multiply_tuple(t_matrix m, t_tuple t);
 t_color				ray_color(t_scene *scene, t_ray ray);
-t_ray ray_for_pixel(t_camera *camera, int px,
-						int py);
+t_ray				ray_for_pixel(t_camera *camera, int px, int py);
 
 t_tuple				tuple_reflect(t_tuple in, t_tuple normal);
 
@@ -455,3 +483,90 @@ t_color				reflected_color(t_scene *scene, t_compu comps,
 						int remaining);
 t_color				shade_hit(t_scene *scene, t_compu comps, int remaining);
 t_color				color_at(t_scene *scene, t_ray ray, int remaining);
+
+///
+
+int					validate_params(char **split, int count, char *element);
+
+int					validate_coordinates(char **coords, char *element,
+						char **to_free);
+
+void				free_splits(char **split1, char **split2, char **split3);
+int					is_valid_line(char *line);
+
+t_color				create_material_color(char **color_values);
+
+void				init_sphere_material(t_sphere *sphere);
+// void				init_plane_material(t_plane *plane);
+
+void				set_color_components(t_color *dest, char **color_values);
+
+void				set_camera_orientation(t_scene *scene, char **orient);
+void				set_camera_position(t_scene *scene, char **pos);
+void				set_sphere_center(t_sphere *sphere, char **pos);
+int					init_plane_splits(char *line, char ***split, char ***pos,
+						char ***normal);
+
+int					init_plane_color(char **split, char ***color);
+void				init_scene_file(const char *filename, FILE **file,
+						t_scene *scene);
+void				parse_line_by_type(char *line, t_scene *scene);
+void				parse_scene(const char *filename, t_scene *scene);
+void				parse_ambient(char *line, t_scene *scene);
+void				parse_camera(char *line, t_scene *scene);
+void				parse_light(char *line, t_scene *scene);
+void				parse_sphere(char *line, t_scene *scene);
+void				parse_plane(char *line, t_scene *scene);
+void				init_scene_file(const char *filename, FILE **file,
+						t_scene *scene);
+void				parse_line_by_type(char *line, t_scene *scene);
+t_plane				create_plane_from_params(char **pos, char **normal,
+						char **color);
+
+t_material			get_object_material(void *object);
+t_tuple				get_object_normal(void *object, t_tuple point);
+
+t_color				get_reflection_color(t_scene *scene, t_ray reflect_ray,
+						void *reflect_object, t_tuple reflect_point);
+
+t_color				calculate_reflection_color(t_scene *scene,
+						t_intersections reflect_xs, t_ray reflect_ray);
+
+t_color				calculate_reflection(t_scene *scene, t_ray ray,
+						t_tuple point, t_tuple normal);
+
+t_color				get_surface_color(t_scene *scene, t_material material,
+						t_compu comps);
+t_color				get_base_color(t_material material, t_tuple point);
+
+t_color				get_ambient_component(t_color base_color,
+						t_light_data *light_data);
+
+t_color				get_diffuse_component(t_color base_color,
+						t_light_data *light_data, double dot);
+t_color				get_specular_component(t_light_data *light_data,
+						double reflect_dot);
+t_color				lighting(t_lighting_params params);
+
+void				init_cylinder_intersection(t_intersections *result);
+void				calculate_cylinder_params(t_cylinder cylinder, t_ray ray,
+						double *params);
+void				add_valid_intersection(t_intersections *result, double t,
+						t_cylinder *cylinder, int *index);
+void				calculate_cylinder_intersections(t_cylinder cylinder,
+						t_ray ray, double *t, double *y);
+
+void				check_cylinder_bounds(t_cylinder cylinder, double *t,
+						double *y);
+
+void				allocate_intersections(t_intersections *result, double *t,
+						t_cylinder *cylinder);
+
+void				calculate_sphere_params(t_ray ray, t_sphere sphere,
+						double *params);
+void				init_intersection_result(t_intersections *result,
+						double discriminant);
+void				set_intersection_values(t_intersections *result,
+						t_sphere *sphere, double *params);
+int					init_mlx(t_data *data);
+void				setup_hooks(t_data *data);

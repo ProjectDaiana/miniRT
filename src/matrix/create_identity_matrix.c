@@ -2,14 +2,26 @@
 
 t_matrix	create_identity_matrix(void)
 {
-	t_matrix identity;
-	identity = create_matrix(4);
-	for (int i = 0; i < 4; i++)
+	t_matrix	matrix;
+	int			i;
+	int			j;
+
+	matrix.size = 4;
+	matrix.m = malloc(sizeof(double *) * matrix.size);
+	i = 0;
+	while (i < matrix.size)
 	{
-		for (int j = 0; j < 4; j++)
+		matrix.m[i] = malloc(sizeof(double) * matrix.size);
+		j = 0;
+		while (j < matrix.size)
 		{
-			identity.m[i][j] = (i == j) ? 1.0 : 0.0;
+			if (i == j)
+				matrix.m[i][j] = 1.0;
+			else
+				matrix.m[i][j] = 0.0;
+			j++;
 		}
+		i++;
 	}
-	return (identity);
+	return (matrix);
 }

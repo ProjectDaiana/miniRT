@@ -1,5 +1,17 @@
 #include "minirt.h"
 
+static void	init_canvas_row(t_color *row, int width)
+{
+	int	j;
+
+	j = 0;
+	while (j < width)
+	{
+		row[j] = create_color(0, 0, 0);
+		j++;
+	}
+}
+
 t_canvas	create_canvas(int width, int height)
 {
 	t_canvas	canvas;
@@ -8,38 +20,36 @@ t_canvas	create_canvas(int width, int height)
 	canvas.width = width;
 	canvas.height = height;
 	canvas.pixels = (t_color **)malloc(sizeof(t_color *) * height);
-	for (i = 0; i < height; i++)
+	i = 0;
+	while (i < height)
 	{
 		canvas.pixels[i] = (t_color *)malloc(sizeof(t_color) * width);
-		for (int j = 0; j < width; j++)
-		{
-			canvas.pixels[i][j] = create_color(0, 0, 0); // Initialize to black
-		}
+		init_canvas_row(canvas.pixels[i], width);
+		i++;
 	}
 	return (canvas);
 }
 
-void	write_pixel(t_canvas *canvas, int x, int y, t_color color)
+static void	write_row_to_ppm(FILE *file, t_canvas *canvas, int y)
 {
-	if (x >= 0 && x < canvas->width && y >= 0 && y < canvas->height)
-	{
-		canvas->pixels[y][x] = color;
-	}
-}
+	int		x;
+	t_color	color;
 
-t_color	pixel_at(t_canvas *canvas, int x, int y)
-{
-	if (x >= 0 && x < canvas->width && y >= 0 && y < canvas->height)
+	x = 0;
+	while (x < canvas->width)
 	{
-		return (canvas->pixels[y][x]);
+		color = canvas->pixels[y][x];
+		fprintf(file, "%d %d %d ", (int)(color.r * 255), (int)(color.g * 255),
+			(int)(color.b * 255));
+		x++;
 	}
-	return (create_color(0, 0, 0)); // Return black for out of bounds
+	fprintf(file, "\n");
 }
 
 void	canvas_to_ppm(t_canvas *canvas, const char *filename)
 {
 	FILE	*file;
-	t_color	color;
+	int		y;
 
 	file = fopen(filename, "w");
 	if (file == NULL)
@@ -47,25 +57,11 @@ void	canvas_to_ppm(t_canvas *canvas, const char *filename)
 		printf("Error opening file for writing\n");
 		return ;
 	}
-	fprintf(file, "P3\n%d %d\n255\n", canvas->width, canvas->height);
-	for (int y = 0; y < canvas->height; y++)
+	y = 0;
+	while (y < canvas->height)
 	{
-		for (int x = 0; x < canvas->width; x++)
-		{
-			color = canvas->pixels[y][x];
-			fprintf(file, "%d %d %d ", (int)(color.r * 255), (int)(color.g
-					* 255), (int)(color.b * 255));
-		}
-		fprintf(file, "\n");
+		write_row_to_ppm(file, canvas, y);
+		y++;
 	}
 	fclose(file);
-}
-
-void	free_canvas(t_canvas *canvas)
-{
-	for (int i = 0; i < canvas->height; i++)
-	{
-		free(canvas->pixels[i]);
-	}
-	free(canvas->pixels);
 }

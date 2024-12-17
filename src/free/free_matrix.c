@@ -2,7 +2,7 @@
 
 void	free_matrix(t_matrix *matrix)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < matrix->size)

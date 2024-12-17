@@ -1,123 +1,54 @@
 #include "minirt.h"
 
-t_ray	create_ray(t_tuple origin, t_tuple direction)
+static t_color	blend_colors(t_color surface_color, t_color reflect_color,
+		double reflective)
 {
-	t_ray	ray;
+	t_color	scaled_surface;
+	t_color	scaled_reflection;
 
-	ray.origin = origin;
-	ray.direction = direction;
-	return (ray);
+	scaled_surface = color_multiply(surface_color, 1.0 - reflective);
+	scaled_reflection = color_multiply(reflect_color, reflective);
+	return (color_add(scaled_surface, scaled_reflection));
 }
 
-t_tuple	position(t_ray ray, double t)
+static t_color	get_intersection_color(t_scene *scene, t_ray ray,
+		void *object, t_tuple point)
 {
-	return (tuple_add(ray.origin, tuple_multiply(ray.direction, t)));
+	t_tuple		normal;
+	t_material	material;
+	t_color		surface_color;
+	t_compu		comps;
+
+	normal = get_object_normal(object, point);
+	material = get_object_material(object);
+	comps.point = point;
+	comps.eyev = tuple_negate(ray.direction);
+	comps.normalv = normal;
+	surface_color = get_surface_color(scene, material, comps);
+	if (material.reflective > 0)
+		return (blend_colors(surface_color,
+				calculate_reflection(scene, ray, point, normal),
+				material.reflective));
+	return (surface_color);
 }
 
-// ok
+static t_color	process_intersection(t_scene *scene, t_ray ray,
+		t_intersections xs)
+{
+	t_tuple	point;
+	void	*object;
 
-// t_color	ray_color(t_scene *scene, t_ray ray)
-// {
-// 	t_intersections	xs;
-// 	t_tuple			point;
-// 	t_tuple			normal;
-// 	t_tuple			eye;
-// 	int				in_shadow;
-// 	t_material		material;
-// 	void			*object;
-
-// 	xs = intersect_world(scene, ray);
-// 	if (xs.count > 0)
-// 	{
-// 		point = position(ray, xs.t[0]);
-// 		object = xs.object[0];
-// 		if (((t_sphere *)object)->radius > 0) // It's a sphere
-// 		{
-// 			normal = normal_at(object, point);
-// 			material = ((t_sphere *)object)->material;
-// 		}
-// 		else // It's a plane
-// 		{
-// 			normal = normal_at(object, point);
-// 			material = ((t_plane *)object)->material;
-// 		}
-// 		eye = tuple_negate(ray.direction);
-// 		in_shadow = is_shadowed(scene, point, &scene->light);
-// 		return (lighting(material, scene->light, point, eye, normal,
-// 				in_shadow));
-// 	}
-// 	return (create_color(0, 0, 0));
-// }
+	point = position(ray, xs.t[0]);
+	object = xs.object[0];
+	return (get_intersection_color(scene, ray, object, point));
+}
 
 t_color	ray_color(t_scene *scene, t_ray ray)
 {
-	t_intersections xs;
-	t_tuple point;
-	t_tuple normal;
-	t_tuple eye;
-	int in_shadow;
-	t_material material;
-	void *object;
+	t_intersections	xs;
 
 	xs = intersect_world(scene, ray);
 	if (xs.count > 0)
-	{
-		point = position(ray, xs.t[0]);
-		object = xs.object[0];
-		if (((t_sphere *)object)->radius > 0) // It's a sphere
-		{
-			normal = normal_at(object, point);
-			material = ((t_sphere *)object)->material;
-		}
-		else // It's a plane
-		{
-			normal = normal_at(object, point);
-			material = ((t_plane *)object)->material;
-		}
-		eye = tuple_negate(ray.direction);
-
-		// Calculate reflection
-		t_tuple reflect_dir = tuple_reflect(ray.direction, normal);
-		t_ray reflect_ray = create_ray(point, reflect_dir);
-		t_color reflect_color = create_color(0, 0, 0);
-
-		// Only calculate reflection if reflectivity > 0
-		if (material.reflective > 0)
-		{
-			t_intersections reflect_xs = intersect_world(scene, reflect_ray);
-			if (reflect_xs.count > 0)
-			{
-				t_tuple reflect_point = position(reflect_ray, reflect_xs.t[0]);
-				t_tuple reflect_normal;
-				t_material reflect_material;
-				void *reflect_object = reflect_xs.object[0];
-
-				if (((t_sphere *)reflect_object)->radius > 0)
-				{
-					reflect_normal = normal_at(reflect_object, reflect_point);
-					reflect_material = ((t_sphere *)reflect_object)->material;
-				}
-				else
-				{
-					reflect_normal = normal_at(reflect_object, reflect_point);
-					reflect_material = ((t_plane *)reflect_object)->material;
-				}
-
-				t_tuple reflect_eye = tuple_negate(reflect_ray.direction);
-				in_shadow = is_shadowed(scene, reflect_point, &scene->light);
-				reflect_color = lighting(reflect_material, scene->light,
-						reflect_point, reflect_eye, reflect_normal, in_shadow);
-			}
-		}
-
-		in_shadow = is_shadowed(scene, point, &scene->light);
-		t_color surface_color = lighting(material, scene->light, point, eye,
-				normal, in_shadow);
-
-		// Blend surface and reflection colors
-		return (color_add(color_multiply(surface_color, 1.0
-					- material.reflective), color_multiply(reflect_color,
-					material.reflective)));
-	}
+		return (process_intersection(scene, ray, xs));
 	return (create_color(0, 0, 0));
 }

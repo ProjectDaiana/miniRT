@@ -1,46 +1,50 @@
 #include "minirt.h"
 
-t_color	lighting(t_material material, t_light light, t_tuple point,
-		t_tuple eye_v, t_tuple normal_v, int in_shadow)
+static t_light_data	init_light_data(t_lighting_params params)
 {
-	t_color color;
-	t_color ambient, diffuse, specular;
-	t_tuple lightv;
-	double light_dot_normal, reflect_dot_eye;
-	
-	// Get base color
-	color = (material.pattern.type == CHECKERS) ? 
-		pattern_at(material.pattern, point) : material.color;
-	
-	// Calculate ambient (not affected by intensity)
-	ambient = color_multiply(color_multiply_colors(color, light.color), 
-		material.ambient);
-	
-	if (in_shadow)
-		return ambient;
+	t_light_data	data;
 
-	// Calculate diffuse and specular
-	lightv = tuple_normalize(tuple_subtract(light.position, point));
-	light_dot_normal = fmax(tuple_dot(lightv, normal_v), 0.0);
-	
-	// Diffuse calculation with smoother transition
-	diffuse = color_multiply(color_multiply_colors(color, light.color),
-		material.diffuse * pow(light_dot_normal, 1.1) * light.intensity);
-		
-	// Specular calculation with improved falloff
-	t_tuple reflectv = tuple_reflect(tuple_negate(lightv), normal_v);
-	reflect_dot_eye = fmax(tuple_dot(reflectv, eye_v), 0.0);
-	
-	if (reflect_dot_eye > 0)
-	{
-		double factor = pow(reflect_dot_eye, material.shininess);
-		specular = color_multiply(light.color, 
-			material.specular * factor * light.intensity);
-	}
-	else
-		specular = create_color(0, 0, 0);
-	
-	// Blend components
-	return color_add(color_add(ambient, diffuse), specular);
+	data.material = params.material;
+	data.light = params.light;
+	data.point = params.point;
+	data.eye_v = params.eye_v;
+	data.normal_v = params.normal_v;
+	data.in_shadow = params.in_shadow;
+	return (data);
 }
 
+static t_color	get_diffuse_and_specular(t_lighting_params params,
+		t_tuple lightv, t_color base_color)
+{
+	t_light_data	data;
+	t_color			diffuse;
+	t_color			specular;
+	t_tuple			reflectv;
+	double			dot;
+
+	data = init_light_data(params);
+	dot = fmax(tuple_dot(lightv, params.normal_v), 0.0);
+	diffuse = get_diffuse_component(base_color, &data, dot);
+	reflectv = tuple_reflect(tuple_negate(lightv), params.normal_v);
+	dot = fmax(tuple_dot(reflectv, params.eye_v), 0.0);
+	specular = get_specular_component(&data, dot);
+	return (color_add(diffuse, specular));
+}
+
+t_color	lighting(t_lighting_params params)
+{
+	t_light_data	data;
+	t_color			base_color;
+	t_color			ambient;
+	t_tuple			lightv;
+
+	data = init_light_data(params);
+	base_color = get_base_color(params.material, params.point);
+	ambient = get_ambient_component(base_color, &data);
+	if (params.in_shadow)
+		return (ambient);
+	lightv = tuple_normalize(tuple_subtract(params.light.position,
+				params.point));
+	return (color_add(ambient, get_diffuse_and_specular(params, lightv,
+				base_color)));
+}

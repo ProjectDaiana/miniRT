@@ -7,6 +7,7 @@
     "libft.h": "c",
     "unistd.h": "c",
     "functional": "c",
-    "WORD.C": "cpp"
+    "WORD.C": "cpp",
+    "string.h": "c"
   }
 }
