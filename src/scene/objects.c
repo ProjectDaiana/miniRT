@@ -3,9 +3,9 @@
 static void	init_plane_material(t_plane *plane, t_color color)
 {
 	plane->material.color = color;
-	plane->material.ambient = 0.1;
+	plane->material.ambient = 0.15;
 	plane->material.diffuse = 0.8;
-	plane->material.specular = 0.0;
+	plane->material.specular = 0.2;
 	plane->material.shininess = 200;
 	plane->material.reflective = 0.05;
 }

@@ -61,6 +61,5 @@ t_plane	create_plane_from_params(char **pos, char **normal, char **color)
 	norm = create_vector(ft_atof(normal[0]), ft_atof(normal[1]),
 			ft_atof(normal[2]));
 	plane = create_plane(point, norm, create_material_color(color));
-	init_plane_material(&plane);
 	return (plane);
 }

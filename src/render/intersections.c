@@ -27,18 +27,18 @@ t_intersections	intersect_plane(t_plane plane, t_ray ray)
 	return (result);
 }
 
-t_intersections	intersect_cylinder(t_cylinder cylinder, t_ray ray)
-{
-	t_intersections	result;
-	double			t[2];
-	double			y[2];
+// t_intersections	intersect_cylinder(t_cylinder cylinder, t_ray ray)
+// {
+// 	t_intersections	result;
+// 	double			t[2];
+// 	double			y[2];
 
-	init_cylinder_intersection(&result);
-	calculate_cylinder_intersections(cylinder, ray, t, y);
-	check_cylinder_bounds(cylinder, t, y);
-	allocate_intersections(&result, t, &cylinder);
-	return (result);
-}
+// 	init_cylinder_intersection(&result);
+// 	calculate_cylinder_intersections(cylinder, ray, t, y);
+// 	check_cylinder_bounds(cylinder, t, y);
+// 	allocate_intersections(&result, t, &cylinder);
+// 	return (result);
+// }
 
 static void	add_sphere_intersections(t_scene *scene, t_ray ray,
 		t_intersections *result)

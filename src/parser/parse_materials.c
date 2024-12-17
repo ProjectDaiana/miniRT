@@ -16,13 +16,13 @@ t_color	create_material_color(char **color_values)
 			/ 255.0));
 }
 
-void	init_plane_material(t_plane *plane)
-{
-	plane->material.ambient = 0.15;
-	plane->material.diffuse = 0.8;
-	plane->material.specular = 0.2;
-	plane->material.shininess = 150;
-}
+// void	init_plane_material(t_plane *plane)
+// {
+// 	plane->material.ambient = 0.15;
+// 	plane->material.diffuse = 0.8;
+// 	plane->material.specular = 0.2;
+// 	plane->material.shininess = 150;
+// }
 
 void	set_color_components(t_color *dest, char **color_values)
 {

@@ -154,16 +154,16 @@ typedef struct s_pattern
 	t_matrix		transform;
 }					t_pattern;
 
-typedef struct
+typedef struct s_material
 {
+	t_color			color;
 	double			ambient;
 	double			diffuse;
 	double			specular;
 	double			shininess;
 	double			reflective;
-	t_color			color;
 	t_pattern		pattern;
-
+	int				has_pattern;
 }					t_material;
 
 typedef struct s_sphere
@@ -193,6 +193,9 @@ typedef struct s_cylinder
 	double			height;
 	t_color			color;
 	t_matrix		transform;
+	double			max;
+	double			min;
+	t_material		material;
 }					t_cylinder;
 
 typedef struct s_ambient_light
@@ -441,8 +444,9 @@ void				add_cylinder(t_scene *scene, t_cylinder *cylinder);
 // intersections
 t_intersections		intersect_plane(t_plane plane, t_ray ray);
 // t_tuple			normal_at_plane(t_plane plane, t_tuple point);
-t_intersections		intersect_cylinder(t_cylinder cylinder, t_ray ray);
-t_tuple				normal_at_cylinder(t_cylinder cylinder, t_tuple point);
+t_intersections		intersect_cylinder(t_cylinder *cylinder, t_ray ray);
+t_tuple				normal_at_cylinder(t_cylinder cylinder,
+						t_tuple world_point);
 void				sort_intersections(t_intersections *xs);
 t_intersections		intersect_world(t_scene *scene, t_ray ray);
 int					is_shadowed(t_scene *scene, t_tuple point, t_light *light);
@@ -497,9 +501,12 @@ int					is_valid_line(char *line);
 t_color				create_material_color(char **color_values);
 
 void				init_sphere_material(t_sphere *sphere);
-// void				init_plane_material(t_plane *plane);
+//void				init_plane_material(t_plane *plane, t_color color);
 
-void				set_color_components(t_color *dest, char **color_values);
+// void				init_plane_material(t_plane *plane) ;
+
+void set_color_components(t_color *dest,
+						char **color_values);
 
 void				set_camera_orientation(t_scene *scene, char **orient);
 void				set_camera_position(t_scene *scene, char **pos);
@@ -519,7 +526,6 @@ void				parse_sphere(char *line, t_scene *scene);
 void				parse_plane(char *line, t_scene *scene);
 void				init_scene_file(const char *filename, FILE **file,
 						t_scene *scene);
-void				parse_line_by_type(char *line, t_scene *scene);
 t_plane				create_plane_from_params(char **pos, char **normal,
 						char **color);
 
@@ -554,11 +560,12 @@ void				calculate_cylinder_params(t_cylinder cylinder, t_ray ray,
 void				add_valid_intersection(t_intersections *result, double t,
 						t_cylinder *cylinder, int *index);
 void				calculate_cylinder_intersections(t_cylinder cylinder,
-						t_ray ray, double *t, double *y);
+						t_ray ray, double *t);
 
-void				check_cylinder_bounds(t_cylinder cylinder, double *t,
-						double *y);
-
+// void				check_cylinder_bounds(t_cylinder cylinder, double *t,
+// 						double *y);
+void				check_cylinder_bounds(t_cylinder cylinder, t_ray ray,
+						double *t);
 void				allocate_intersections(t_intersections *result, double *t,
 						t_cylinder *cylinder);
 
@@ -570,3 +577,6 @@ void				set_intersection_values(t_intersections *result,
 						t_sphere *sphere, double *params);
 int					init_mlx(t_data *data);
 void				setup_hooks(t_data *data);
+void				free_scene(t_scene *scene);
+void				free_intersections(t_intersections *xs);
+void				parse_cylinder(char *line, t_scene *scene);
