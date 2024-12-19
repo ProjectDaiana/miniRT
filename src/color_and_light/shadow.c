@@ -7,9 +7,8 @@ static t_ray	create_shadow_ray(t_tuple point, t_light *light)
 
 	direction = tuple_subtract(light->position, point);
 	normalized_direction = tuple_normalize(direction);
-	return (create_ray(tuple_add(point,
-				tuple_multiply(normalized_direction, EPSILON)),
-			normalized_direction));
+	return (create_ray(tuple_add(point, tuple_multiply(normalized_direction,
+					EPSILON)), normalized_direction));
 }
 
 int	is_shadowed(t_scene *scene, t_tuple point, t_light *light)
@@ -22,6 +21,7 @@ int	is_shadowed(t_scene *scene, t_tuple point, t_light *light)
 	shadow_ray = create_shadow_ray(point, light);
 	distance = tuple_magnitude(tuple_subtract(light->position, point));
 	intersections = intersect_world(scene, shadow_ray);
+	// Add distance-based attenuation
 	i = 0;
 	while (i < intersections.count)
 	{

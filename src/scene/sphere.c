@@ -41,6 +41,7 @@ t_tuple	normal_at_sphere(t_sphere *sphere, t_tuple world_point)
 	return (object_normal);
 }
 
+
 t_tuple	normal_at(void *object, t_tuple world_point)
 {
 	if (((t_sphere *)object)->radius > 0)
@@ -49,5 +50,29 @@ t_tuple	normal_at(void *object, t_tuple world_point)
 		|| ((t_plane *)object)->normal.y != 0
 		|| ((t_plane *)object)->normal.z != 0)
 		return (normal_at_plane((t_plane *)object, world_point));
+	else if (((t_cylinder *)object)->diameter > 0)
+		return (normal_at_cylinder((t_cylinder *)object, world_point));
 	return (create_vector(0, 0, 0));
 }
+
+// t_tuple	normal_at(void *object, t_tuple world_point)
+// {
+// 	t_sphere *sphere;
+// 	t_plane *plane;
+// 	t_cylinder *cylinder;
+// 	double normal_length;
+
+// 	// Match the working order from get_object_material
+// 	sphere = (t_sphere *)object;
+// 	if (sphere->radius > 0 && sphere->center.w == 1.0)
+// 		return (normal_at_sphere(sphere, world_point));
+
+// 	plane = (t_plane *)object;
+// 	normal_length = sqrt(plane->normal.x * plane->normal.x + plane->normal.y
+// 			* plane->normal.y + plane->normal.z * plane->normal.z);
+// 	if (fabs(normal_length - 1.0) < EPSILON)
+// 		return (normal_at_plane(plane, world_point));
+
+// 	cylinder = (t_cylinder *)object;
+// 	return (normal_at_cylinder(cylinder, world_point));
+// }

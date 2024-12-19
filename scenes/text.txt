@@ -48,6 +48,17 @@ pl 8,0,0 -1,0,0 255,255,0
 pl 0,0,45 0,0,-1 0,0,255
 
 
+// current
+C 5,10,-25 -0.2,-0.3,0.8 50
+L -2,3,-10 0.4 255,255,255
+A 0.2 220,220,255
+sp -5,-2.5,10 7 255,0,0 0
+sp 3,-2.5,-3 4 255,255,0 0.9
+sp -6,-2.5,-3 2 220,220,255 0.3
+sp -2,-2.5,-6 2 0,255,0 0.3
+pl 0,-5.5,0 0,1,0 0,255,0 0.3
+pl 8,0,0 -1,0,0 255,255,0
+pl 0,0,45 0,0,-1 0,0,255
 
 
 // modify:
@@ -309,3 +320,21 @@ void	parse_scene(const char *filename, t_scene *scene)
 	}
 }
 
+
+
+commits:
+
+9818e0e norm ok
+309c498 norm ok
+7ae1036 sp position ok
+216f3cb reflected planes
+10591be checkered ok
+793a583 light
+e21b09c temp ok
+afacf02 ok light/shadow
+80d9f7b floor+walls
+b3ff18a  this works and display a sphere
+403e527 Update README.md
+2dd4f15 Create README.md
+5dd6698 cleanup, merged, transform(), replaced t_vector for t_tuple
+227dbf1 compiling version, wrong ray_trace function, cleanup

@@ -23,8 +23,11 @@ t_color	calculate_reflection(t_scene *scene, t_ray ray, t_tuple point,
 	t_ray			reflect_ray;
 	t_intersections	reflect_xs;
 	t_color			reflect_color;
+	t_tuple			offset_point;
 
-	reflect_ray = create_ray(point, tuple_reflect(ray.direction, normal));
+	// Add a small offset to the reflection point to avoid self-intersection
+	offset_point = tuple_add(point, tuple_multiply(normal, 0.00001));
+	reflect_ray = create_ray(offset_point, tuple_reflect(ray.direction, normal));
 	reflect_color = create_color(0, 0, 0);
 	reflect_xs = intersect_world(scene, reflect_ray);
 	if (reflect_xs.count > 0)

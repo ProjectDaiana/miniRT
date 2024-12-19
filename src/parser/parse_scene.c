@@ -24,6 +24,8 @@ void	parse_line_by_type(char *line, t_scene *scene)
 		parse_sphere(line, scene);
 	else if (line[0] == 'p' && line[1] == 'l')
 		parse_plane(line, scene);
+	else if (line[0] == 'c' && line[1] == 'y')
+		parse_cylinder(line, scene);
 }
 
 void	parse_scene(const char *filename, t_scene *scene)
@@ -56,10 +58,25 @@ t_plane	create_plane_from_params(char **pos, char **normal, char **color)
 	t_plane	plane;
 	t_tuple	point;
 	t_tuple	norm;
+	int		color_count;
 
 	point = create_point(ft_atof(pos[0]), ft_atof(pos[1]), ft_atof(pos[2]));
 	norm = create_vector(ft_atof(normal[0]), ft_atof(normal[1]),
 			ft_atof(normal[2]));
 	plane = create_plane(point, norm, create_material_color(color));
+	color_count = 0;
+	while (color[color_count])
+		color_count++;
+	printf("Color count: %d\n", color_count);
+	if (color_count > 3)
+	{
+		plane.material.reflective = ft_atof(color[3]);
+		printf("Setting reflective to: %f\n", plane.material.reflective);
+	}
+	if (color_count > 4)
+	{
+		plane.material.transparency = ft_atof(color[4]);
+		printf("Setting transparency to: %f\n", plane.material.transparency);
+	}
 	return (plane);
 }

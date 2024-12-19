@@ -6,18 +6,18 @@ t_tuple	normal_at_plane(t_plane *plane, t_tuple world_point)
 	return (plane->normal);
 }
 
-t_tuple	normal_at_cylinder(t_cylinder cylinder, t_tuple point)
-{
-	t_tuple	pc;
-	double	projection;
-	t_tuple	axis_point;
+// t_tuple	normal_at_cylinder(t_cylinder cylinder, t_tuple point)
+// {
+// 	t_tuple	pc;
+// 	double	projection;
+// 	t_tuple	axis_point;
 
-	pc = tuple_subtract(point, cylinder.center);
-	projection = tuple_dot(pc, cylinder.axis);
-	axis_point = tuple_add(cylinder.center, tuple_multiply(cylinder.axis,
-				projection));
-	return (tuple_normalize(tuple_subtract(point, axis_point)));
-}
+// 	pc = tuple_subtract(point, cylinder.center);
+// 	projection = tuple_dot(pc, cylinder.axis);
+// 	axis_point = tuple_add(cylinder.center, tuple_multiply(cylinder.axis,
+// 				projection));
+// 	return (tuple_normalize(tuple_subtract(point, axis_point)));
+// }
 
 void	sort_intersections(t_intersections *xs)
 {

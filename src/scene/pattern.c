@@ -30,6 +30,7 @@ t_color	pattern_at_checkers(t_pattern pattern, t_tuple point)
 	return (pattern.color2);
 }
 
+
 t_color	pattern_at(t_pattern pattern, t_tuple point)
 {
 	if (pattern.type == CHECKERS)
@@ -43,10 +44,14 @@ t_color	pattern_at_shape(t_pattern pattern, void *shape, t_tuple world_point)
 	t_matrix	pattern_inv;
 	t_tuple		object_point;
 	t_tuple		pattern_point;
+	double		epsilon;
 
+	epsilon = 0.00001;
 	shape_inv = inverse_matrix(&((t_plane *)shape)->transform);
 	pattern_inv = inverse_matrix(&pattern.transform);
 	object_point = matrix_multiply_tuple(shape_inv, world_point);
+	object_point.x += (fabs(object_point.x) < epsilon) ? epsilon : 0;
+	object_point.z += (fabs(object_point.z) < epsilon) ? epsilon : 0;
 	pattern_point = matrix_multiply_tuple(pattern_inv, object_point);
 	return (pattern_at(pattern, pattern_point));
 }

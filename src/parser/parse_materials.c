@@ -2,11 +2,12 @@
 
 void	init_sphere_material(t_sphere *sphere)
 {
-	sphere->material.ambient = 0.1;
-	sphere->material.diffuse = 0.9;
-	sphere->material.specular = 0.8;
-	sphere->material.shininess = 200;
-	sphere->material.reflective = 0.0;
+	sphere->material.ambient = 0.3;
+	sphere->material.diffuse = 0.0;
+	sphere->material.specular = 0.2;
+	sphere->material.shininess = 300;
+	// sphere->material.reflective = 0.7;
+	// sphere->material.transparency = 0.9;
 }
 
 t_color	create_material_color(char **color_values)
@@ -15,14 +16,6 @@ t_color	create_material_color(char **color_values)
 			ft_atof(color_values[1]) / 255.0, ft_atof(color_values[2])
 			/ 255.0));
 }
-
-// void	init_plane_material(t_plane *plane)
-// {
-// 	plane->material.ambient = 0.15;
-// 	plane->material.diffuse = 0.8;
-// 	plane->material.specular = 0.2;
-// 	plane->material.shininess = 150;
-// }
 
 void	set_color_components(t_color *dest, char **color_values)
 {

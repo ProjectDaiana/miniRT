@@ -37,6 +37,7 @@ t_color	get_specular_component(t_light_data *light_data, double reflect_dot)
 
 t_color	get_base_color(t_material material, t_tuple point)
 {
+
 	if (material.pattern.type == CHECKERS)
 	{
 		return (pattern_at(material.pattern, point));

@@ -2,9 +2,24 @@
 
 t_material	get_object_material(void *object)
 {
-	if (((t_sphere *)object)->radius > 0)
-		return (((t_sphere *)object)->material);
-	return (((t_plane *)object)->material);
+	t_sphere	*sphere;
+	t_plane		*plane;
+	double		normal_length;
+	t_cylinder	*cylinder;
+
+	sphere = (t_sphere *)object;
+	if (sphere->radius > 0 && sphere->center.w == 1.0)
+		return (sphere->material);
+	plane = (t_plane *)object;
+	normal_length = sqrt(plane->normal.x * plane->normal.x + plane->normal.y
+			* plane->normal.y + plane->normal.z * plane->normal.z);
+	if (fabs(normal_length - 1.0) < EPSILON)
+		return (plane->material);
+	cylinder = (t_cylinder *)object;
+	printf("Getting cylinder material:\n");
+	printf("Color values: R=%d, G=%d, B=%d\n", cylinder->material.color.r,
+		cylinder->material.color.g, cylinder->material.color.b);
+	return (cylinder->material);
 }
 
 t_tuple	get_object_normal(void *object, t_tuple point)

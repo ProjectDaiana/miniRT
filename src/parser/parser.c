@@ -111,7 +111,13 @@ void	parse_plane(char *line, t_scene *scene)
 	char	**pos;
 	char	**normal;
 	char	**color;
+	int		param_count;
 
+	split = ft_split(line, ' ');
+	param_count = 0;
+	while (split[param_count])
+		param_count++;
+	
 	if (!init_plane_splits(line, &split, &pos, &normal))
 		return ;
 	if (!init_plane_color(split, &color))
@@ -120,7 +126,57 @@ void	parse_plane(char *line, t_scene *scene)
 		return ;
 	}
 	plane = create_plane_from_params(pos, normal, color);
+	if (param_count > 4) 
+		plane.material.reflective = ft_atof(split[4]);
+	if (param_count > 5)
+		plane.material.transparency = ft_atof(split[5]);
+	
 	add_plane(scene, &plane);
 	free_splits(split, pos, normal);
+	ft_free_split(color);
+}
+
+void	parse_cylinder(char *line, t_scene *scene)
+{
+	t_cylinder	cylinder;
+	char		**split;
+	char		**pos;
+	char		**orient;
+	char		**color;
+
+	split = ft_split(line, ' ');
+	if (!validate_params(split, 5, "cylinder"))
+		return ;
+	pos = ft_split(split[1], ',');
+	orient = ft_split(split[2], ',');
+	if (!validate_coordinates(pos, "cylinder position", split)
+		|| !validate_coordinates(orient, "cylinder orientation", split))
+	{
+		free_splits(split, pos, orient);
+		return ;
+	}
+	cylinder.center = create_point(ft_atof(pos[0]), ft_atof(pos[1]),
+			ft_atof(pos[2]));
+	cylinder.axis = create_vector(ft_atof(orient[0]), ft_atof(orient[1]),
+			ft_atof(orient[2]));
+	cylinder.axis = tuple_normalize(cylinder.axis);
+	cylinder.diameter = ft_atof(split[3]);
+	cylinder.height = ft_atof(split[4]);
+	color = ft_split(split[5], ',');
+	if (!validate_coordinates(color, "cylinder color", split))
+	{
+		free_splits(split, pos, orient);
+		return ;
+	}
+	cylinder.material.color = create_material_color(color);
+	cylinder.min = 0;
+	cylinder.max = cylinder.height;
+	cylinder.material.ambient = 0.1;
+	cylinder.material.diffuse = 0.7;
+	cylinder.material.specular = 0.3;
+	cylinder.material.shininess = 200;
+	cylinder.material.reflective = 0.0;
+	add_cylinder(scene, &cylinder);
+	free_splits(split, pos, orient);
 	ft_free_split(color);
 }
