@@ -1,3 +1,5 @@
+
+
 #include "minirt.h"
 
 static void	init(t_data *data, t_vector *vector)

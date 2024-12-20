@@ -179,9 +179,9 @@ void	parse_cylinder(char *line, t_scene *scene)
 	cylinder.material.shininess = 100;
 	cylinder.material.reflective = 0.0;
 	cylinder.material.has_pattern = 0.0;
-	printf("DEBUG: Creating cylinder with normalized color: R=%d, G=%d, B=%d\n",
-		cylinder.material.color.r, cylinder.material.color.g,
-		cylinder.material.color.b);
+	// printf("DEBUG: Creating cylinder with normalized color: R=%d, G=%d, B=%d\n",
+		// cylinder.material.color.r, cylinder.material.color.g,
+		// cylinder.material.color.b);
 	add_cylinder(scene, &cylinder);
 	free_splits(split, pos, orient);
 	ft_free_split(color);

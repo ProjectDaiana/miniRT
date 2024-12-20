@@ -46,7 +46,7 @@ t_tuple	normal_at(void *object, t_tuple world_point)
 	// t_sphere	*sphere;
 	// t_cylinder	*cylinder;
 	// t_plane		*plane;
-	printf("DEBUG: Checking object type for normal calculation\n");
+	// printf("DEBUG: Checking object type for normal calculation\n");
 	// if (((t_cylinder *)object)->diameter > 0)
 	// {
 	// 	printf("DEBUG: Object identified as cylinder\n");
@@ -55,23 +55,23 @@ t_tuple	normal_at(void *object, t_tuple world_point)
 	// sphere = (t_sphere *)object;
 	if (((t_sphere *)object)->radius > 0)
 	{
-		printf("DEBUG: Object identified as sphere\n");
+		// printf("DEBUG: Object identified as sphere\n");
 		return (normal_at_sphere((t_sphere *)object, world_point));
 	}
 	if (((t_cylinder *)object)->diameter > 0)
 	{
-		printf("DEBUG: Object identified as cylinder\n");
+		// printf("DEBUG: Object identified as cylinder\n");
 		return (normal_at_cylinder((t_cylinder *)object, world_point));
 	}
 	// plane = (t_plane *)object;
 	if (((t_plane *)object)->normal.x != 0 || ((t_plane *)object)->normal.y != 0
 		|| ((t_plane *)object)->normal.z != 0)
 	{
-		printf("DEBUG: Object identified as plane\n");
+		// printf("DEBUG: Object identified as plane\n");
 		return (normal_at_plane((t_plane *)object, world_point));
 	}
 	// cylinder = (t_cylinder *)object;
-	printf("DEBUG: Object type not identified!\n");
+	// printf("DEBUG: Object type not identified!\n");
 	return (create_vector(0, 0, 0));
 }
 

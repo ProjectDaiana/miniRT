@@ -26,9 +26,9 @@ void	add_plane(t_scene *scene, t_plane *plane)
 
 void	add_cylinder(t_scene *scene, t_cylinder *cylinder)
 {
-	printf("DEBUG: Adding cylinder to scene with normalized color:\n");
-	printf("DEBUG: Color: R=%d, G=%d, B=%d\n", cylinder->material.color.r,
-		cylinder->material.color.g, cylinder->material.color.b);
+	// printf("DEBUG: Adding cylinder to scene with normalized color:\n");
+	// printf("DEBUG: Color: R=%d, G=%d, B=%d\n", cylinder->material.color.r,
+	// 	cylinder->material.color.g, cylinder->material.color.b);
 	scene->cylinder_count++;
 	scene->cylinders = realloc(scene->cylinders, scene->cylinder_count
 			* sizeof(t_cylinder));

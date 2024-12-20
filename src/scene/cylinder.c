@@ -48,28 +48,28 @@ t_tuple	normal_at_cylinder(t_cylinder *cylinder, t_tuple world_point)
 	double	projection_len;
 
 	t_tuple normal; // Declare this if you want to store the normal
-	printf("Cylinder normal at point (%f,%f,%f)\n", world_point.x,
-		world_point.y, world_point.z);
+	// printf("Cylinder normal at point (%f,%f,%f)\n", world_point.x,
+		// world_point.y, world_point.z);
 	obj_point = tuple_subtract(world_point, cylinder->center);
 	projection_len = tuple_dot(obj_point, cylinder->axis);
 	// Check if point is on caps
 	if (projection_len >= cylinder->height - EPSILON)
 	{
 		normal = cylinder->axis;
-		printf("Cap normal: (%f,%f,%f)\n", normal.x, normal.y, normal.z);
+		// printf("Cap normal: (%f,%f,%f)\n", normal.x, normal.y, normal.z);
 		return (normal);
 	}
 	if (projection_len <= EPSILON)
 	{
 		normal = tuple_negate(cylinder->axis);
-		printf("Bottom cap normal: (%f,%f,%f)\n", normal.x, normal.y, normal.z);
+		// printf("Bottom cap normal: (%f,%f,%f)\n", normal.x, normal.y, normal.z);
 		return (normal);
 	}
 	// Point is on the body
 	axis_projection = tuple_multiply(cylinder->axis, projection_len);
 	radial_vect = tuple_subtract(obj_point, axis_projection);
 	normal = tuple_normalize(radial_vect);
-	printf("Body normal: (%f,%f,%f)\n", normal.x, normal.y, normal.z);
+	// printf("Body normal: (%f,%f,%f)\n", normal.x, normal.y, normal.z);
 	return (normal);
 }
 

@@ -38,13 +38,13 @@ static int	is_plane(void *object)
 		return (0);
         
 	// Debug output to track plane properties
-	printf("DEBUG Plane check:\n");
-	printf("Point: (%f, %f, %f, %f)\n", 
-		plane->point.x, plane->point.y, plane->point.z, plane->point.w);
-	printf("Normal: (%f, %f, %f, %f)\n", 
-		plane->normal.x, plane->normal.y, plane->normal.z, plane->normal.w);
-	printf("Color: (%d, %d, %d)\n", 
-		plane->material.color.r, plane->material.color.g, plane->material.color.b);
+	// printf("DEBUG Plane check:\n");
+	// printf("Point: (%f, %f, %f, %f)\n", 
+	// 	plane->point.x, plane->point.y, plane->point.z, plane->point.w);
+	// printf("Normal: (%f, %f, %f, %f)\n", 
+	// 	plane->normal.x, plane->normal.y, plane->normal.z, plane->normal.w);
+	// printf("Color: (%d, %d, %d)\n", 
+	// 	plane->material.color.r, plane->material.color.g, plane->material.color.b);
 
 	return (1);
 }
@@ -53,7 +53,7 @@ t_material	get_object_material(void *object)
 {
 	if (!object)
 	{
-		printf("DEBUG: NULL object passed to get_object_material\n");
+		// printf("DEBUG: NULL object passed to get_object_material\n");
 		return ((t_material){0}); // Return empty material for NULL
 	}
 	
@@ -63,14 +63,14 @@ t_material	get_object_material(void *object)
 		return (((t_cylinder *)object)->material);
 	if (is_plane(object))
 	{
-		printf("DEBUG: Plane material found with color: R=%d, G=%d, B=%d\n",
-			((t_plane *)object)->material.color.r,
-			((t_plane *)object)->material.color.g,
-			((t_plane *)object)->material.color.b);
+		// printf("DEBUG: Plane material found with color: R=%d, G=%d, B=%d\n",
+			// ((t_plane *)object)->material.color.r,
+			// ((t_plane *)object)->material.color.g,
+			// ((t_plane *)object)->material.color.b);
 		return (((t_plane *)object)->material);
 	}
 
-	printf("DEBUG: ERROR object type not identified\n");
+	// printf("DEBUG: ERROR object type not identified\n");
 	return ((t_material){0}); // Return empty material as fallback
 }
 
