@@ -31,10 +31,10 @@ t_color	reflected_color(t_scene *scene, t_compu comps, int remaining)
 
 	if (remaining <= 0)
 		return (create_color(0, 0, 0));
-	if (((t_sphere *)comps.object)->radius > 0)
-		reflective = ((t_sphere *)comps.object)->material.reflective;
-	else
-		reflective = ((t_plane *)comps.object)->material.reflective;
+	
+	t_material material = get_object_material(comps.object);
+	reflective = material.reflective;
+	
 	if (reflective < EPSILON)
 		return (create_color(0, 0, 0));
 	reflect_ray = create_ray(comps.over_point, comps.reflectv);
@@ -52,10 +52,7 @@ t_color	shade_hit(t_scene *scene, t_compu comps, int remaining)
 	int					shadowed;
 	t_lighting_params	params;
 
-	if (((t_sphere *)comps.object)->radius > 0)
-		material = ((t_sphere *)comps.object)->material;
-	else
-		material = ((t_plane *)comps.object)->material;
+	material = get_object_material(comps.object);
 	shadowed = is_shadowed(scene, comps.over_point, &scene->light);
 	params.material = material;
 	params.light = scene->light;

@@ -165,6 +165,7 @@ typedef struct s_material
 	t_pattern		pattern;
 	int				has_pattern;
 	double			transparency;
+	
 }					t_material;
 
 typedef struct s_sphere
@@ -173,6 +174,7 @@ typedef struct s_sphere
 	double			radius;
 	t_material		material;
 	t_color			color;
+	int				type;
 
 }					t_sphere;
 
@@ -183,6 +185,7 @@ typedef struct s_plane
 	t_color			color;
 	t_matrix		transform;
 	t_material		material;
+	int				type;
 
 }					t_plane;
 
@@ -197,6 +200,7 @@ typedef struct s_cylinder
 	double			max;
 	double			min;
 	t_material		material;
+	int				type;
 }					t_cylinder;
 
 typedef struct s_ambient_light

@@ -6,11 +6,11 @@ t_sphere	create_sphere(void)
 
 	sphere.center = create_point(0, 0, 0);
 	sphere.radius = 1.0;
-	sphere.material.ambient = 0.1;
+	sphere.material.ambient = 0.2;
 	sphere.material.diffuse = 0.7;
-	sphere.material.specular = 0.9;
-	sphere.material.shininess = 350;
-	sphere.material.reflective = 0.9;
+	sphere.material.specular = 0.7;
+	sphere.material.shininess = 300;
+	sphere.material.reflective = 0.1;
 	return (sphere);
 }
 
@@ -41,17 +41,37 @@ t_tuple	normal_at_sphere(t_sphere *sphere, t_tuple world_point)
 	return (object_normal);
 }
 
-
 t_tuple	normal_at(void *object, t_tuple world_point)
 {
+	// t_sphere	*sphere;
+	// t_cylinder	*cylinder;
+	// t_plane		*plane;
+	printf("DEBUG: Checking object type for normal calculation\n");
+	// if (((t_cylinder *)object)->diameter > 0)
+	// {
+	// 	printf("DEBUG: Object identified as cylinder\n");
+	// 	return (normal_at_cylinder((t_cylinder *)object, world_point));
+	// }
+	// sphere = (t_sphere *)object;
 	if (((t_sphere *)object)->radius > 0)
+	{
+		printf("DEBUG: Object identified as sphere\n");
 		return (normal_at_sphere((t_sphere *)object, world_point));
-	else if (((t_plane *)object)->normal.x != 0
-		|| ((t_plane *)object)->normal.y != 0
-		|| ((t_plane *)object)->normal.z != 0)
-		return (normal_at_plane((t_plane *)object, world_point));
-	else if (((t_cylinder *)object)->diameter > 0)
+	}
+	if (((t_cylinder *)object)->diameter > 0)
+	{
+		printf("DEBUG: Object identified as cylinder\n");
 		return (normal_at_cylinder((t_cylinder *)object, world_point));
+	}
+	// plane = (t_plane *)object;
+	if (((t_plane *)object)->normal.x != 0 || ((t_plane *)object)->normal.y != 0
+		|| ((t_plane *)object)->normal.z != 0)
+	{
+		printf("DEBUG: Object identified as plane\n");
+		return (normal_at_plane((t_plane *)object, world_point));
+	}
+	// cylinder = (t_cylinder *)object;
+	printf("DEBUG: Object type not identified!\n");
 	return (create_vector(0, 0, 0));
 }
 

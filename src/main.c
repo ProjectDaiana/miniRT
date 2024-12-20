@@ -23,6 +23,7 @@ static int	init_scene(t_data *data, char *scene_file)
 	return (0);
 }
 
+
 int	main(int argc, char **argv)
 {
 	t_data		data;

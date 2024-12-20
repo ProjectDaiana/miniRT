@@ -2,11 +2,11 @@
 
 void	init_sphere_material(t_sphere *sphere)
 {
-	sphere->material.ambient = 0.3;
-	sphere->material.diffuse = 0.0;
-	sphere->material.specular = 0.2;
+	sphere->material.ambient = 0.2;
+	sphere->material.diffuse = 0.7;
+	sphere->material.specular = 0.7;
 	sphere->material.shininess = 300;
-	// sphere->material.reflective = 0.7;
+	sphere->material.reflective = 0.0;
 	// sphere->material.transparency = 0.9;
 }
 

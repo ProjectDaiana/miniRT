@@ -100,6 +100,10 @@ void	parse_sphere(char *line, t_scene *scene)
 	}
 	sphere.material.color = create_material_color(color);
 	init_sphere_material(&sphere);
+	sphere.material.color = create_material_color(color);
+	// printf("DEBUG Sphere: Creating sphere with color: R=%d, G=%d, B=%d\n",
+	// 	sphere.material.color.r ,sphere.material.color.g
+	// 		, sphere.material.color.b);
 	add_sphere(scene, &sphere);
 	free_splits(split, pos, color);
 }
@@ -117,7 +121,6 @@ void	parse_plane(char *line, t_scene *scene)
 	param_count = 0;
 	while (split[param_count])
 		param_count++;
-	
 	if (!init_plane_splits(line, &split, &pos, &normal))
 		return ;
 	if (!init_plane_color(split, &color))
@@ -126,11 +129,10 @@ void	parse_plane(char *line, t_scene *scene)
 		return ;
 	}
 	plane = create_plane_from_params(pos, normal, color);
-	if (param_count > 4) 
+	if (param_count > 4)
 		plane.material.reflective = ft_atof(split[4]);
 	if (param_count > 5)
 		plane.material.transparency = ft_atof(split[5]);
-	
 	add_plane(scene, &plane);
 	free_splits(split, pos, normal);
 	ft_free_split(color);
@@ -171,11 +173,15 @@ void	parse_cylinder(char *line, t_scene *scene)
 	cylinder.material.color = create_material_color(color);
 	cylinder.min = 0;
 	cylinder.max = cylinder.height;
-	cylinder.material.ambient = 0.1;
-	cylinder.material.diffuse = 0.7;
-	cylinder.material.specular = 0.3;
-	cylinder.material.shininess = 200;
+	cylinder.material.ambient = 0.2;
+	cylinder.material.diffuse = 0.9;
+	cylinder.material.specular = 0.1;
+	cylinder.material.shininess = 100;
 	cylinder.material.reflective = 0.0;
+	cylinder.material.has_pattern = 0.0;
+	printf("DEBUG: Creating cylinder with normalized color: R=%d, G=%d, B=%d\n",
+		cylinder.material.color.r, cylinder.material.color.g,
+		cylinder.material.color.b);
 	add_cylinder(scene, &cylinder);
 	free_splits(split, pos, orient);
 	ft_free_split(color);

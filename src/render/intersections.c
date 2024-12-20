@@ -99,7 +99,9 @@ static void	add_plane_intersections(t_scene *scene, t_ray ray,
 	i = 0;
 	while (i < scene->plane_count)
 	{
+		printf("DEBUG: Testing intersection with plane %d\n", i);
 		plane_xs = intersect_plane(&scene->planes[i], ray);
+		printf("DEBUG: Found %d intersections\n", plane_xs.count);
 		j = 0;
 		while (j < plane_xs.count)
 		{
@@ -119,6 +121,7 @@ static void	add_cylinder_intersections(t_scene *scene, t_ray ray,
 	int				i;
 	int				j;
 
+	printf("DEBUG: Adding cylinder intersections\n");
 	i = 0;
 	while (i < scene->cylinder_count)
 	{
@@ -126,6 +129,7 @@ static void	add_cylinder_intersections(t_scene *scene, t_ray ray,
 		j = 0;
 		while (j < cylinder_xs.count)
 		{
+			printf("DEBUG: Found cylinder intersection\n");
 			result->t[result->count] = cylinder_xs.t[j];
 			result->object[result->count] = &scene->cylinders[i];
 			result->count++;
@@ -158,4 +162,3 @@ t_intersections	intersect_world(t_scene *scene, t_ray ray)
 	sort_intersections(&result);
 	return (result);
 }
-

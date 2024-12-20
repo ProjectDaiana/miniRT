@@ -1,25 +1,77 @@
 #include "minirt.h"
 
-t_material	get_object_material(void *object)
+static int	is_cylinder(void *object)
 {
-	t_sphere	*sphere;
-	t_plane		*plane;
-	double		normal_length;
 	t_cylinder	*cylinder;
 
-	sphere = (t_sphere *)object;
-	if (sphere->radius > 0 && sphere->center.w == 1.0)
-		return (sphere->material);
-	plane = (t_plane *)object;
-	normal_length = sqrt(plane->normal.x * plane->normal.x + plane->normal.y
-			* plane->normal.y + plane->normal.z * plane->normal.z);
-	if (fabs(normal_length - 1.0) < EPSILON)
-		return (plane->material);
 	cylinder = (t_cylinder *)object;
-	printf("Getting cylinder material:\n");
-	printf("Color values: R=%d, G=%d, B=%d\n", cylinder->material.color.r,
-		cylinder->material.color.g, cylinder->material.color.b);
-	return (cylinder->material);
+	return (cylinder->diameter > 0 && 
+		cylinder->height > 0 && 
+		cylinder->axis.w == 0 && // Must be a vector
+		cylinder->center.w == 1.0 && // Must be a point
+		fabs(tuple_magnitude(cylinder->axis) - 1.0) < EPSILON); // Normalized axis
+}
+
+static int	is_sphere(void *object)
+{
+	t_sphere	*sphere;
+
+	sphere = (t_sphere *)object;
+	return (sphere->radius > 0 && 
+		sphere->center.w == 1.0 && // Must be a point
+		sphere->material.color.r >= 0 && 
+		sphere->material.color.g >= 0 && 
+		sphere->material.color.b >= 0);
+}
+
+static int	is_plane(void *object)
+{
+	t_plane	*plane;
+
+	plane = (t_plane *)object;
+	// Basic structural checks
+	if (!plane || plane->point.w != 1.0 || plane->normal.w != 0.0)
+		return (0);
+	
+	// Check if it has a valid normal vector (not zero)
+	if (!(plane->normal.x != 0 || plane->normal.y != 0 || plane->normal.z != 0))
+		return (0);
+        
+	// Debug output to track plane properties
+	printf("DEBUG Plane check:\n");
+	printf("Point: (%f, %f, %f, %f)\n", 
+		plane->point.x, plane->point.y, plane->point.z, plane->point.w);
+	printf("Normal: (%f, %f, %f, %f)\n", 
+		plane->normal.x, plane->normal.y, plane->normal.z, plane->normal.w);
+	printf("Color: (%d, %d, %d)\n", 
+		plane->material.color.r, plane->material.color.g, plane->material.color.b);
+
+	return (1);
+}
+
+t_material	get_object_material(void *object)
+{
+	if (!object)
+	{
+		printf("DEBUG: NULL object passed to get_object_material\n");
+		return ((t_material){0}); // Return empty material for NULL
+	}
+	
+	if (is_sphere(object))
+		return (((t_sphere *)object)->material);
+	if (is_cylinder(object))
+		return (((t_cylinder *)object)->material);
+	if (is_plane(object))
+	{
+		printf("DEBUG: Plane material found with color: R=%d, G=%d, B=%d\n",
+			((t_plane *)object)->material.color.r,
+			((t_plane *)object)->material.color.g,
+			((t_plane *)object)->material.color.b);
+		return (((t_plane *)object)->material);
+	}
+
+	printf("DEBUG: ERROR object type not identified\n");
+	return ((t_material){0}); // Return empty material as fallback
 }
 
 t_tuple	get_object_normal(void *object, t_tuple point)
