@@ -1,179 +1,188 @@
 #include "minirt.h"
 
-int	parse_color(char *str, t_color *color)
+void	parse_ambient(char *line, t_scene *scene)
 {
 	char	**split;
-
-	split = ft_split(str, ',');
-	if (!split || !split[0] || !split[1] || !split[2])
-		return (0);
-	color->r = ft_atoi(split[0]);
-	color->g = ft_atoi(split[1]);
-	color->b = ft_atoi(split[2]);
-	free_split(split);
-	return (1);
-}
-
-int	parse_vector(char *str, t_tuple *vector)
-{
-	char	**split;
-
-	split = ft_split(str, ',');
-	if (!split || !split[0] || !split[1] || !split[2])
-		return (0);
-	vector->x = atof(split[0]);
-	vector->y = atof(split[1]);
-	vector->z = atof(split[2]);
-	free_split(split);
-	return (1);
-}
-
-int	parse_ambient(char **split, t_scene *scene)
-{
-	if (!split[1] || !split[2])
-		return (0);
-	scene->ambient_intensity = atof(split[1]);
-	return (parse_color(split[2], &scene->ambient_color));
-}
-
-// int	parse_camera(char **split, t_scene *scene)
-// {
-// 	if (!split[1] || !split[2] || !split[3])
-// 		return (0);
-// 	if (!parse_vector(split[1], &scene->camera.position))
-// 		return (0);
-// 	if (!parse_vector(split[2], &scene->camera.orientation))
-// 		return (0);
-// 	scene->camera.fov = atof(split[3]);
-// 	return (1);
-// }
-
-int	parse_camera(char **split, t_scene *scene)
-{
-	if (!split[1] || !split[2] || !split[3])
-		return (0);
-	if (!parse_vector(split[1], &scene->camera.position))
-		return (0);
-	if (!parse_vector(split[2], &scene->camera.orientation))
-		return (0);
-	scene->camera.fov = atof(split[3]) * M_PI / 180.0; // Convert to radians
-	printf("Parsed camera: pos(%f, %f, %f), orient(%f, %f, %f), fov: %f\n",
-		scene->camera.position.x, scene->camera.position.y,
-		scene->camera.position.z, scene->camera.orientation.x,
-		scene->camera.orientation.y, scene->camera.orientation.z,
-		scene->camera.fov);
-	return (1);
-}
-
-int	parse_light(char **split, t_scene *scene)
-{
-	if (!split[1] || !split[2] || !split[3])
-		return (0);
-	if (!parse_vector(split[1], &scene->light.position))
-		return (0);
-	scene->light.intensity = atof(split[2]);
-	return (parse_color(split[3], &scene->light.color));
-}
-
-// int	parse_sphere(char **split, t_scene *scene)
-// {
-// 	t_sphere	sphere;
-
-// 	if (!split[1] || !split[2] || !split[3])
-// 		return (0);
-// 	if (!parse_vector(split[1], &sphere.center))
-// 		return (0);
-// 	sphere.radius = atof(split[2]) / 2.0;
-// 	if (!parse_color(split[3], &sphere.material.color))
-// 		return (0);
-// 	sphere.material.ambient = scene->ambient_intensity;
-// 	sphere.material.diffuse = 0.7;
-// 	sphere.material.specular = 0.2;
-// 	sphere.material.shininess = 200.0;
-// 	scene->spheres[scene->sphere_count++] = sphere;
-// 	return (1);
-// }
-
-int	parse_sphere(char **split, t_scene *scene)
-{
-	t_sphere	*sphere;
-
-	if (scene->sphere_count >= MAX_SPHERES)
-	{
-		printf("Error: Maximum number of spheres reached\n");
-		return (0);
-	}
-	sphere = &scene->spheres[scene->sphere_count];
-	if (!split[1] || !split[2] || !split[3])
-		return (0);
-	if (!parse_vector(split[1], &sphere->center))
-		return (0);
-	sphere->radius = atof(split[2]) / 2.0;
-	if (!parse_color(split[3], &sphere->material.color))
-		return (0);
-	sphere->material.ambient = scene->ambient_intensity;
-	sphere->material.diffuse = 0.7;
-	sphere->material.specular = 0.2;
-	sphere->material.shininess = 200.0;
-	scene->sphere_count++;
-	printf("Parsed sphere: center(%f, %f, %f), radius: %f\n", sphere->center.x,
-		sphere->center.y, sphere->center.z, sphere->radius);
-	return (1);
-}
-
-int	parse_line(char *line, t_scene *scene)
-{
-	char	**split;
+	char	**color;
 
 	split = ft_split(line, ' ');
-	if (!split || !split[0])
-		return (0);
-	if (ft_strcmp(split[0], "A") == 0)
-		return (parse_ambient(split, scene));
-	else if (ft_strcmp(split[0], "C") == 0)
-		return (parse_camera(split, scene));
-	else if (ft_strcmp(split[0], "L") == 0)
-		return (parse_light(split, scene));
-	else if (ft_strcmp(split[0], "sp") == 0)
-		return (parse_sphere(split, scene));
-	free_split(split);
-	return (0);
+	if (!split || !split[1] || !split[2])
+	{
+		fprintf(stderr, "Error: Invalid ambient light format\n");
+		return ;
+	}
+	scene->ambient_intensity = ft_atof(split[1]);
+	color = ft_split(split[2], ',');
+	if (!color || !color[0] || !color[1] || !color[2])
+	{
+		fprintf(stderr, "Error: Invalid ambient light color format\n");
+		ft_free_split(split);
+		return ;
+	}
+	scene->ambient_color.r = ft_atof(color[0]) / 255.0;
+	scene->ambient_color.g = ft_atof(color[1]) / 255.0;
+	scene->ambient_color.b = ft_atof(color[2]) / 255.0;
+	ft_free_split(split);
+	ft_free_split(color);
 }
 
-int	parse_rt_file(char *filename, t_scene *scene)
+void	parse_camera(char *line, t_scene *scene)
 {
-	int fd;
-	char *line;
-	int gnl_result;
+	char	**split;
+	char	**pos;
+	char	**orient;
 
-	printf("Attempting to open file: %s\n", filename);
-	fd = open(filename, O_RDONLY);
-	if (fd == -1)
+	split = ft_split(line, ' ');
+	if (!validate_params(split, 4, "camera"))
+		return ;
+	pos = ft_split(split[1], ',');
+	orient = ft_split(split[2], ',');
+	if (!validate_coordinates(pos, "camera", split)
+		|| !validate_coordinates(orient, "camera orientation", split))
 	{
-		perror("Error opening file");
-		return (0);
+		free_splits(pos, orient, NULL);
+		return ;
 	}
-	printf("File opened successfully\n");
+	set_camera_position(scene, pos);
+	set_camera_orientation(scene, orient);
+	scene->camera.fov = ft_atof(split[3]);
+	free_splits(split, pos, orient);
+}
 
-	while ((gnl_result = get_next_line(fd, &line)) > 0)
-	{
-		printf("Read line: %s\n", line);
-		if (!parse_line(line, scene))
-		{
-			printf("Error parsing line: %s\n", line);
-			free(line);
-			close(fd);
-			return (0);
-		}
-		free(line);
-	}
+void	parse_light(char *line, t_scene *scene)
+{
+	char	**split;
+	char	**pos;
+	char	**color;
 
-	close(fd);
-	if (gnl_result == -1)
+	split = ft_split(line, ' ');
+	if (!validate_params(split, 4, "light"))
+		return ;
+	pos = ft_split(split[1], ',');
+	if (!validate_coordinates(pos, "light", split))
+		return ;
+	scene->light.position.x = ft_atof(pos[0]);
+	scene->light.position.y = ft_atof(pos[1]);
+	scene->light.position.z = ft_atof(pos[2]);
+	scene->light.position.w = 1.0;
+	scene->light.intensity = ft_atof(split[2]) * 1.2;
+	color = ft_split(split[3], ',');
+	if (!validate_coordinates(color, "light color", split))
 	{
-		printf("Error in get_next_line\n");
-		return (0);
+		ft_free_split(pos);
+		return ;
 	}
-	printf("File parsed successfully\n");
-	return (1);
+	set_color_components(&scene->light.color, color);
+	scene->light_count++;
+	free_splits(split, pos, color);
+}
+
+void	parse_sphere(char *line, t_scene *scene)
+{
+	t_sphere	sphere;
+	char		**split;
+	char		**color;
+	char		**pos;
+
+	split = ft_split(line, ' ');
+	if (!validate_params(split, 4, "sphere"))
+		return ;
+	pos = ft_split(split[1], ',');
+	if (!validate_coordinates(pos, "sphere", split))
+		return ;
+	set_sphere_center(&sphere, pos);
+	sphere.radius = ft_atof(split[2]) / 2.0;
+	color = ft_split(split[3], ',');
+	if (!validate_coordinates(color, "sphere color", split))
+	{
+		ft_free_split(pos);
+		return ;
+	}
+	sphere.material.color = create_material_color(color);
+	init_sphere_material(&sphere);
+	sphere.material.color = create_material_color(color);
+	// printf("DEBUG Sphere: Creating sphere with color: R=%d, G=%d, B=%d\n",
+	// 	sphere.material.color.r ,sphere.material.color.g
+	// 		, sphere.material.color.b);
+	add_sphere(scene, &sphere);
+	free_splits(split, pos, color);
+}
+
+void	parse_plane(char *line, t_scene *scene)
+{
+	t_plane	plane;
+	char	**split;
+	char	**pos;
+	char	**normal;
+	char	**color;
+	int		param_count;
+
+	split = ft_split(line, ' ');
+	param_count = 0;
+	while (split[param_count])
+		param_count++;
+	if (!init_plane_splits(line, &split, &pos, &normal))
+		return ;
+	if (!init_plane_color(split, &color))
+	{
+		free_splits(split, pos, normal);
+		return ;
+	}
+	plane = create_plane_from_params(pos, normal, color);
+	if (param_count > 4)
+		plane.material.reflective = ft_atof(split[4]);
+	if (param_count > 5)
+		plane.material.transparency = ft_atof(split[5]);
+	add_plane(scene, &plane);
+	free_splits(split, pos, normal);
+	ft_free_split(color);
+}
+
+void	parse_cylinder(char *line, t_scene *scene)
+{
+	t_cylinder	cylinder;
+	char		**split;
+	char		**pos;
+	char		**orient;
+	char		**color;
+
+	split = ft_split(line, ' ');
+	if (!validate_params(split, 5, "cylinder"))
+		return ;
+	pos = ft_split(split[1], ',');
+	orient = ft_split(split[2], ',');
+	if (!validate_coordinates(pos, "cylinder position", split)
+		|| !validate_coordinates(orient, "cylinder orientation", split))
+	{
+		free_splits(split, pos, orient);
+		return ;
+	}
+	cylinder.center = create_point(ft_atof(pos[0]), ft_atof(pos[1]),
+			ft_atof(pos[2]));
+	cylinder.axis = create_vector(ft_atof(orient[0]), ft_atof(orient[1]),
+			ft_atof(orient[2]));
+	cylinder.axis = tuple_normalize(cylinder.axis);
+	cylinder.diameter = ft_atof(split[3]);
+	cylinder.height = ft_atof(split[4]);
+	color = ft_split(split[5], ',');
+	if (!validate_coordinates(color, "cylinder color", split))
+	{
+		free_splits(split, pos, orient);
+		return ;
+	}
+	cylinder.material.color = create_material_color(color);
+	cylinder.min = 0;
+	cylinder.max = cylinder.height;
+	cylinder.material.ambient = 0.2;
+	cylinder.material.diffuse = 0.9;
+	cylinder.material.specular = 0.1;
+	cylinder.material.shininess = 100;
+	cylinder.material.reflective = 0.0;
+	cylinder.material.has_pattern = 0.0;
+	printf("DEBUG: Creating cylinder with normalized color: R=%d, G=%d, B=%d\n",
+		cylinder.material.color.r, cylinder.material.color.g,
+		cylinder.material.color.b);
+	add_cylinder(scene, &cylinder);
+	free_splits(split, pos, orient);
+	ft_free_split(color);
 }

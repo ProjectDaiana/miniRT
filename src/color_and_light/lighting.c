@@ -1,52 +1,65 @@
 #include "minirt.h"
 
-// t_color	calculate_lighting(t_hit hit, t_scene *scene, t_ray ray)
-// {
-// 	t_color ambient, diffuse, specular, result;
-// 	t_tuple light_dir, view_dir, reflect_dir;
-// 	double diff, spec;
-
-// 	ambient = multiply_color_by_scalar(scene->ambient_color,
-// 			scene->ambient_intensity);
-
-// 	light_dir = vect_normalize(vect_subtraction(scene->light.position,
-// 				hit.point));
-
-// 	// Diffuse
-// 	diff = fmax(dot_product(hit.normal, light_dir), 0.0);
-// 	diffuse = multiply_color_by_scalar(scene->light.color, diff
-// 			* scene->sphere.material.diffuse);
-
-// 	// Specular
-// 	view_dir = vect_normalize(vect_negate(ray.direction));
-// 	reflect_dir = vect_reflect(vect_negate(light_dir), hit.normal);
-// 	spec = pow(fmax(dot_product(view_dir, reflect_dir), 0.0),
-// 			scene->sphere.material.shininess);
-// 	specular = multiply_color_by_scalar(scene->light.color, spec
-// 			* scene->sphere.material.specular);
-
-// 	result = add_color(ambient, add_color(diffuse, specular));
-// 	return (color_multiply(result, scene->sphere.material.color));
-// }
-
-t_color	calculate_lighting(t_hit hit, t_scene *scene, t_ray ray)
+static t_light_data	init_light_data(t_lighting_params params)
 {
-	t_color ambient, diffuse, result;
-	t_tuple light_dir;
-	double diff;
-	(void)ray;
+	t_light_data	data;
 
-	ambient = multiply_color_by_scalar(&scene->ambient_color,
-			scene->ambient_intensity);
+	data.material = params.material;
+	data.light = params.light;
+	data.point = params.point;
+	data.eye_v = params.eye_v;
+	data.normal_v = params.normal_v;
+	data.in_shadow = params.in_shadow;
+	return (data);
+}
 
-	light_dir = normalize_vect(vect_subtraction(scene->light.position,
-				hit.point));
+static t_color	get_diffuse_and_specular(t_lighting_params params,
+		t_tuple lightv, t_color base_color)
+{
+	t_light_data	data;
+	t_color			diffuse;
+	t_color			specular;
+	t_tuple			reflectv;
+	double			dot;
 
-	// Diffuse
-	diff = fmax(dot_product(hit.normal, light_dir), 0.0);
-	diffuse = multiply_color_by_scalar(&scene->light.color, diff
-			* hit.material.diffuse);
+	data = init_light_data(params);
+	dot = fmax(tuple_dot(lightv, params.normal_v), 0.0);
+	diffuse = get_diffuse_component(base_color, &data, dot);
+	reflectv = tuple_reflect(tuple_negate(lightv), params.normal_v);
+	dot = fmax(tuple_dot(reflectv, params.eye_v), 0.0);
+	specular = get_specular_component(&data, dot);
+	return (color_add(diffuse, specular));
+}
 
-	result = add_color(ambient, diffuse);
-	return (color_multiply(result, hit.material.color));
+t_color	lighting(t_lighting_params params)
+{
+	t_light_data	data;
+	t_color			base_color;
+	t_color			ambient;
+	t_tuple			lightv;
+	t_color			final;
+
+	printf("DEBUG: Material color before lighting: R=%d, G=%d, B=%d\n",
+		params.material.color.r, params.material.color.g,
+		params.material.color.b);
+	data = init_light_data(params);
+	base_color = get_base_color(params.material, params.point);
+	printf("DEBUG: Base color after get_base_color: R=%d, G=%d, B=%d\n",
+		base_color.r, base_color.g, base_color.b);
+	ambient = get_ambient_component(base_color, &data);
+	printf("DEBUG: Ambient component: R=%d, G=%d, B=%d\n", 
+		ambient.r, ambient.g, ambient.b);
+	
+	if (params.in_shadow)
+	{
+		printf("DEBUG: Object is in shadow\n");
+		return (ambient);
+	}
+
+	lightv = tuple_normalize(tuple_subtract(params.light.position,
+				params.point));
+	final = color_add(ambient, get_diffuse_and_specular(params, lightv,
+				base_color));
+	printf("DEBUG: Final color: R=%d, G=%d, B=%d\n", final.r, final.g, final.b);
+	return (final);
 }
