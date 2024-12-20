@@ -46,7 +46,7 @@ typedef struct tuple
 	double			x;
 	double			y;
 	double			z;
-	double w; // 1 for point, 0 for vector
+	double			w;
 }					t_tuple;
 
 typedef struct s_matrix
@@ -61,14 +61,6 @@ typedef struct s_color
 	int				g;
 	int				b;
 }					t_color;
-
-// typedef struct
-// {
-// 	int			hit;
-// 	double		t;
-// 	t_vector	point;
-// 	t_vector	normal;
-// }				t_hit;
 
 typedef struct s_hit
 {
@@ -165,7 +157,7 @@ typedef struct s_material
 	t_pattern		pattern;
 	int				has_pattern;
 	double			transparency;
-	
+
 }					t_material;
 
 typedef struct s_sphere
@@ -249,19 +241,6 @@ typedef struct data
 
 }					t_data;
 
-// typedef struct s_computations
-// {
-// 	double		t;
-// 	t_point		point;
-// 	t_vector	over_point;
-// 	t_vector	eyev;
-// 	t_vector	normalv;
-// 	t_vector	reflectv;
-// 	double		n1;
-// 	double		n2;
-// 	void		*object;
-// }				t_compu;
-
 typedef struct s_computations
 {
 	double			t;
@@ -324,11 +303,9 @@ int					handle_no_event(void *data);
 int					handle_keypress(int keysym, t_data *data);
 int					handle_keyrelease(int keysym, void *data);
 
-// Utility functions
 double				ft_sqr(double x);
 double				double_to_degrees(double radians);
 
-// Vector functions
 double				vect_length(double x, double y, double z);
 t_vector			vect_addition(t_vector a, t_vector b);
 t_vector			vect_multiplication(t_vector a, double b);
@@ -336,7 +313,6 @@ t_tuple				normalize_vect(t_tuple v);
 
 void				draw_clock(t_data *data);
 
-// Color functions
 int					rgb_to_int(t_color color);
 int					add_color(t_color *color1, t_color *color2);
 int					substract_color(t_color *color1, t_color *color2);
@@ -349,7 +325,6 @@ t_color				color_subtract(t_color c1, t_color c2);
 t_color				color_multiply(t_color c, double scalar);
 t_color				color_multiply_colors(t_color c1, t_color c2);
 
-// Matrix functions
 t_tuple				multiply_matrix_by_tuple(t_matrix *matrix, t_tuple *tuple);
 t_matrix			create_matrix_3(double m[3][3]);
 t_matrix			create_matrix(int size);
@@ -377,10 +352,8 @@ t_matrix			scaling(double x, double y, double z);
 t_matrix			rotation_x(double rad);
 t_matrix			rotation_y(double rad);
 t_matrix			rotation_z(double rad);
-// t_matrix			skewing(double x_y, double x_z, double y_x, double y_z,
-// 						double z_x, double z_y);
 t_matrix			skewing(t_skew_params params);
-// Error functions
+
 void				print_error(char *msg);
 
 /// TEST FUNCTIONS, DELETE LATER
@@ -398,7 +371,6 @@ double				dot_product(t_vector a, t_vector b);
 
 double				cross_product_to_array(t_vector a, t_vector b);
 
-// tuple functions
 t_tuple				create_tuple(double x, double y, double z, double w);
 
 t_tuple				create_point(double x, double y, double z);
@@ -416,40 +388,30 @@ t_tuple				tuple_normalize(t_tuple a);
 double				tuple_dot(t_tuple a, t_tuple b);
 t_tuple				tuple_cross(t_tuple a, t_tuple b);
 
-// render function
 int					render(t_data *data);
 
-// canvas functions
 t_canvas			create_canvas(int width, int height);
 void				write_pixel(t_canvas *canvas, int x, int y, t_color color);
 void				free_canvas(t_canvas *canvas);
 t_color				pixel_at(t_canvas *canvas, int x, int y);
 void				canvas_to_ppm(t_canvas *canvas, const char *filename);
 
-// ray functions
 t_ray				create_ray(t_tuple origin, t_tuple direction);
 t_tuple				position(t_ray ray, double t);
 
-// sphere functions
 t_sphere			create_sphere(void);
 t_intersections		intersect_sphere(t_sphere sphere, t_ray ray);
-// t_tuple			normal_at(t_sphere sphere, t_tuple world_point);
 
 void				parse_scene(const char *filename, t_scene *scene);
 
-// utils
 void				my_mlx_pixel_put(t_img *img, int x, int y, int color);
 
-// object functions
 void				add_light(t_scene *scene, t_light *light);
 void				add_sphere(t_scene *scene, t_sphere *sphere);
 void				add_plane(t_scene *scene, t_plane *plane);
 void				add_cylinder(t_scene *scene, t_cylinder *cylinder);
 
-// intersections
 t_intersections		intersect_plane(t_plane *plane, t_ray ray);
-// t_tuple			normal_at_plane(t_plane plane, t_tuple point);
-// t_intersections		intersect_cylinder(t_cylinder *cylinder, t_ray ray);
 t_intersections		intersect_cylinder(t_cylinder cylinder, t_ray ray);
 t_tuple				normal_at_cylinder(t_cylinder *cylinder,
 						t_tuple world_point);
@@ -466,16 +428,12 @@ t_tuple				tuple_reflect(t_tuple in, t_tuple normal);
 void				intersect_body(double a, double b, double c,
 						t_intersections *result, t_cylinder cylinder,
 						t_ray ray);
-// added
-
 void				ft_free_split(char **split);
 double				ft_atof(const char *str);
 t_plane				create_plane(t_tuple point, t_tuple normal, t_color color);
 t_compu				prepare_computations(double t, t_ray ray,
 						t_intersections *xs);
 t_matrix			create_identity_matrix(void);
-// void			prepare_computations(t_intersections *xs, t_ray *ray,
-// 					t_hit *hit);
 
 t_camera			create_camera(int hsize, int vsize, double field_of_view);
 t_matrix			look_at(t_tuple from, t_tuple to, t_tuple up);
@@ -483,8 +441,6 @@ t_tuple				normal_at(void *object, t_tuple world_point);
 
 t_tuple				normal_at_sphere(t_sphere *sphere, t_tuple world_point);
 t_tuple				normal_at_plane(t_plane *plane, t_tuple world_point);
-
-// pattern.c
 
 t_pattern			create_checkers_pattern(t_color c1, t_color c2);
 t_color				pattern_at_checkers(t_pattern pattern, t_tuple point);
@@ -495,8 +451,6 @@ t_color				reflected_color(t_scene *scene, t_compu comps,
 						int remaining);
 t_color				shade_hit(t_scene *scene, t_compu comps, int remaining);
 t_color				color_at(t_scene *scene, t_ray ray, int remaining);
-
-///
 
 int					validate_params(char **split, int count, char *element);
 
@@ -509,9 +463,7 @@ int					is_valid_line(char *line);
 t_color				create_material_color(char **color_values);
 
 void				init_sphere_material(t_sphere *sphere);
-// void				init_plane_material(t_plane *plane, t_color color);
 
-// void				init_plane_material(t_plane *plane) ;
 double				schlick(t_compu comps);
 void				set_color_components(t_color *dest, char **color_values);
 
@@ -566,13 +518,10 @@ void				calculate_cylinder_params(t_cylinder cylinder, t_ray ray,
 						double *params);
 void				add_valid_intersection(t_intersections *result, double t,
 						t_cylinder *cylinder, int *index);
-// void				calculate_cylinder_intersections(t_cylinder cylinder,
-// 						t_ray ray, double *t);
+
 void				calculate_cylinder_intersections(t_cylinder cylinder,
 						t_ray ray, double *t, double *y);
 
-// void				check_cylinder_bounds(t_cylinder cylinder, double *t,
-// 						double *y);
 void				check_cylinder_bounds(t_cylinder cylinder, double *t,
 						double *y);
 void				allocate_intersections(t_intersections *result, double *t,
@@ -596,3 +545,16 @@ void				intersect_caps(t_cylinder cylinder, t_ray ray,
 						t_intersections *result);
 void				add_intersection(t_intersections *result, double t);
 int					check_cap(t_ray ray, double t, t_cylinder cylinder);
+
+void				init_cylinder_material(t_cylinder *cylinder);
+
+t_tuple				transform_point(t_matrix transform, t_tuple point);
+void				init_plane_material(t_plane *plane, t_color color);
+void				set_orientation_matrix(t_matrix *matrix, t_tuple left,
+						t_tuple true_up, t_tuple forward);
+void				add_sphere_intersections(t_scene *scene, t_ray ray,
+						t_intersections *result);
+void				add_plane_intersections(t_scene *scene, t_ray ray,
+						t_intersections *result);
+void				add_cylinder_intersections(t_scene *scene, t_ray ray,
+						t_intersections *result);

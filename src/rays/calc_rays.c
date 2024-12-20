@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   calc_rays.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tbella-n <tbella-n@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/12/20 20:06:36 by tbella-n          #+#    #+#             */
+/*   Updated: 2024/12/20 20:10:17 by tbella-n         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minirt.h"
 
 t_tuple	position(t_ray ray, double t)
@@ -25,9 +37,9 @@ t_color	calculate_reflection(t_scene *scene, t_ray ray, t_tuple point,
 	t_color			reflect_color;
 	t_tuple			offset_point;
 
-	// Add a small offset to the reflection point to avoid self-intersection
 	offset_point = tuple_add(point, tuple_multiply(normal, 0.00001));
-	reflect_ray = create_ray(offset_point, tuple_reflect(ray.direction, normal));
+	reflect_ray = create_ray(offset_point, tuple_reflect(ray.direction,
+				normal));
 	reflect_color = create_color(0, 0, 0);
 	reflect_xs = intersect_world(scene, reflect_ray);
 	if (reflect_xs.count > 0)

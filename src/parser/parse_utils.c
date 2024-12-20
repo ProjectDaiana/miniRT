@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse_utils.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tbella-n <tbella-n@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/12/20 19:53:33 by tbella-n          #+#    #+#             */
+/*   Updated: 2024/12/20 20:42:48 by tbella-n         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minirt.h"
 
 int	validate_params(char **split, int count, char *element)
@@ -26,16 +38,6 @@ int	validate_coordinates(char **coords, char *element, char **to_free)
 		return (0);
 	}
 	return (1);
-}
-
-void	free_splits(char **split1, char **split2, char **split3)
-{
-	if (split1)
-		ft_free_split(split1);
-	if (split2)
-		ft_free_split(split2);
-	if (split3)
-		ft_free_split(split3);
 }
 
 int	is_valid_line(char *line)

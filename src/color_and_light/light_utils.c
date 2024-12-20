@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   light_utils.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tbella-n <tbella-n@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/12/20 19:44:49 by tbella-n          #+#    #+#             */
+/*   Updated: 2024/12/20 20:36:59 by tbella-n         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minirt.h"
 
 t_color	get_ambient_component(t_color base_color, t_light_data *light_data)
@@ -33,14 +45,4 @@ t_color	get_specular_component(t_light_data *light_data, double reflect_dot)
 	factor = pow(reflect_dot, light_data->material.shininess);
 	factor *= light_data->material.specular * light_data->light.intensity;
 	return (color_multiply(light_data->light.color, factor));
-}
-
-t_color	get_base_color(t_material material, t_tuple point)
-{
-
-	if (material.pattern.type == CHECKERS)
-	{
-		return (pattern_at(material.pattern, point));
-	}
-	return (material.color);
 }

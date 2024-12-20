@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tbella-n <tbella-n@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/12/20 20:26:58 by tbella-n          #+#    #+#             */
+/*   Updated: 2024/12/20 20:27:00 by tbella-n         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minirt.h"
 
 static void	init(t_data *data, t_vector *vector)
@@ -22,7 +34,6 @@ static int	init_scene(t_data *data, char *scene_file)
 	}
 	return (0);
 }
-
 
 int	main(int argc, char **argv)
 {

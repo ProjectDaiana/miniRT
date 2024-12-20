@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ray_utils.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tbella-n <tbella-n@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/12/20 20:08:38 by tbella-n          #+#    #+#             */
+/*   Updated: 2024/12/20 20:08:39 by tbella-n         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minirt.h"
 
 static int	is_cylinder(void *object)
@@ -5,11 +17,9 @@ static int	is_cylinder(void *object)
 	t_cylinder	*cylinder;
 
 	cylinder = (t_cylinder *)object;
-	return (cylinder->diameter > 0 && 
-		cylinder->height > 0 && 
-		cylinder->axis.w == 0 && // Must be a vector
-		cylinder->center.w == 1.0 && // Must be a point
-		fabs(tuple_magnitude(cylinder->axis) - 1.0) < EPSILON); // Normalized axis
+	return (cylinder->diameter > 0 && cylinder->height > 0
+		&& cylinder->axis.w == 0 && cylinder->center.w == 1.0
+		&& fabs(tuple_magnitude(cylinder->axis) - 1.0) < EPSILON);
 }
 
 static int	is_sphere(void *object)
@@ -17,11 +27,9 @@ static int	is_sphere(void *object)
 	t_sphere	*sphere;
 
 	sphere = (t_sphere *)object;
-	return (sphere->radius > 0 && 
-		sphere->center.w == 1.0 && // Must be a point
-		sphere->material.color.r >= 0 && 
-		sphere->material.color.g >= 0 && 
-		sphere->material.color.b >= 0);
+	return (sphere->radius > 0 && sphere->center.w == 1.0
+		&& sphere->material.color.r >= 0 && sphere->material.color.g >= 0
+		&& sphere->material.color.b >= 0);
 }
 
 static int	is_plane(void *object)
@@ -29,49 +37,24 @@ static int	is_plane(void *object)
 	t_plane	*plane;
 
 	plane = (t_plane *)object;
-	// Basic structural checks
 	if (!plane || plane->point.w != 1.0 || plane->normal.w != 0.0)
 		return (0);
-	
-	// Check if it has a valid normal vector (not zero)
 	if (!(plane->normal.x != 0 || plane->normal.y != 0 || plane->normal.z != 0))
 		return (0);
-        
-	// Debug output to track plane properties
-	printf("DEBUG Plane check:\n");
-	printf("Point: (%f, %f, %f, %f)\n", 
-		plane->point.x, plane->point.y, plane->point.z, plane->point.w);
-	printf("Normal: (%f, %f, %f, %f)\n", 
-		plane->normal.x, plane->normal.y, plane->normal.z, plane->normal.w);
-	printf("Color: (%d, %d, %d)\n", 
-		plane->material.color.r, plane->material.color.g, plane->material.color.b);
-
 	return (1);
 }
 
 t_material	get_object_material(void *object)
 {
 	if (!object)
-	{
-		printf("DEBUG: NULL object passed to get_object_material\n");
-		return ((t_material){0}); // Return empty material for NULL
-	}
-	
+		return ((t_material){0});
 	if (is_sphere(object))
 		return (((t_sphere *)object)->material);
 	if (is_cylinder(object))
 		return (((t_cylinder *)object)->material);
 	if (is_plane(object))
-	{
-		printf("DEBUG: Plane material found with color: R=%d, G=%d, B=%d\n",
-			((t_plane *)object)->material.color.r,
-			((t_plane *)object)->material.color.g,
-			((t_plane *)object)->material.color.b);
 		return (((t_plane *)object)->material);
-	}
-
-	printf("DEBUG: ERROR object type not identified\n");
-	return ((t_material){0}); // Return empty material as fallback
+	return ((t_material){0});
 }
 
 t_tuple	get_object_normal(void *object, t_tuple point)
