@@ -52,13 +52,16 @@ Welcome to miniRT, a basic raytracing engine built from scratch using the MiniLi
 [Subject](https://cdn.intra.42.fr/pdf/pdf/137465/en.subject.pdf)
 
 ## To Do
-- [ ] Check for forbidden functions
-- [ ] Check behaviour of camera movements
-- [ ] left wall changing colors
-- [ ] change functions in parser
-- [ ] finish reflections
-- [ ] Check that rendering works everytime. Some times it is not rendering cylinder or sphere
+- [x] Check for forbidden functions
+- [x] finish reflections
+- [x] change functions in parser
+- [x] left wall changing colors
+- [ ] Window resize
+- [ ] Camera input
+- [ ] Bring multithread
 - [ ] Check for race conditions
+- [ ] Check behaviour of camera movements
+- [ ] Check that rendering works everytime. Some times it is not rendering cylinder or sphere
 - [ ] Check for leaks
 - [ ] Norminette
 - [ ] Evaluate
