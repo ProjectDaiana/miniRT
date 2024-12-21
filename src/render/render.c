@@ -5,12 +5,14 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: darotche <darotche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/20 20:13:51 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/21 16:32:31 by darotche         ###   ########.fr       */
+/*   Created: Invalid date        by                   #+#    #+#             */
+/*   Updated: 2024/12/21 23:36:17 by darotche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+
 #include "minirt.h"
+#include <pthread.h>
 #include <pthread.h>
 
 static void	render_pixel(t_scene *scene, t_camera *camera, t_canvas *canvas,
@@ -166,6 +168,7 @@ int	render(t_data *data)
 	copy_to_image(data, &canvas);
 	mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->img.img, 0, 0);
 	free_canvas(&canvas);
+	free_mtrx(&transform);
 	return (0);
 }
 
