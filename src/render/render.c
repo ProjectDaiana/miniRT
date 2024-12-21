@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   render.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: darotche <darotche@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/12/20 20:13:51 by tbella-n          #+#    #+#             */
+/*   Updated: 2024/12/21 16:32:31 by darotche         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minirt.h"
 #include <pthread.h>
 
@@ -147,10 +159,7 @@ int	render(t_data *data)
 	if (!transform.m)
 		return (1);
 	camera.transform = transform;
-
 	render_threads(data, &camera, &canvas);
-
-
 	data->img.img = mlx_new_image(data->mlx_ptr, W_WIDTH, W_HEIGHT);
 	data->img.addr = mlx_get_data_addr(data->img.img, &data->img.bits_per_pixel,
 			&data->img.line_length, &data->img.endian);

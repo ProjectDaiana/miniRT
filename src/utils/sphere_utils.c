@@ -1,19 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   errors.c                                           :+:      :+:    :+:   */
+/*   sphere_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tbella-n <tbella-n@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/20 20:23:07 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/20 20:23:08 by tbella-n         ###   ########.fr       */
+/*   Created: 2024/12/20 20:18:20 by tbella-n          #+#    #+#             */
+/*   Updated: 2024/12/20 21:25:10 by tbella-n         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-void	print_error(char *msg)
+void	calculate_sphere_params(t_ray ray, t_sphere sphere, double *params)
 {
-	printf(RED "%s\n" RESET, msg);
-	exit(EXIT_FAILURE);
+	t_tuple	sphere_to_ray;
+
+	sphere_to_ray = tuple_subtract(ray.origin, sphere.center);
+	params[0] = tuple_dot(ray.direction, ray.direction);
+	params[1] = 2.0 * tuple_dot(ray.direction, sphere_to_ray);
+	params[2] = tuple_dot(sphere_to_ray, sphere_to_ray) - (sphere.radius
+			* sphere.radius);
 }

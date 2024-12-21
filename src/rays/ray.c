@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ray.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tbella-n <tbella-n@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/12/20 20:08:47 by tbella-n          #+#    #+#             */
+/*   Updated: 2024/12/20 20:08:57 by tbella-n         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minirt.h"
 
 static t_color	blend_colors(t_color surface_color, t_color reflect_color,
@@ -11,8 +23,8 @@ static t_color	blend_colors(t_color surface_color, t_color reflect_color,
 	return (color_add(scaled_surface, scaled_reflection));
 }
 
-static t_color	get_intersection_color(t_scene *scene, t_ray ray,
-		void *object, t_tuple point)
+static t_color	get_intersection_color(t_scene *scene, t_ray ray, void *object,
+		t_tuple point)
 {
 	t_tuple		normal;
 	t_material	material;
@@ -26,9 +38,8 @@ static t_color	get_intersection_color(t_scene *scene, t_ray ray,
 	comps.normalv = normal;
 	surface_color = get_surface_color(scene, material, comps);
 	if (material.reflective > 0)
-		return (blend_colors(surface_color,
-				calculate_reflection(scene, ray, point, normal),
-				material.reflective));
+		return (blend_colors(surface_color, calculate_reflection(scene, ray,
+					point, normal), material.reflective));
 	return (surface_color);
 }
 

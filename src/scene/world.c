@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   world.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tbella-n <tbella-n@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/12/20 20:19:54 by tbella-n          #+#    #+#             */
+/*   Updated: 2024/12/20 21:28:49 by tbella-n         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minirt.h"
 
 t_world	create_world(void)
@@ -14,7 +26,7 @@ t_color	color_at(t_scene *scene, t_ray ray, int remaining)
 	t_intersections	xs;
 	t_compu			comps;
 
-	if (remaining <= 0) // Add explicit check
+	if (remaining <= 0)
 		return (create_color(0, 0, 0));
 	xs = intersect_world(scene, ray);
 	if (xs.count == 0)
@@ -25,44 +37,20 @@ t_color	color_at(t_scene *scene, t_ray ray, int remaining)
 
 t_color	reflected_color(t_scene *scene, t_compu comps, int remaining)
 {
-	double	reflective;
-	t_ray	reflect_ray;
-	t_color	color;
+	double		reflective;
+	t_ray		reflect_ray;
+	t_color		color;
+	t_material	material;
 
 	if (remaining <= 0)
 		return (create_color(0, 0, 0));
-	
-	t_material material = get_object_material(comps.object);
+	material = get_object_material(comps.object);
 	reflective = material.reflective;
-	
 	if (reflective < EPSILON)
 		return (create_color(0, 0, 0));
 	reflect_ray = create_ray(comps.over_point, comps.reflectv);
 	color = color_at(scene, reflect_ray, remaining - 1);
 	return (color_multiply(color, reflective));
-}
-
-
-
-t_color	shade_hit(t_scene *scene, t_compu comps, int remaining)
-{
-	t_material			material;
-	t_color				surface;
-	t_color				reflected;
-	int					shadowed;
-	t_lighting_params	params;
-
-	material = get_object_material(comps.object);
-	shadowed = is_shadowed(scene, comps.over_point, &scene->light);
-	params.material = material;
-	params.light = scene->light;
-	params.point = comps.point;
-	params.eye_v = comps.eyev;
-	params.normal_v = comps.normalv;
-	params.in_shadow = shadowed;
-	surface = lighting(params);
-	reflected = reflected_color(scene, comps, remaining);
-	return (color_add(surface, reflected));
 }
 
 double	schlick(t_compu comps)

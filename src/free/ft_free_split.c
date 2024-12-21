@@ -1,19 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   errors.c                                           :+:      :+:    :+:   */
+/*   ft_free_split.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tbella-n <tbella-n@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/20 20:23:07 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/20 20:23:08 by tbella-n         ###   ########.fr       */
+/*   Created: 2024/12/20 20:23:22 by tbella-n          #+#    #+#             */
+/*   Updated: 2024/12/20 20:23:24 by tbella-n         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-void	print_error(char *msg)
+void	ft_free_split(char **split)
 {
-	printf(RED "%s\n" RESET, msg);
-	exit(EXIT_FAILURE);
+	int	i;
+
+	i = 0;
+	while (split[i])
+	{
+		free(split[i]);
+		i++;
+	}
+	free(split);
 }

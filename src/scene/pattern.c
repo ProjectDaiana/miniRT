@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pattern.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tbella-n <tbella-n@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/12/20 20:18:14 by tbella-n          #+#    #+#             */
+/*   Updated: 2024/12/20 21:23:47 by tbella-n         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minirt.h"
 
 t_pattern	create_checkers_pattern(t_color c1, t_color c2)
@@ -29,7 +41,6 @@ t_color	pattern_at_checkers(t_pattern pattern, t_tuple point)
 		return (pattern.color1);
 	return (pattern.color2);
 }
-
 
 t_color	pattern_at(t_pattern pattern, t_tuple point)
 {

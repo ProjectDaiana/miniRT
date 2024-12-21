@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   transformations.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tbella-n <tbella-n@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/12/20 20:22:24 by tbella-n          #+#    #+#             */
+/*   Updated: 2024/12/20 21:13:56 by tbella-n         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minirt.h"
 
 t_matrix	translation(double x, double y, double z)
@@ -48,4 +60,13 @@ t_matrix	skewing(t_skew_params params)
 	skew_matrix = create_matrix(4);
 	set_skew_matrix(&skew_matrix, params);
 	return (skew_matrix);
+}
+
+
+t_tuple	transform_point(t_matrix transform, t_tuple point)
+{
+	t_tuple	result;
+
+	result = matrix_multiply_tuple(transform, point);
+	return (result);
 }

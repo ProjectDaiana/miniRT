@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   shadow.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tbella-n <tbella-n@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/12/20 19:45:12 by tbella-n          #+#    #+#             */
+/*   Updated: 2024/12/20 21:29:11 by tbella-n         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minirt.h"
 
 static t_ray	create_shadow_ray(t_tuple point, t_light *light)
@@ -21,7 +33,6 @@ int	is_shadowed(t_scene *scene, t_tuple point, t_light *light)
 	shadow_ray = create_shadow_ray(point, light);
 	distance = tuple_magnitude(tuple_subtract(light->position, point));
 	intersections = intersect_world(scene, shadow_ray);
-	// Add distance-based attenuation
 	i = 0;
 	while (i < intersections.count)
 	{
@@ -30,4 +41,25 @@ int	is_shadowed(t_scene *scene, t_tuple point, t_light *light)
 		i++;
 	}
 	return (0);
+}
+
+t_color	shade_hit(t_scene *scene, t_compu comps, int remaining)
+{
+	t_material			material;
+	t_color				surface;
+	t_color				reflected;
+	int					shadowed;
+	t_lighting_params	params;
+
+	material = get_object_material(comps.object);
+	shadowed = is_shadowed(scene, comps.over_point, &scene->light);
+	params.material = material;
+	params.light = scene->light;
+	params.point = comps.point;
+	params.eye_v = comps.eyev;
+	params.normal_v = comps.normalv;
+	params.in_shadow = shadowed;
+	surface = lighting(params);
+	reflected = reflected_color(scene, comps, remaining);
+	return (color_add(surface, reflected));
 }

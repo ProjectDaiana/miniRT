@@ -1,148 +1,17 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   intersections.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: darotche <darotche@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/12/20 20:12:23 by tbella-n          #+#    #+#             */
+/*   Updated: 2024/12/21 16:29:47 by darotche         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minirt.h"
 
-t_intersections	intersect_plane(t_plane *plane, t_ray ray)
-{
-	double			denom;
-	t_tuple			p0l0;
-	double			t;
-	t_intersections	result;
-
-	result.count = 0;
-	result.t1 = 0;
-	result.t2 = 0;
-	denom = tuple_dot(plane->normal, ray.direction);
-	if (fabs(denom) > EPSILON)
-	{
-		p0l0 = tuple_subtract(plane->point, ray.origin);
-		t = tuple_dot(p0l0, plane->normal) / denom;
-		if (t >= 0)
-		{
-			result.count = 1;
-			result.t = malloc(sizeof(double));
-			result.t[0] = t;
-			result.object = malloc(sizeof(void *));
-			result.object[0] = plane;
-		}
-	}
-	return (result);
-}
-
-// t_intersections	intersect_cylinder(t_cylinder cylinder, t_ray ray)
-// {
-// 	t_intersections	result;
-// 	double			t[2];
-// 	double			y[2];
-
-// 	init_cylinder_intersection(&result);
-// 	calculate_cylinder_intersections(cylinder, ray, t, y);
-// 	check_cylinder_bounds(cylinder, t, y);
-// 	allocate_intersections(&result, t, &cylinder);
-// 	return (result);
-// }
-
-t_intersections	intersect_cylinder(t_cylinder cylinder, t_ray ray)
-{
-	t_intersections	result;
-	t_tuple			oc;
-	double			a;
-	double			b;
-	double			c;
-
-	result.count = 0;
-	result.t = NULL;
-	result.object = NULL;
-	// Calculate quadratic equation parameters
-	oc = tuple_subtract(ray.origin, cylinder.center);
-	a = tuple_dot(ray.direction, ray.direction) - pow(tuple_dot(ray.direction,
-				cylinder.axis), 2);
-	b = 2 * (tuple_dot(ray.direction, oc) - tuple_dot(ray.direction,
-				cylinder.axis) * tuple_dot(oc, cylinder.axis));
-	c = tuple_dot(oc, oc) - pow(tuple_dot(oc, cylinder.axis), 2)
-		- pow(cylinder.diameter / 2, 2);
-	// Find intersections with cylinder body
-	intersect_body(a, b, c, &result, cylinder, ray);
-	// Find intersections with caps
-	intersect_caps(cylinder, ray, &result);
-	return (result);
-}
-
-static void	add_sphere_intersections(t_scene *scene, t_ray ray,
-		t_intersections *result)
-{
-	t_intersections	sphere_xs;
-	int				i;
-	int				j;
-
-	i = 0;
-	while (i < scene->sphere_count)
-	{
-		sphere_xs = intersect_sphere(scene->spheres[i], ray);
-		j = 0;
-		while (j < sphere_xs.count)
-		{
-			result->t[result->count] = sphere_xs.t[j];
-			result->object[result->count] = &scene->spheres[i];
-			result->count++;
-			j++;
-		}
-		i++;
-	}
-}
-
-static void	add_plane_intersections(t_scene *scene, t_ray ray,
-		t_intersections *result)
-{
-	t_intersections	plane_xs;
-	int				i;
-	int				j;
-
-	i = 0;
-	while (i < scene->plane_count)
-	{
-		// printf("DEBUG: Testing intersection with plane %d\n", i);
-		plane_xs = intersect_plane(&scene->planes[i], ray);
-		// printf("DEBUG: Found %d intersections\n", plane_xs.count);
-		j = 0;
-		while (j < plane_xs.count)
-		{
-			result->t[result->count] = plane_xs.t[j];
-			result->object[result->count] = &scene->planes[i];
-			result->count++;
-			j++;
-		}
-		i++;
-	}
-}
-
-static void	add_cylinder_intersections(t_scene *scene, t_ray ray,
-		t_intersections *result)
-{
-	t_intersections	cylinder_xs;
-	int				i;
-	int				j;
-
-	// printf("DEBUG: Adding cylinder intersections\n");
-	i = 0;
-	while (i < scene->cylinder_count)
-	{
-		cylinder_xs = intersect_cylinder(scene->cylinders[i], ray);
-		j = 0;
-		while (j < cylinder_xs.count)
-		{
-			// printf("DEBUG: Found cylinder intersection\n");
-			result->t[result->count] = cylinder_xs.t[j];
-			result->object[result->count] = &scene->cylinders[i];
-			result->count++;
-			j++;
-		}
-		if (cylinder_xs.count > 0)
-		{
-			free(cylinder_xs.t);
-			free(cylinder_xs.object);
-		}
-		i++;
-	}
-}
 
 t_intersections	intersect_world(t_scene *scene, t_ray ray)
 {
@@ -161,4 +30,104 @@ t_intersections	intersect_world(t_scene *scene, t_ray ray)
 	add_cylinder_intersections(scene, ray, &result);
 	sort_intersections(&result);
 	return (result);
+}
+
+void	add_intersection(t_intersections *result, double t)
+{
+	double	*new_t;
+
+	if (result->count == 0)
+	{
+		result->t = ft_calloc(1, sizeof(double));
+	}
+	else
+	{
+		new_t = ft_calloc(result->count + 1, sizeof(double));
+		if (!new_t)
+		{
+			fprintf(stderr,
+				"Error: Memory allocation failed in add_intersection\n");
+			exit(1);
+		}
+		ft_memcpy(new_t, result->t, sizeof(double) * result->count);
+		free(result->t);
+		result->t = new_t;
+	}
+	if (!result->t)
+	{
+		fprintf(stderr,
+			"Error: Memory allocation failed in add_intersection\n");
+		exit(1);
+	}
+	result->t[result->count] = t;
+	result->count++;
+}
+
+void	init_intersection_result(t_intersections *result, double discriminant)
+{
+	result->count = 0;
+	result->t = NULL;
+	result->object = NULL;
+	if (discriminant >= 0)
+	{
+		result->count = 2;
+		result->t = malloc(sizeof(double) * 2);
+		result->object = malloc(sizeof(void *) * 2);
+	}
+}
+
+
+void	set_intersection_values(t_intersections *result, t_sphere *sphere,
+		double *params)
+{
+	double	sqrt_disc;
+	double	two_a;
+	double	temp;
+
+	sqrt_disc = sqrt(params[1] * params[1] - 4.0 * params[0] * params[2]);
+	two_a = 2.0 * params[0];
+	result->t[0] = (-params[1] - sqrt_disc) / two_a;
+	result->t[1] = (-params[1] + sqrt_disc) / two_a;
+	if (result->t[0] > result->t[1])
+	{
+		temp = result->t[0];
+		result->t[0] = result->t[1];
+		result->t[1] = temp;
+	}
+	result->object[0] = sphere;
+	result->object[1] = sphere;
+}
+
+
+t_intersections	intersect_sphere(t_sphere sphere, t_ray ray)
+{
+	t_intersections	result;
+	double			params[3];
+	double			discriminant;
+
+	calculate_sphere_params(ray, sphere, params);
+	discriminant = (params[1] * params[1]) - (4.0 * params[0] * params[2]);
+	init_intersection_result(&result, discriminant);
+	if (discriminant >= 0)
+		set_intersection_values(&result, &sphere, params);
+	return (result);
+}
+
+
+void	allocate_intersections(t_intersections *result, double *t,
+		t_cylinder *cylinder)
+{
+	int	index;
+
+	result->count = (t[0] != INFINITY) + (t[1] != INFINITY);
+	if (result->count > 0)
+	{
+		result->t = malloc(sizeof(double) * result->count);
+		result->object = malloc(sizeof(void *) * result->count);
+		index = 0;
+		if (t[0] != INFINITY)
+			add_valid_intersection(result, t[0], cylinder, &index);
+		if (t[1] != INFINITY)
+			add_valid_intersection(result, t[1], cylinder, &index);
+	}
 }

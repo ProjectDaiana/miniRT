@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse_scene.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tbella-n <tbella-n@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/12/20 19:53:37 by tbella-n          #+#    #+#             */
+/*   Updated: 2024/12/20 21:22:45 by tbella-n         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minirt.h"
 
 void	init_scene_file(const char *filename, FILE **file, t_scene *scene)
@@ -42,7 +54,6 @@ void	parse_scene(const char *filename, t_scene *scene)
 			*newline = '\0';
 		if (!is_valid_line(line))
 			continue ;
-		printf("Parsing line: [%s]\n", line);
 		parse_line_by_type(line, scene);
 	}
 	fclose(file);
@@ -51,32 +62,4 @@ void	parse_scene(const char *filename, t_scene *scene)
 		printf("Error: Scene must contain at least one sphere and one light\n");
 		exit(1);
 	}
-}
-
-t_plane	create_plane_from_params(char **pos, char **normal, char **color)
-{
-	t_plane	plane;
-	t_tuple	point;
-	t_tuple	norm;
-	int		color_count;
-
-	point = create_point(ft_atof(pos[0]), ft_atof(pos[1]), ft_atof(pos[2]));
-	norm = create_vector(ft_atof(normal[0]), ft_atof(normal[1]),
-			ft_atof(normal[2]));
-	plane = create_plane(point, norm, create_material_color(color));
-	color_count = 0;
-	while (color[color_count])
-		color_count++;
-	printf("Color count: %d\n", color_count);
-	if (color_count > 3)
-	{
-		plane.material.reflective = ft_atof(color[3]);
-		printf("Setting reflective to: %f\n", plane.material.reflective);
-	}
-	if (color_count > 4)
-	{
-		plane.material.transparency = ft_atof(color[4]);
-		printf("Setting transparency to: %f\n", plane.material.transparency);
-	}
-	return (plane);
 }
