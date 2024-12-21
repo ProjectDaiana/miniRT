@@ -238,8 +238,6 @@ typedef struct data
 	t_img			img;
 	t_light			light;
 	t_scene			scene;
-	t_canvas		canvas;
-
 }					t_data;
 
 typedef struct s_computations

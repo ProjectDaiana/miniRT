@@ -6,7 +6,7 @@
 /*   By: darotche <darotche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 19:48:58 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/21 17:54:34 by darotche         ###   ########.fr       */
+/*   Updated: 2024/12/21 18:20:28 by darotche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,10 @@ int	handle_no_event(void *data)
 // }
 int	close_window(t_data *data)
 {
-	free_canvas(&data->canvas);
 	free_mtrx(&data->scene.camera.transform);
 	mlx_destroy_window(data->mlx_ptr, data->win_ptr);
 	mlx_destroy_display(data->mlx_ptr);
-	// free(data->mlx_ptr);
+	free(data->mlx_ptr);
 	exit (0);
 }
 
