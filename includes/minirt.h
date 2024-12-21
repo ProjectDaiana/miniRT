@@ -239,7 +239,6 @@ typedef struct data
 	t_img			img;
 	t_light			light;
 	t_scene			scene;
-
 }					t_data;
 
 typedef struct s_computations
@@ -567,3 +566,6 @@ void				add_plane_intersections(t_scene *scene, t_ray ray,
 						t_intersections *result);
 void				add_cylinder_intersections(t_scene *scene, t_ray ray,
 						t_intersections *result);
+
+void				free_mtrx(t_matrix *matrix);
+int					close_window(t_data *data);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mlx_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbella-n <tbella-n@student.42.fr>          +#+  +:+       +#+        */
+/*   By: darotche <darotche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 20:23:35 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/20 20:23:36 by tbella-n         ###   ########.fr       */
+/*   Updated: 2024/12/21 18:00:38 by darotche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ int	init_mlx(t_data *data)
 
 void	setup_hooks(t_data *data)
 {
+	mlx_hook(data->win_ptr, 17, 1L << 17, close_window, data);
 	mlx_hook(data->win_ptr, KeyPress, KeyPressMask, handle_keypress, data);
 	mlx_hook(data->win_ptr, KeyRelease, KeyReleaseMask, &handle_keyrelease,
 		data);
