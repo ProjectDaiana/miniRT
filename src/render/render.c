@@ -6,7 +6,7 @@
 /*   By: darotche <darotche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 20:13:51 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/21 16:32:31 by darotche         ###   ########.fr       */
+/*   Updated: 2024/12/21 21:51:23 by darotche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,6 +166,7 @@ int	render(t_data *data)
 	copy_to_image(data, &canvas);
 	mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->img.img, 0, 0);
 	free_canvas(&canvas);
+	free_mtrx(&camera.transform);
 	return (0);
 }
 

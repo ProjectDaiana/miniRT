@@ -319,8 +319,6 @@ t_vector			vect_addition(t_vector a, t_vector b);
 t_vector			vect_multiplication(t_vector a, double b);
 t_tuple				normalize_vect(t_tuple v);
 
-void				draw_clock(t_data *data);
-
 int					rgb_to_int(t_color color);
 int					add_color(t_color *color1, t_color *color2);
 int					substract_color(t_color *color1, t_color *color2);
@@ -333,7 +331,7 @@ t_color				color_subtract(t_color c1, t_color c2);
 t_color				color_multiply(t_color c, double scalar);
 t_color				color_multiply_colors(t_color c1, t_color c2);
 
-t_tuple				multiply_matrix_by_tuple(t_matrix *matrix, t_tuple *tuple);
+t_tuple				multiply_matrix_by_tuple(t_matrix matrix, t_tuple tuple);
 t_matrix			create_matrix_3(double m[3][3]);
 t_matrix			create_matrix(int size);
 void				assign_matrix(t_matrix *matrix, double m[4][4]);
@@ -569,3 +567,6 @@ void				add_cylinder_intersections(t_scene *scene, t_ray ray,
 
 void				free_mtrx(t_matrix *matrix);
 int					close_window(t_data *data);
+
+void				rotate_camera(t_data *data, t_tuple vector);
+void				reset_cam_position(t_data *data);

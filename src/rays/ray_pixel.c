@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ray_pixel.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbella-n <tbella-n@student.42.fr>          +#+  +:+       +#+        */
+/*   By: darotche <darotche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 21:12:48 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/20 21:13:32 by tbella-n         ###   ########.fr       */
+/*   Updated: 2024/12/21 21:44:15 by darotche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ t_ray	ray_for_pixel(t_camera *cam, int px, int py)
 	pixel = transform_point(inv_transform, get_pixel_position(cam, px, py));
 	origin = transform_point(inv_transform, create_point(0, 0, 0));
 	direction = tuple_normalize(tuple_subtract(pixel, origin));
+	free_mtrx(&inv_transform);
 	return (create_ray(origin, direction));
 }
 
