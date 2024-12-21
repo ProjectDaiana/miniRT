@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbella-n <tbella-n@student.42.fr>          +#+  +:+       +#+        */
+/*   By: darotche <darotche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 20:13:51 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/20 21:33:20 by tbella-n         ###   ########.fr       */
+/*   Updated: 2024/12/21 23:20:10 by darotche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
+#include <pthread.h>
 
 static void	render_pixel(t_scene *scene, t_camera *camera, t_canvas *canvas,
 		t_tuple pixel)
@@ -21,24 +22,6 @@ static void	render_pixel(t_scene *scene, t_camera *camera, t_canvas *canvas,
 	ray = ray_for_pixel(camera, pixel.x, pixel.y);
 	color = ray_color(scene, ray);
 	write_pixel(canvas, pixel.x, pixel.y, color);
-}
-
-static void	render_pixels(t_scene *scene, t_camera *camera, t_canvas *canvas)
-{
-	int	x;
-	int	y;
-
-	y = 0;
-	while (y < W_HEIGHT)
-	{
-		x = 0;
-		while (x < W_WIDTH)
-		{
-			render_pixel(scene, camera, canvas, (t_tuple){x, y, 0, 1});
-			x++;
-		}
-		y++;
-	}
 }
 
 static void	copy_to_image(t_data *data, t_canvas *canvas)
@@ -55,6 +38,25 @@ static void	copy_to_image(t_data *data, t_canvas *canvas)
 		{
 			color = pixel_at(canvas, x, y);
 			my_mlx_pixel_put(&data->img, x, y, rgb_to_int(color));
+			x++;
+		}
+		y++;
+	}
+}
+
+// No-threaded version of render_pixels
+static void	render_pixels(t_scene *scene, t_camera *camera, t_canvas *canvas)
+{
+	int	x;
+	int	y;
+
+	y = 0;
+	while (y < W_HEIGHT)
+	{
+		x = 0;
+		while (x < W_WIDTH)
+		{
+			render_pixel(scene, camera, canvas, (t_tuple){x, y, 0, 1});
 			x++;
 		}
 		y++;
@@ -85,5 +87,6 @@ int	render(t_data *data)
 	copy_to_image(data, &canvas);
 	mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->img.img, 0, 0);
 	free_canvas(&canvas);
+	free_mtrx(&transform);
 	return (0);
 }

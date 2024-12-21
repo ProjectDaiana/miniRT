@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   intersections.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbella-n <tbella-n@student.42.fr>          +#+  +:+       +#+        */
+/*   By: darotche <darotche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 20:12:23 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/20 21:36:46 by tbella-n         ###   ########.fr       */
+/*   Updated: 2024/12/21 23:15:00 by darotche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ t_intersections	intersect_world(t_scene *scene, t_ray ray)
 	add_plane_intersections(scene, ray, &result);
 	add_cylinder_intersections(scene, ray, &result);
 	sort_intersections(&result);
+	
 	return (result);
 }
 

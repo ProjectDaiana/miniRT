@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   intersect_objects.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbella-n <tbella-n@student.42.fr>          +#+  +:+       +#+        */
+/*   By: darotche <darotche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 21:35:59 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/20 21:37:10 by tbella-n         ###   ########.fr       */
+/*   Updated: 2024/12/21 23:16:08 by darotche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ void	add_sphere_intersections(t_scene *scene, t_ray ray,
 		}
 		i++;
 	}
+	free_intersections(&sphere_xs);
 }
 
 void	add_plane_intersections(t_scene *scene, t_ray ray,
@@ -128,11 +129,12 @@ void	add_cylinder_intersections(t_scene *scene, t_ray ray,
 			result->count++;
 			j++;
 		}
-		if (cylinder_xs.count > 0)
-		{
-			free(cylinder_xs.t);
-			free(cylinder_xs.object);
-		}
+		// if (cylinder_xs.count > 0)
+		// {
+		// 	free(cylinder_xs.t);
+		// 	free(cylinder_xs.object);
+		// }
 		i++;
 	}
+	free_intersections(&cylinder_xs);
 }
