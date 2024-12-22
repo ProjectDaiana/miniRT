@@ -5,10 +5,11 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: darotche <darotche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/20 20:13:51 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/21 21:51:23 by darotche         ###   ########.fr       */
+/*   Created: Invalid date        by                   #+#    #+#             */
+/*   Updated: 2024/12/21 23:40:59 by darotche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "minirt.h"
 #include <pthread.h>
@@ -166,7 +167,7 @@ int	render(t_data *data)
 	copy_to_image(data, &canvas);
 	mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->img.img, 0, 0);
 	free_canvas(&canvas);
-	free_mtrx(&camera.transform);
+	free_mtrx(&transform);
 	return (0);
 }
 

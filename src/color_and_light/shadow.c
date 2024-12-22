@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shadow.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbella-n <tbella-n@student.42.fr>          +#+  +:+       +#+        */
+/*   By: darotche <darotche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 19:45:12 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/20 21:29:11 by tbella-n         ###   ########.fr       */
+/*   Updated: 2024/12/21 23:30:57 by darotche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ int	is_shadowed(t_scene *scene, t_tuple point, t_light *light)
 			return (1);
 		i++;
 	}
+	free_intersections(&intersections);
 	return (0);
 }
 

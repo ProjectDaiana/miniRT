@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   matrix_helpers.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbella-n <tbella-n@student.42.fr>          +#+  +:+       +#+        */
+/*   By: darotche <darotche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 19:51:05 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/20 19:51:06 by tbella-n         ###   ########.fr       */
+/*   Updated: 2024/12/21 22:56:48 by darotche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ double	calculate_minor(t_matrix *matrix, int row, int col, int mtrx_size)
 
 	submatrix = find_submatrix(matrix, row, col, mtrx_size);
 	minor = calculate_determinant(&submatrix, mtrx_size - 1);
+	free_mtrx(&submatrix);
 	return (minor);
 }
 
