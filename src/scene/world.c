@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   world.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbella-n <tbella-n@student.42.fr>          +#+  +:+       +#+        */
+/*   By: darotche <darotche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 20:19:54 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/20 21:28:49 by tbella-n         ###   ########.fr       */
+/*   Updated: 2024/12/22 16:47:27 by darotche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ t_color	color_at(t_scene *scene, t_ray ray, int remaining)
 	if (xs.count == 0)
 		return (create_color(0, 0, 0));
 	comps = prepare_computations(xs.t[0], ray, &xs);
+	free_intersections(&xs);
 	return (shade_hit(scene, comps, remaining));
 }
 

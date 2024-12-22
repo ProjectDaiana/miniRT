@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ray.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbella-n <tbella-n@student.42.fr>          +#+  +:+       +#+        */
+/*   By: darotche <darotche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 20:08:47 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/20 20:08:57 by tbella-n         ###   ########.fr       */
+/*   Updated: 2024/12/22 16:51:51 by darotche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ static t_color	process_intersection(t_scene *scene, t_ray ray,
 
 	point = position(ray, xs.t[0]);
 	object = xs.object[0];
+	free_intersections(&xs);
 	return (get_intersection_color(scene, ray, object, point));
 }
 
@@ -61,5 +62,6 @@ t_color	ray_color(t_scene *scene, t_ray ray)
 	xs = intersect_world(scene, ray);
 	if (xs.count > 0)
 		return (process_intersection(scene, ray, xs));
+	free_intersections(&xs);
 	return (create_color(0, 0, 0));
 }
