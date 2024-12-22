@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   intersections.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbella-n <tbella-n@student.42.fr>          +#+  +:+       +#+        */
+/*   By: darotche <darotche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 20:12:23 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/22 17:04:04 by tbella-n         ###   ########.fr       */
+/*   Updated: 2024/12/22 22:25:12 by darotche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ t_intersections	intersect_world(t_scene *scene, t_ray ray)
 	result.object = NULL;
 	max_intersections = scene->sphere_count * 2 + scene->plane_count
 		+ scene->cylinder_count * 2;
-	result.t = malloc(sizeof(double) * max_intersections);
-	result.object = malloc(sizeof(void *) * max_intersections);
+	result.t = ft_calloc(max_intersections, sizeof(double));
+	result.object = ft_calloc(max_intersections, sizeof(void *));
 	add_sphere_intersections(scene, ray, &result);
 	add_plane_intersections(scene, ray, &result);
 	add_cylinder_intersections(scene, ray, &result);
@@ -71,8 +71,8 @@ void	init_intersection_result(t_intersections *result, double discriminant)
 	if (discriminant >= 0)
 	{
 		result->count = 2;
-		result->t = malloc(sizeof(double) * 2);
-		result->object = malloc(sizeof(void *) * 2);
+		result->t = ft_calloc(2, sizeof(double));
+		result->object = ft_calloc(2, sizeof(void *));
 	}
 }
 

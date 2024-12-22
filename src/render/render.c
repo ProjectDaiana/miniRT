@@ -6,7 +6,7 @@
 /*   By: darotche <darotche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/12/22 21:42:59 by darotche         ###   ########.fr       */
+/*   Updated: 2024/12/22 22:17:11 by darotche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static void	copy_to_image(t_data *data, t_canvas *canvas)
 	}
 }
 
-// No-threaded version of render_pixels
+//No-threaded version of render_pixels
 // static void	render_pixels(t_scene *scene, t_camera *camera, t_canvas *canvas)
 // {
 // 	int	x;

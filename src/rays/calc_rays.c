@@ -6,7 +6,7 @@
 /*   By: darotche <darotche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 20:06:36 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/22 16:49:18 by darotche         ###   ########.fr       */
+/*   Updated: 2024/12/22 22:39:49 by darotche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,11 @@ t_color	calculate_reflection(t_scene *scene, t_ray ray, t_tuple point,
 	reflect_color = create_color(0, 0, 0);
 	reflect_xs = intersect_world(scene, reflect_ray);
 	if (reflect_xs.count > 0)
-		return (calculate_reflection_color(scene, reflect_xs, reflect_ray));
-	return (reflect_color);
+		{
+        reflect_color = calculate_reflection_color(scene, reflect_xs, reflect_ray);
+        free_intersections(&reflect_xs);
+        return (reflect_color);
+    }
+    free_intersections(&reflect_xs);
+    return (reflect_color);
 }

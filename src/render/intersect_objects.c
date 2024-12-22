@@ -6,7 +6,7 @@
 /*   By: darotche <darotche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 21:35:59 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/21 23:16:08 by darotche         ###   ########.fr       */
+/*   Updated: 2024/12/22 21:55:56 by darotche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,9 @@ t_intersections	intersect_cylinder(t_cylinder cylinder, t_ray ray)
 	double			b;
 	double			c;
 
+    a = 0.0;
+    b = 0.0;
+    c = 0.0;
 	result.count = 0;
 	result.t = NULL;
 	result.object = NULL;

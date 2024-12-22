@@ -6,7 +6,7 @@
 /*   By: darotche <darotche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 19:45:12 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/22 16:46:51 by darotche         ###   ########.fr       */
+/*   Updated: 2024/12/22 22:42:01 by darotche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,10 @@ int	is_shadowed(t_scene *scene, t_tuple point, t_light *light)
 	while (i < intersections.count)
 	{
 		if (intersections.t[i] > 0 && intersections.t[i] < distance)
+		{
+			free_intersections(&intersections);
 			return (1);
+		}
 		i++;
 	}
 	free_intersections(&intersections);

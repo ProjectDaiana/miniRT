@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_intersection.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbella-n <tbella-n@student.42.fr>          +#+  +:+       +#+        */
+/*   By: darotche <darotche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 19:49:27 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/20 19:49:30 by tbella-n         ###   ########.fr       */
+/*   Updated: 2024/12/22 22:40:42 by darotche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void	free_intersections(t_intersections *xs)
 		free(xs->object);
 		xs->object = NULL;
 	}
+	//printf("\033[0;32mfree_intersections\033[0m\n");
 	xs->count = 0;
 }
 

@@ -569,3 +569,4 @@ void				add_cylinder_intersections(t_scene *scene, t_ray ray,
 
 void				free_mtrx(t_matrix *matrix);
 int					close_window(t_data *data);
+
