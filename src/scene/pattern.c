@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pattern.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: darotche <darotche@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tbella-n <tbella-n@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 20:18:14 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/21 23:18:03 by darotche         ###   ########.fr       */
+/*   Updated: 2024/12/22 22:20:29 by tbella-n         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ t_color	pattern_at_checkers(t_pattern pattern, t_tuple point)
 	double	y;
 	double	z;
 
-	scale = 0.2;
+	scale = 0.5;
 	x = floor(point.x * scale + EPSILON);
 	y = floor(point.y * scale + EPSILON);
 	z = floor(point.z * scale + EPSILON);

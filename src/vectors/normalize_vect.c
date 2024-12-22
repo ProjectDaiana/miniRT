@@ -6,7 +6,7 @@
 /*   By: tbella-n <tbella-n@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 20:25:13 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/20 20:25:14 by tbella-n         ###   ########.fr       */
+/*   Updated: 2024/12/22 23:15:02 by tbella-n         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,5 +28,6 @@ t_tuple	normalize_vect(t_tuple v)
 	result.x = v.x / mag;
 	result.y = v.y / mag;
 	result.z = v.z / mag;
+	result.w = 0; // here?
 	return (result);
 }

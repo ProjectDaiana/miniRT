@@ -468,7 +468,7 @@ int					validate_coordinates(char **coords, char *element,
 void				free_splits(char **split1, char **split2, char **split3);
 int					is_valid_line(char *line);
 
-t_color				create_material_color(char **color_values);
+t_color	create_material_color(char **color_values);
 
 void				init_sphere_material(t_sphere *sphere);
 
@@ -482,8 +482,9 @@ int					init_plane_splits(char *line, char ***split, char ***pos,
 						char ***normal);
 
 int					init_plane_color(char **split, char ***color);
-void				init_scene_file(const char *filename, FILE **file,
-						t_scene *scene);
+
+void init_scene_file(const char *filename, FILE **file,
+					 t_scene *scene);
 void				parse_line_by_type(char *line, t_scene *scene);
 void				parse_scene(const char *filename, t_scene *scene);
 void				parse_ambient(char *line, t_scene *scene);
@@ -569,4 +570,5 @@ void				add_cylinder_intersections(t_scene *scene, t_ray ray,
 
 void				free_mtrx(t_matrix *matrix);
 int					close_window(t_data *data);
+void set_plane_pattern(t_plane *plane);
 

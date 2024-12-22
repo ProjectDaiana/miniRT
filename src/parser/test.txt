@@ -1,0 +1,19 @@
+parse_plane()
+init_plane_splits
+
+init_plane_color
+
+validate_coordinates
+
+
+
+create_plane vs create_plane_from_params
+
+check init_plane_material
+
+create_plane, init_plane_material, set_plane_pattern are correct!
+
+create_checkers_pattern, pattern_at_checkers,pattern_at,pattern_at_shape
+
+i suspect these:
+get_base_color, create_material_color, set_color_components, init_plane_color:
