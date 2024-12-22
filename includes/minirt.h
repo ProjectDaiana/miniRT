@@ -22,6 +22,7 @@
 #define MAX_LIGHTS 10
 #define MAX_REFLECTION_DEPTH 5
 #define EPSILON 0.00001
+#define THREADS 4
 
 #define RED "\e[0;31m"
 #define GRN "\e[0;32m"
@@ -297,6 +298,14 @@ typedef struct s_skew_params
 	double			z_x;
 	double			z_y;
 }					t_skew_params;
+
+typedef struct {
+    t_canvas		*canvas;
+    t_scene			*scene;
+    t_camera		*camera;
+    int				start_y;
+    int				end_y;
+} 					t_thread_data;
 
 int					handle_no_event(void *data);
 int					handle_keypress(int keysym, t_data *data);
