@@ -6,7 +6,7 @@
 /*   By: darotche <darotche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/12/21 23:36:17 by darotche         ###   ########.fr       */
+/*   Updated: 2024/12/22 21:42:59 by darotche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,8 +92,6 @@ static void	copy_to_image(t_data *data, t_canvas *canvas)
 // 	return (0);
 // }
 
-
-// Thread version
 
 //	Threaded version of render_pixels
 static void *render_pixels(void *arg)

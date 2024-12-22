@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   plane_setup.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbella-n <tbella-n@student.42.fr>          +#+  +:+       +#+        */
+/*   By: darotche <darotche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 20:59:06 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/20 21:10:31 by tbella-n         ###   ########.fr       */
+/*   Updated: 2024/12/22 21:44:02 by darotche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,15 @@ t_plane	create_plane_from_params(char **pos, char **normal, char **color)
 
 void	add_plane(t_scene *scene, t_plane *plane)
 {
+	t_plane	*new_planes;
+
 	scene->plane_count++;
-	scene->planes = realloc(scene->planes, scene->plane_count
-			* sizeof(t_plane));
+	new_planes = ft_calloc(scene->plane_count, sizeof(t_plane));
+	if (scene->planes)
+	{
+		ft_memcpy(new_planes, scene->planes, (scene->plane_count - 1) * sizeof(t_plane));
+		free(scene->planes);
+	}
+	scene->planes = new_planes;
 	scene->planes[scene->plane_count - 1] = *plane;
 }
