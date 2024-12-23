@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   transformations.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbella-n <tbella-n@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tasha <tasha@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 20:22:24 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/20 21:13:56 by tbella-n         ###   ########.fr       */
+/*   Updated: 2024/12/23 19:58:41 by tasha            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,6 @@ t_matrix	skewing(t_skew_params params)
 	set_skew_matrix(&skew_matrix, params);
 	return (skew_matrix);
 }
-
 
 t_tuple	transform_point(t_matrix transform, t_tuple point)
 {

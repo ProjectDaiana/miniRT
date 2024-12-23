@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   events.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: darotche <darotche@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tasha <tasha@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 19:48:58 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/21 18:20:28 by darotche         ###   ########.fr       */
+/*   Updated: 2024/12/23 19:57:26 by tasha            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,18 @@ int	handle_no_event(void *data)
 // }
 int	close_window(t_data *data)
 {
-	free_mtrx(&data->scene.camera.transform);
-	mlx_destroy_window(data->mlx_ptr, data->win_ptr);
-	mlx_destroy_display(data->mlx_ptr);
-	free(data->mlx_ptr);
-	exit (0);
+	free_scene(&data->scene);
+	if (data->img.img)
+		mlx_destroy_image(data->mlx_ptr, data->img.img);
+	if (data->win_ptr)
+		mlx_destroy_window(data->mlx_ptr, data->win_ptr);
+	if (data->mlx_ptr)
+	{
+		mlx_destroy_display(data->mlx_ptr);
+		free(data->mlx_ptr);
+	}
+	exit(0);
+	return (0);
 }
 
 

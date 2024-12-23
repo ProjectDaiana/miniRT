@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   objects.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbella-n <tbella-n@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tasha <tasha@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 20:18:02 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/22 22:53:28 by tbella-n         ###   ########.fr       */
+/*   Updated: 2024/12/23 20:33:16 by tasha            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ void	set_plane_pattern(t_plane *plane)
 t_plane	create_plane(t_tuple point, t_tuple normal, t_color color)
 {
 	t_plane	plane;
+
+	ft_memset(&plane, 0, sizeof(t_plane));
 
 	plane.point = point;
 	plane.normal = tuple_normalize(normal);

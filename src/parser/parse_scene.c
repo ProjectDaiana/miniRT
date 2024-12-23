@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_scene.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbella-n <tbella-n@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tasha <tasha@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 19:53:37 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/20 21:22:45 by tbella-n         ###   ########.fr       */
+/*   Updated: 2024/12/23 17:03:45 by tasha            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,4 +62,13 @@ void	parse_scene(const char *filename, t_scene *scene)
 		printf("Error: Scene must contain at least one sphere and one light\n");
 		exit(1);
 	}
+	printf("Scene contents:\n");
+	printf("Camera: pos(%.2f,%.2f,%.2f) dir(%.2f,%.2f,%.2f) fov %.2f\n",
+		scene->camera.position.x, scene->camera.position.y,
+		scene->camera.position.z, scene->camera.orientation.x,
+		scene->camera.orientation.y, scene->camera.orientation.z,
+		scene->camera.fov);
+	printf("Spheres: %d\n", scene->sphere_count);
+	printf("Planes: %d\n", scene->plane_count);
+	printf("Cylinders: %d\n", scene->cylinder_count);
 }

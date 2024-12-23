@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_sphere.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbella-n <tbella-n@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tasha <tasha@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 20:45:11 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/20 20:54:18 by tbella-n         ###   ########.fr       */
+/*   Updated: 2024/12/23 17:55:38 by tasha            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ void	parse_sphere(char *line, t_scene *scene)
 	}
 	sphere.material.color = create_material_color(color);
 	init_sphere_material(&sphere);
-	sphere.material.color = create_material_color(color);
 	add_sphere(scene, &sphere);
 	free_splits(split, pos, color);
 }

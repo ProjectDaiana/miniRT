@@ -6,30 +6,39 @@
 /*   By: tasha <tasha@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 20:24:05 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/23 15:49:10 by tasha            ###   ########.fr       */
+/*   Updated: 2024/12/23 19:26:43 by tasha            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
+
 int is_valid_tuple(t_tuple t)
 {
-	return (!isnan(t.x) && !isnan(t.y) && !isnan(t.z) && !isnan(t.w)
-		&& !isinf(t.x) && !isinf(t.y) && !isinf(t.z) && !isinf(t.w));
+	// Initialize a known valid tuple for comparison
+	t_tuple zero = {0.0, 0.0, 0.0, 0.0};
+	
+	// First check if any component is NaN or Inf or uninitialized
+	// by comparing with itself (NaN and uninitialized values will fail this test)
+	if (t.x != t.x || t.y != t.y || t.z != t.z || t.w != t.w ||
+		isinf(t.x) || isinf(t.y) || isinf(t.z) || isinf(t.w))
+		return 0;
+	
+	// Then check if all components are zero
+	if (memcmp(&t, &zero, sizeof(t_tuple)) == 0)
+		return 0;
+	
+	return 1;
 }
 
 double	tuple_magnitude(t_tuple a)
 {
-	// Check for NaN/Inf values in components
-	if (isnan(a.x) || isnan(a.y) || isnan(a.z) || isnan(a.w) ||
-		isinf(a.x) || isinf(a.y) || isinf(a.z) || isinf(a.w))
+	if (!is_valid_tuple(a))
 		return 0.0;
-	
-	// Calculate magnitude
+
 	double mag = sqrt(a.x * a.x + a.y * a.y + a.z * a.z + a.w * a.w);
 	
-	// Check for NaN/Inf result
-	if (isnan(mag) || isinf(mag))
+	if (mag != mag || isinf(mag))
 		return 0.0;
 	
 	return mag;
@@ -70,14 +79,14 @@ t_tuple	tuple_cross(t_tuple a, t_tuple b)
 			* b.y - a.y * b.x));
 }
 
-t_tuple	tuple_reflect(t_tuple in, t_tuple normal)
-{
-	double	dot;
-	double	normal_mag;
+// t_tuple	tuple_reflect(t_tuple in, t_tuple normal)
+// {
+// 	double	dot;
+// 	double	normal_mag;
 
-	normal_mag = tuple_magnitude(normal); // here
-	if (fabs(normal_mag - 1.0) > EPSILON) // here
-		normal = tuple_divide(normal, normal_mag); // here
-	dot = tuple_dot(in, normal);
-	return (tuple_subtract(in, tuple_multiply(normal, 2 * dot)));
-}
+// 	normal_mag = tuple_magnitude(normal); // here
+// 	if (fabs(normal_mag - 1.0) > EPSILON) // here
+// 		normal = tuple_divide(normal, normal_mag); // here
+// 	dot = tuple_dot(in, normal);
+// 	return (tuple_subtract(in, tuple_multiply(normal, 2 * dot)));
+// }

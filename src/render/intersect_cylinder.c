@@ -6,7 +6,7 @@
 /*   By: tasha <tasha@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 21:19:49 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/23 13:48:04 by tasha            ###   ########.fr       */
+/*   Updated: 2024/12/23 16:40:12 by tasha            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,25 +85,31 @@ void	intersect_caps(t_cylinder *cylinder, t_ray ray, t_intersections *result)
 
 void	intersect_body(t_cylinder *cylinder, t_ray ray, t_intersections *result)
 {
-	double	params[3];
-	double	disc;
-	double	t[2];
-	double	y[2];
-	t_tuple	p1;
-	t_tuple	p2;
+	double params[3] = {0, 0, 0};
+	double disc;
+	double t[2] = {INFINITY, INFINITY};
+	double y[2] = {0, 0};
+	t_tuple p1, p2;
+
+	if (!cylinder || !result || !is_valid_tuple(ray.origin) || 
+		!is_valid_tuple(ray.direction))
+		return;
 
 	calculate_cylinder_params(*cylinder, ray, params);
 	disc = params[1] * params[1] - 4 * params[0] * params[2];
 	
-	if (disc < 0)
+	if (disc < 0 || params[0] == 0)
 		return;
 	
 	t[0] = (-params[1] - sqrt(disc)) / (2 * params[0]);
 	t[1] = (-params[1] + sqrt(disc)) / (2 * params[0]);
 	
-	// Calculate y values
 	p1 = tuple_add(ray.origin, tuple_multiply(ray.direction, t[0]));
 	p2 = tuple_add(ray.origin, tuple_multiply(ray.direction, t[1]));
+	
+	if (!is_valid_tuple(p1) || !is_valid_tuple(p2))
+		return;
+
 	y[0] = tuple_dot(tuple_subtract(p1, cylinder->center), cylinder->axis);
 	y[1] = tuple_dot(tuple_subtract(p2, cylinder->center), cylinder->axis);
 	

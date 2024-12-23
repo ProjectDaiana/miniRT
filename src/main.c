@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: darotche <darotche@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tasha <tasha@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 20:26:58 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/21 16:31:30 by darotche         ###   ########.fr       */
+/*   Updated: 2024/12/23 19:57:15 by tasha            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,25 @@ int	main(int argc, char **argv)
 	if (init_mlx(&data) == MLX_ERROR)
 		return (MLX_ERROR);
 	if (init_scene(&data, argv[1]))
+	{
+		mlx_destroy_display(data.mlx_ptr);
+		free(data.mlx_ptr);
 		return (1);
+	}
 	render(&data);
 	setup_hooks(&data);
 	mlx_loop(data.mlx_ptr);
+	
+	// Cleanup (this will run after mlx_loop ends)
+	free_scene(&data.scene);
+	if (data.img.img)
+		mlx_destroy_image(data.mlx_ptr, data.img.img);
+	if (data.win_ptr)
+		mlx_destroy_window(data.mlx_ptr, data.win_ptr);
+	if (data.mlx_ptr)
+	{
+		mlx_destroy_display(data.mlx_ptr);
+		free(data.mlx_ptr);
+	}
 	return (0);
 }

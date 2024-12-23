@@ -6,7 +6,7 @@
 /*   By: tasha <tasha@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 20:59:06 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/23 14:13:45 by tasha            ###   ########.fr       */
+/*   Updated: 2024/12/23 20:32:38 by tasha            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,21 +75,32 @@ t_plane	create_plane_from_params(char **pos, char **normal, char **color)
 	t_tuple	norm;
 	int		color_count;
 
-	// ft_memset(&plane, 0, sizeof(t_plane));
+	// Initialize the entire structure to zero
+	ft_memset(&plane, 0, sizeof(t_plane));
+	
 	point = create_point(ft_atof(pos[0]), ft_atof(pos[1]), ft_atof(pos[2]));
 	norm = create_vector(ft_atof(normal[0]), ft_atof(normal[1]),
 			ft_atof(normal[2]));
+	
+	// Create base plane with initialized values
 	plane = create_plane(point, norm, create_color(0, 0, 0));
+	
+	// Set color values
 	plane.material.color.r = ft_atof(color[0]) / 255.0;
 	plane.material.color.g = ft_atof(color[1]) / 255.0;
 	plane.material.color.b = ft_atof(color[2]) / 255.0;
+	
+	// Count and set optional parameters
 	color_count = 0;
 	while (color[color_count])
 		color_count++;
+	
+	// Set optional material properties
 	if (color_count > 3)
 		plane.material.reflective = ft_atof(color[3]);
 	if (color_count > 4)
 		plane.material.transparency = ft_atof(color[4]);
+	
 	return (plane);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   matrix_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: darotche <darotche@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tasha <tasha@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 19:51:08 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/21 22:52:36 by darotche         ###   ########.fr       */
+/*   Updated: 2024/12/23 19:46:23 by tasha            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,9 +56,23 @@ t_matrix	create_matrix(int size)
 	i = 0;
 	matrix.size = size;
 	matrix.m = ft_calloc(size, sizeof(double *));
+	if (!matrix.m)
+	{
+		matrix.size = 0;
+		return (matrix);
+	}
 	while (i < size)
 	{
-		matrix.m[i] = malloc(sizeof(double) * size);
+		matrix.m[i] = ft_calloc(size, sizeof(double));
+		if (!matrix.m[i])
+		{
+			while (--i >= 0)
+				free(matrix.m[i]);
+			free(matrix.m);
+			matrix.m = NULL;
+			matrix.size = 0;
+			return (matrix);
+		}
 		i++;
 	}
 	return (matrix);

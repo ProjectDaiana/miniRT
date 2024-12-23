@@ -6,7 +6,7 @@
 /*   By: tasha <tasha@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 20:12:23 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/23 12:40:15 by tasha            ###   ########.fr       */
+/*   Updated: 2024/12/23 20:16:25 by tasha            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,17 +17,26 @@ t_intersections	intersect_world(t_scene *scene, t_ray ray)
 	t_intersections	result;
 	int				max_intersections;
 
-	result.count = 0;
-	result.t = NULL;
-	result.object = NULL;
+	ft_memset(&result, 0, sizeof(t_intersections));
+	if (!scene || !is_valid_tuple(ray.origin) || !is_valid_tuple(ray.direction))
+		return (result);
 	max_intersections = scene->sphere_count * 2 + scene->plane_count
 		+ scene->cylinder_count * 2;
+	if (max_intersections <= 0)
+		return (result);
 	result.t = ft_calloc(max_intersections, sizeof(double));
 	result.object = ft_calloc(max_intersections, sizeof(void *));
+	if (!result.t || !result.object)
+	{
+		free_intersections(&result);
+		return (result);
+	}
+	result.capacity = max_intersections;
 	add_sphere_intersections(scene, ray, &result);
 	add_plane_intersections(scene, ray, &result);
 	add_cylinder_intersections(scene, ray, &result);
-	sort_intersections(&result);
+	if (result.count > 0)
+		sort_intersections(&result);
 	return (result);
 }
 
@@ -109,15 +118,16 @@ void	set_intersection_values(t_intersections *result, t_sphere *sphere,
 t_intersections	intersect_sphere(t_sphere sphere, t_ray ray)
 {
 	t_intersections	result;
-	double			params[3];
+	double			params[3] = {0, 0, 0};
 	double			discriminant;
 
-	result.count = 0;
-	result.t = NULL;
-	result.object = NULL;
+	ft_memset(&result, 0, sizeof(t_intersections));
+	if (!is_valid_tuple(ray.origin) || !is_valid_tuple(ray.direction)
+		|| !is_valid_tuple(sphere.center))
+		return (result);
 	calculate_sphere_params(ray, sphere, params);
 	discriminant = (params[1] * params[1]) - (4.0 * params[0] * params[2]);
-	if (discriminant >= 0)
+	if (discriminant >= 0 && params[0] != 0)
 	{
 		result.count = 2;
 		result.t = ft_calloc(2, sizeof(double));

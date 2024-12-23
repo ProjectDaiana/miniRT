@@ -7,7 +7,6 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
-
 #define W_HEIGHT 800
 #define W_WIDTH 800
 #define MLX_ERROR 1
