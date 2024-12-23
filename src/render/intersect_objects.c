@@ -6,7 +6,7 @@
 /*   By: darotche <darotche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 21:35:59 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/22 21:55:56 by darotche         ###   ########.fr       */
+/*   Updated: 2024/12/23 16:56:17 by darotche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,8 @@ void	add_sphere_intersections(t_scene *scene, t_ray ray,
 		}
 		i++;
 	}
-	free_intersections(&sphere_xs);
+	if (scene->sphere_count > 0)
+		free_intersections(&sphere_xs);
 }
 
 void	add_plane_intersections(t_scene *scene, t_ray ray,
@@ -111,6 +112,8 @@ void	add_plane_intersections(t_scene *scene, t_ray ray,
 		}
 		i++;
 	}
+	// if (scene->plane_count > 0)
+	// 	free_intersections(&plane_xs);
 }
 
 void	add_cylinder_intersections(t_scene *scene, t_ray ray,
@@ -139,5 +142,6 @@ void	add_cylinder_intersections(t_scene *scene, t_ray ray,
 		// }
 		i++;
 	}
-	free_intersections(&cylinder_xs);
+	if (scene->cylinder_count > 0)
+		free_intersections(&cylinder_xs);
 }

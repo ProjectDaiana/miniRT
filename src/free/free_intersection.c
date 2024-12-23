@@ -6,7 +6,7 @@
 /*   By: darotche <darotche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 19:49:27 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/22 22:40:42 by darotche         ###   ########.fr       */
+/*   Updated: 2024/12/23 16:49:09 by darotche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ void	free_intersections(t_intersections *xs)
 		free(xs->object);
 		xs->object = NULL;
 	}
-	//printf("\033[0;32mfree_intersections\033[0m\n");
 	xs->count = 0;
 }
 
