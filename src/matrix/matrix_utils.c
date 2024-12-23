@@ -6,7 +6,7 @@
 /*   By: darotche <darotche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 19:51:08 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/21 22:52:36 by darotche         ###   ########.fr       */
+/*   Updated: 2024/12/23 17:33:47 by darotche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ t_matrix	create_matrix(int size)
 	matrix.m = ft_calloc(size, sizeof(double *));
 	while (i < size)
 	{
-		matrix.m[i] = malloc(sizeof(double) * size);
+		matrix.m[i] = ft_calloc(size, sizeof(double));
 		i++;
 	}
 	return (matrix);
