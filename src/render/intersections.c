@@ -6,7 +6,7 @@
 /*   By: darotche <darotche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 20:12:23 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/22 22:25:12 by darotche         ###   ########.fr       */
+/*   Updated: 2024/12/23 18:00:25 by darotche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,8 +122,8 @@ void	allocate_intersections(t_intersections *result, double *t,
 	result->count = (t[0] != INFINITY) + (t[1] != INFINITY);
 	if (result->count > 0)
 	{
-		result->t = malloc(sizeof(double) * result->count);
-		result->object = malloc(sizeof(void *) * result->count);
+		result->t = ft_calloc(result->count, sizeof(double));
+		result->object = ft_calloc(result->count, sizeof(void *));
 		index = 0;
 		if (t[0] != INFINITY)
 			add_valid_intersection(result, t[0], cylinder, &index);

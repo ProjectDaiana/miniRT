@@ -6,7 +6,7 @@
 /*   By: darotche <darotche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 21:35:59 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/23 16:56:17 by darotche         ###   ########.fr       */
+/*   Updated: 2024/12/23 17:58:39 by darotche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,9 @@ t_intersections	intersect_plane(t_plane *plane, t_ray ray)
 		if (t >= 0)
 		{
 			result.count = 1;
-			result.t = malloc(sizeof(double));
+			result.t = ft_calloc(1, sizeof(double));
 			result.t[0] = t;
-			result.object = malloc(sizeof(void *));
+			result.object = ft_calloc(1, sizeof(void *));
 			result.object[0] = plane;
 		}
 	}
