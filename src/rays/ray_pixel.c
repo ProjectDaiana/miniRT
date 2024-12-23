@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ray_pixel.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: darotche <darotche@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tasha <tasha@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 21:12:48 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/21 22:55:50 by darotche         ###   ########.fr       */
+/*   Updated: 2024/12/23 16:05:56 by tasha            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
-
 
 static t_tuple	get_pixel_position(t_camera *cam, int px, int py)
 {
@@ -27,18 +26,44 @@ static t_tuple	get_pixel_position(t_camera *cam, int px, int py)
 	return (create_point(world_x, world_y, -1));
 }
 
+// t_ray	ray_for_pixel(t_camera *cam, int px, int py)
+// {
+// 	t_matrix	inv_transform;
+// 	t_tuple		pixel;
+// 	t_tuple		origin;
+// 	t_tuple		direction;
+
+// 	inv_transform = inverse_matrix(&cam->transform);
+// 	pixel = transform_point(inv_transform, get_pixel_position(cam, px, py));
+// 	origin = transform_point(inv_transform, create_point(0, 0, 0));
+// 	direction = tuple_normalize(tuple_subtract(pixel, origin));
+// 	free_mtrx(&inv_transform);
+// 	return (create_ray(origin, direction));
+// }
+
 t_ray	ray_for_pixel(t_camera *cam, int px, int py)
 {
 	t_matrix	inv_transform;
 	t_tuple		pixel;
 	t_tuple		origin;
 	t_tuple		direction;
+	t_ray		result;
 
+	result = create_ray(create_point(0, 0, 0), create_vector(0, 0, 1));
+	if (!cam || !cam->transform.m)
+		return (result);
 	inv_transform = inverse_matrix(&cam->transform);
+	if (!inv_transform.m)
+		return (result);
 	pixel = transform_point(inv_transform, get_pixel_position(cam, px, py));
 	origin = transform_point(inv_transform, create_point(0, 0, 0));
+	if (!is_valid_tuple(pixel) || !is_valid_tuple(origin)
+		|| tuple_magnitude(tuple_subtract(pixel, origin)) < EPSILON)
+	{
+		free_mtrx(&inv_transform);
+		return (result);
+	}
 	direction = tuple_normalize(tuple_subtract(pixel, origin));
 	free_mtrx(&inv_transform);
 	return (create_ray(origin, direction));
 }
-

@@ -3,28 +3,58 @@
 /*                                                        :::      ::::::::   */
 /*   tuple.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbella-n <tbella-n@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tasha <tasha@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 20:24:05 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/22 23:21:09 by tbella-n         ###   ########.fr       */
+/*   Updated: 2024/12/23 15:49:10 by tasha            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
+int is_valid_tuple(t_tuple t)
+{
+	return (!isnan(t.x) && !isnan(t.y) && !isnan(t.z) && !isnan(t.w)
+		&& !isinf(t.x) && !isinf(t.y) && !isinf(t.z) && !isinf(t.w));
+}
+
 double	tuple_magnitude(t_tuple a)
 {
-	return (sqrt(a.x * a.x + a.y * a.y + a.z * a.z + a.w * a.w));
+	// Check for NaN/Inf values in components
+	if (isnan(a.x) || isnan(a.y) || isnan(a.z) || isnan(a.w) ||
+		isinf(a.x) || isinf(a.y) || isinf(a.z) || isinf(a.w))
+		return 0.0;
+	
+	// Calculate magnitude
+	double mag = sqrt(a.x * a.x + a.y * a.y + a.z * a.z + a.w * a.w);
+	
+	// Check for NaN/Inf result
+	if (isnan(mag) || isinf(mag))
+		return 0.0;
+	
+	return mag;
 }
 
 t_tuple	tuple_normalize(t_tuple a)
 {
 	double	mag;
+	t_tuple	result;
 
+	// Initialize result to zero vector
+	result = create_vector(0, 0, 0);
+	
 	mag = tuple_magnitude(a);
-	if (fabs(mag) < EPSILON) // here
-		return (a);
-	return (tuple_divide(a, mag));
+	if (fabs(mag) < EPSILON)
+		return result; 
+	
+	// Safely divide
+	result = tuple_divide(a, mag);
+	
+	// Validate result
+	if (fabs(tuple_magnitude(result) - 1.0) > EPSILON)
+		return create_vector(0, 0, 0);
+	
+	return result;
 }
 
 double	tuple_dot(t_tuple a, t_tuple b)

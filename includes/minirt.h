@@ -228,6 +228,7 @@ typedef struct s_intersections
 	double			t2;
 	double			*t;
 	void			**object;
+	int				capacity;
 }					t_intersections;
 
 typedef struct data
@@ -299,13 +300,14 @@ typedef struct s_skew_params
 	double			z_y;
 }					t_skew_params;
 
-typedef struct {
-    t_canvas		*canvas;
-    t_scene			*scene;
-    t_camera		*camera;
-    int				start_y;
-    int				end_y;
-} 					t_thread_data;
+typedef struct
+{
+	t_canvas		*canvas;
+	t_scene			*scene;
+	t_camera		*camera;
+	int				start_y;
+	int				end_y;
+}					t_thread_data;
 
 int					handle_no_event(void *data);
 int					handle_keypress(int keysym, t_data *data);
@@ -433,9 +435,11 @@ t_color				ray_color(t_scene *scene, t_ray ray);
 t_ray				ray_for_pixel(t_camera *camera, int px, int py);
 
 t_tuple				tuple_reflect(t_tuple in, t_tuple normal);
-void				intersect_body(double a, double b, double c,
-						t_intersections *result, t_cylinder cylinder,
-						t_ray ray);
+// void				intersect_body(double a, double b, double c,
+// 						t_intersections *result, t_cylinder cylinder,
+// 						t_ray ray);
+void				intersect_body(t_cylinder *cylinder, t_ray ray,
+						t_intersections *result);
 void				ft_free_split(char **split);
 double				ft_atof(const char *str);
 t_plane				create_plane(t_tuple point, t_tuple normal, t_color color);
@@ -468,7 +472,7 @@ int					validate_coordinates(char **coords, char *element,
 void				free_splits(char **split1, char **split2, char **split3);
 int					is_valid_line(char *line);
 
-t_color	create_material_color(char **color_values);
+t_color				create_material_color(char **color_values);
 
 void				init_sphere_material(t_sphere *sphere);
 
@@ -483,8 +487,8 @@ int					init_plane_splits(char *line, char ***split, char ***pos,
 
 int					init_plane_color(char **split, char ***color);
 
-void init_scene_file(const char *filename, FILE **file,
-					 t_scene *scene);
+void				init_scene_file(const char *filename, FILE **file,
+						t_scene *scene);
 void				parse_line_by_type(char *line, t_scene *scene);
 void				parse_scene(const char *filename, t_scene *scene);
 void				parse_ambient(char *line, t_scene *scene);
@@ -550,9 +554,11 @@ void				parse_cylinder(char *line, t_scene *scene);
 void				calculate_t(double *t1, double *t2, double discriminant,
 						double a, double b);
 
-void				intersect_caps(t_cylinder cylinder, t_ray ray,
+void				intersect_caps(t_cylinder *cylinder, t_ray ray,
 						t_intersections *result);
-void				add_intersection(t_intersections *result, double t);
+// void				add_intersection(t_intersections *result, double t);
+void				add_intersection(t_intersections *result, double t,
+						void *object);
 int					check_cap(t_ray ray, double t, t_cylinder cylinder);
 
 void				init_cylinder_material(t_cylinder *cylinder);
@@ -570,5 +576,8 @@ void				add_cylinder_intersections(t_scene *scene, t_ray ray,
 
 void				free_mtrx(t_matrix *matrix);
 int					close_window(t_data *data);
-void set_plane_pattern(t_plane *plane);
-
+void				set_plane_pattern(t_plane *plane);
+int					is_cylinder(void *object);
+int					is_sphere(void *object);
+int					is_plane(void *object);
+int					is_valid_tuple(t_tuple t);

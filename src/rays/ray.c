@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ray.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: darotche <darotche@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tasha <tasha@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 20:08:47 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/22 16:51:51 by darotche         ###   ########.fr       */
+/*   Updated: 2024/12/23 15:00:33 by tasha            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,28 @@ static t_color	blend_colors(t_color surface_color, t_color reflect_color,
 	return (color_add(scaled_surface, scaled_reflection));
 }
 
+// static t_color	get_intersection_color(t_scene *scene, t_ray ray,
+//		void *object,
+// 		t_tuple point)
+// {
+// 	t_tuple		normal;
+// 	t_material	material;
+// 	t_color		surface_color;
+// 	t_compu		comps;
+
+// 	normal = get_object_normal(object, point);
+// 	material = get_object_material(object);
+// 	comps.point = point;
+// 	comps.eyev = tuple_negate(ray.direction);
+// 	comps.normalv = normal;
+// 	surface_color = get_surface_color(scene, material, comps);
+// 	if (material.reflective > 0)
+// 		return (blend_colors(surface_color, calculate_reflection(scene, ray,
+// 					point, normal), material.reflective));
+// 	return (surface_color);
+// }
+
+
 static t_color	get_intersection_color(t_scene *scene, t_ray ray, void *object,
 		t_tuple point)
 {
@@ -31,11 +53,16 @@ static t_color	get_intersection_color(t_scene *scene, t_ray ray, void *object,
 	t_color		surface_color;
 	t_compu		comps;
 
+	surface_color = create_color(0, 0, 0);
+	if (!scene || !object)
+		return (surface_color);
+	ft_memset(&comps, 0, sizeof(t_compu));
 	normal = get_object_normal(object, point);
 	material = get_object_material(object);
 	comps.point = point;
 	comps.eyev = tuple_negate(ray.direction);
 	comps.normalv = normal;
+	comps.object = object;
 	surface_color = get_surface_color(scene, material, comps);
 	if (material.reflective > 0)
 		return (blend_colors(surface_color, calculate_reflection(scene, ray,

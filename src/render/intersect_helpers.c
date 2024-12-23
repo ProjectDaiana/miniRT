@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   intersect_helpers.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbella-n <tbella-n@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tasha <tasha@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 20:11:34 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/20 20:11:36 by tbella-n         ###   ########.fr       */
+/*   Updated: 2024/12/23 13:49:35 by tasha            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,10 +63,19 @@ void	calculate_cylinder_intersections(t_cylinder cylinder, t_ray ray,
 	}
 }
 
+// void	check_cylinder_bounds(t_cylinder cylinder, double *t, double *y)
+// {
+// 	if (y[0] < cylinder.center.y || y[0] > cylinder.center.y + cylinder.height)
+// 		t[0] = INFINITY;
+// 	if (y[1] < cylinder.center.y || y[1] > cylinder.center.y + cylinder.height)
+// 		t[1] = INFINITY;
+// }
+
+
 void	check_cylinder_bounds(t_cylinder cylinder, double *t, double *y)
 {
-	if (y[0] < cylinder.center.y || y[0] > cylinder.center.y + cylinder.height)
+	if (y[0] < -cylinder.height / 2 || y[0] > cylinder.height / 2)
 		t[0] = INFINITY;
-	if (y[1] < cylinder.center.y || y[1] > cylinder.center.y + cylinder.height)
+	if (y[1] < -cylinder.height / 2 || y[1] > cylinder.height / 2)
 		t[1] = INFINITY;
 }

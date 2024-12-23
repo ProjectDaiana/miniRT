@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   world.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: darotche <darotche@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tasha <tasha@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 20:19:54 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/22 22:14:00 by darotche         ###   ########.fr       */
+/*   Updated: 2024/12/23 14:50:53 by tasha            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,39 @@ t_color	color_at(t_scene *scene, t_ray ray, int remaining)
 	if (remaining <= 0)
 		return (create_color(0, 0, 0));
 	xs = intersect_world(scene, ray);
-	if (xs.count == 0)
+	if (!xs.t || !xs.object)
+	{
+		free_intersections(&xs);
 		return (create_color(0, 0, 0));
+	}
+	if (xs.count == 0)
+	{
+		free_intersections(&xs);
+		return (create_color(0, 0, 0));
+	}
 	comps = prepare_computations(xs.t[0], ray, &xs);
 	color = shade_hit(scene, comps, remaining);
 	free_intersections(&xs);
 	return (color);
 }
+
+// t_color	reflected_color(t_scene *scene, t_compu comps, int remaining)
+// {
+// 	double		reflective;
+// 	t_ray		reflect_ray;
+// 	t_color		color;
+// 	t_material	material;
+
+// 	if (remaining <= 0)
+// 		return (create_color(0, 0, 0));
+// 	material = get_object_material(comps.object);
+// 	reflective = material.reflective;
+// 	if (reflective < EPSILON)
+// 		return (create_color(0, 0, 0));
+// 	reflect_ray = create_ray(comps.over_point, comps.reflectv);
+// 	color = color_at(scene, reflect_ray, remaining - 1);
+// 	return (color_multiply(color, reflective));
+// }
 
 t_color	reflected_color(t_scene *scene, t_compu comps, int remaining)
 {

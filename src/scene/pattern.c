@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pattern.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbella-n <tbella-n@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tasha <tasha@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 20:18:14 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/22 22:20:29 by tbella-n         ###   ########.fr       */
+/*   Updated: 2024/12/23 16:04:57 by tasha            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,20 +49,55 @@ t_color	pattern_at(t_pattern pattern, t_tuple point)
 	return (create_color(0, 0, 0));
 }
 
+// t_color	pattern_at_shape(t_pattern pattern, void *shape,
+//		t_tuple world_point)
+// {
+// 	t_matrix	shape_inv;
+// 	t_matrix	pattern_inv;
+// 	t_tuple		object_point;
+// 	t_tuple		pattern_point;
+// 	double		epsilon;
+
+// 	epsilon = 0.00001;
+// 	shape_inv = inverse_matrix(&((t_plane *)shape)->transform);
+// 	pattern_inv = inverse_matrix(&pattern.transform);
+// 	object_point = matrix_multiply_tuple(shape_inv, world_point);
+// 	object_point.x += (fabs(object_point.x) < epsilon) ? epsilon : 0;
+// 	object_point.z += (fabs(object_point.z) < epsilon) ? epsilon : 0;
+// 	pattern_point = matrix_multiply_tuple(pattern_inv, object_point);
+// 	return (pattern_at(pattern, pattern_point));
+// }
+
+
 t_color	pattern_at_shape(t_pattern pattern, void *shape, t_tuple world_point)
 {
 	t_matrix	shape_inv;
 	t_matrix	pattern_inv;
 	t_tuple		object_point;
 	t_tuple		pattern_point;
-	double		epsilon;
+	t_color		result;
 
-	epsilon = 0.00001;
+	// Initialize default color
+	result = create_color(0, 0, 0);
+	// Validate inputs
+	if (!shape || !is_valid_tuple(world_point))
+		return (result);
+	// Get inverse matrices
 	shape_inv = inverse_matrix(&((t_plane *)shape)->transform);
+	if (!shape_inv.m)
+		return (result);
 	pattern_inv = inverse_matrix(&pattern.transform);
+	if (!pattern_inv.m)
+	{
+		free_mtrx(&shape_inv);
+		return (result);
+	}
+	// Transform points
 	object_point = matrix_multiply_tuple(shape_inv, world_point);
-	object_point.x += (fabs(object_point.x) < epsilon) ? epsilon : 0;
-	object_point.z += (fabs(object_point.z) < epsilon) ? epsilon : 0;
 	pattern_point = matrix_multiply_tuple(pattern_inv, object_point);
+	// Clean up
+	free_mtrx(&shape_inv);
+	free_mtrx(&pattern_inv);
 	return (pattern_at(pattern, pattern_point));
 }
+

@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   intersections.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: darotche <darotche@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tasha <tasha@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 20:12:23 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/22 22:25:12 by darotche         ###   ########.fr       */
+/*   Updated: 2024/12/23 12:40:15 by tasha            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
-
 
 t_intersections	intersect_world(t_scene *scene, t_ray ray)
 {
@@ -32,50 +31,59 @@ t_intersections	intersect_world(t_scene *scene, t_ray ray)
 	return (result);
 }
 
-void	add_intersection(t_intersections *result, double t)
-{
-	double	*new_t;
+// void	add_intersection(t_intersections *result, double t)
+// {
+// 	double	*new_t;
 
-	if (result->count == 0)
-	{
-		result->t = ft_calloc(1, sizeof(double));
-	}
-	else
-	{
-		new_t = ft_calloc(result->count + 1, sizeof(double));
-		if (!new_t)
-		{
-			fprintf(stderr,
-				"Error: Memory allocation failed in add_intersection\n");
-			exit(1);
-		}
-		ft_memcpy(new_t, result->t, sizeof(double) * result->count);
-		free(result->t);
-		result->t = new_t;
-	}
-	if (!result->t)
-	{
-		fprintf(stderr,
-			"Error: Memory allocation failed in add_intersection\n");
-		exit(1);
-	}
+// 	if (result->count == 0)
+// 	{
+// 		result->t = ft_calloc(1, sizeof(double));
+// 	}
+// 	else
+// 	{
+// 		new_t = ft_calloc(result->count + 1, sizeof(double));
+// 		if (!new_t)
+// 		{
+// 			fprintf(stderr,
+// 				"Error: Memory allocation failed in add_intersection\n");
+// 			exit(1);
+// 		}
+// 		ft_memcpy(new_t, result->t, sizeof(double) * result->count);
+// 		free(result->t);
+// 		result->t = new_t;
+// 	}
+// 	if (!result->t)
+// 	{
+// 		fprintf(stderr,
+// 			"Error: Memory allocation failed in add_intersection\n");
+// 		exit(1);
+// 	}
+// 	result->t[result->count] = t;
+// 	result->count++;
+// }
+
+void	add_intersection(t_intersections *result, double t, void *object)
+{
+	if (!result || !result->t || !result->object
+		|| result->count >= result->capacity)
+		return ;
 	result->t[result->count] = t;
+	result->object[result->count] = object;
 	result->count++;
 }
 
-void	init_intersection_result(t_intersections *result, double discriminant)
-{
-	result->count = 0;
-	result->t = NULL;
-	result->object = NULL;
-	if (discriminant >= 0)
-	{
-		result->count = 2;
-		result->t = ft_calloc(2, sizeof(double));
-		result->object = ft_calloc(2, sizeof(void *));
-	}
-}
-
+// void	init_intersection_result(t_intersections *result, double discriminant)
+// {
+// 	result->count = 0;
+// 	result->t = NULL;
+// 	result->object = NULL;
+// 	if (discriminant >= 0)
+// 	{
+// 		result->count = 2;
+// 		result->t = ft_calloc(2, sizeof(double));
+// 		result->object = ft_calloc(2, sizeof(void *));
+// 	}
+// }
 
 void	set_intersection_values(t_intersections *result, t_sphere *sphere,
 		double *params)
@@ -98,21 +106,31 @@ void	set_intersection_values(t_intersections *result, t_sphere *sphere,
 	result->object[1] = sphere;
 }
 
-
 t_intersections	intersect_sphere(t_sphere sphere, t_ray ray)
 {
 	t_intersections	result;
 	double			params[3];
 	double			discriminant;
 
+	result.count = 0;
+	result.t = NULL;
+	result.object = NULL;
 	calculate_sphere_params(ray, sphere, params);
 	discriminant = (params[1] * params[1]) - (4.0 * params[0] * params[2]);
-	init_intersection_result(&result, discriminant);
 	if (discriminant >= 0)
+	{
+		result.count = 2;
+		result.t = ft_calloc(2, sizeof(double));
+		result.object = ft_calloc(2, sizeof(void *));
+		if (!result.t || !result.object)
+		{
+			free_intersections(&result);
+			return (result);
+		}
 		set_intersection_values(&result, &sphere, params);
+	}
 	return (result);
 }
-
 
 void	allocate_intersections(t_intersections *result, double *t,
 		t_cylinder *cylinder)
