@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   world.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbella-n <tbella-n@student.42.fr>          +#+  +:+       +#+        */
+/*   By: darotche <darotche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 20:19:54 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/20 21:28:49 by tbella-n         ###   ########.fr       */
+/*   Updated: 2024/12/22 22:14:00 by darotche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ t_color	color_at(t_scene *scene, t_ray ray, int remaining)
 {
 	t_intersections	xs;
 	t_compu			comps;
+	t_color			color;
 
 	if (remaining <= 0)
 		return (create_color(0, 0, 0));
@@ -32,7 +33,9 @@ t_color	color_at(t_scene *scene, t_ray ray, int remaining)
 	if (xs.count == 0)
 		return (create_color(0, 0, 0));
 	comps = prepare_computations(xs.t[0], ray, &xs);
-	return (shade_hit(scene, comps, remaining));
+	color = shade_hit(scene, comps, remaining);
+	free_intersections(&xs);
+	return (color);
 }
 
 t_color	reflected_color(t_scene *scene, t_compu comps, int remaining)

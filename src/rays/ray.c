@@ -6,7 +6,7 @@
 /*   By: darotche <darotche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 20:08:47 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/21 23:11:25 by darotche         ###   ########.fr       */
+/*   Updated: 2024/12/23 16:54:01 by darotche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,5 +62,6 @@ t_color	ray_color(t_scene *scene, t_ray ray)
 	xs = intersect_world(scene, ray);
 	if (xs.count > 0)
 		return (process_intersection(scene, ray, xs));
+	free_intersections(&xs);
 	return (create_color(0, 0, 0));
 }

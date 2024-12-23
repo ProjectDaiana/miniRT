@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cylinder_setup.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbella-n <tbella-n@student.42.fr>          +#+  +:+       +#+        */
+/*   By: darotche <darotche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 21:09:03 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/20 21:15:03 by tbella-n         ###   ########.fr       */
+/*   Updated: 2024/12/22 21:44:23 by darotche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,18 @@
 
 void	add_cylinder(t_scene *scene, t_cylinder *cylinder)
 {
+	t_cylinder	*new_cylinders;
+
 	scene->cylinder_count++;
-	scene->cylinders = realloc(scene->cylinders, scene->cylinder_count
-			* sizeof(t_cylinder));
+	new_cylinders = ft_calloc(scene->cylinder_count, sizeof(t_cylinder));
+	if (!new_cylinders)
+		return ;
+	if (scene->cylinders)
+	{
+		ft_memcpy(new_cylinders, scene->cylinders, (scene->cylinder_count - 1)
+				* sizeof(t_cylinder));
+		free(scene->cylinders);
+	}
+	scene->cylinders = new_cylinders;
 	scene->cylinders[scene->cylinder_count - 1] = *cylinder;
 }
-

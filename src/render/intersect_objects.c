@@ -6,7 +6,7 @@
 /*   By: darotche <darotche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 21:35:59 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/21 23:42:20 by darotche         ###   ########.fr       */
+/*   Updated: 2024/12/23 18:23:17 by darotche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,9 @@ t_intersections	intersect_plane(t_plane *plane, t_ray ray)
 		if (t >= 0)
 		{
 			result.count = 1;
-			result.t = malloc(sizeof(double));
+			result.t = ft_calloc(1, sizeof(double));
 			result.t[0] = t;
-			result.object = malloc(sizeof(void *));
+			result.object = ft_calloc(1, sizeof(void *));
 			result.object[0] = plane;
 		}
 	}
@@ -48,6 +48,9 @@ t_intersections	intersect_cylinder(t_cylinder cylinder, t_ray ray)
 	double			b;
 	double			c;
 
+    a = 0.0;
+    b = 0.0;
+    c = 0.0;
 	result.count = 0;
 	result.t = NULL;
 	result.object = NULL;
@@ -84,7 +87,8 @@ void	add_sphere_intersections(t_scene *scene, t_ray ray,
 		}
 		i++;
 	}
-	free_intersections(&sphere_xs);
+	if (scene->sphere_count > 0)
+		free_intersections(&sphere_xs);
 }
 
 void	add_plane_intersections(t_scene *scene, t_ray ray,
@@ -108,6 +112,8 @@ void	add_plane_intersections(t_scene *scene, t_ray ray,
 		}
 		i++;
 	}
+	// if (scene->plane_count > 0)
+	// 	free_intersections(&plane_xs);
 }
 
 void	add_cylinder_intersections(t_scene *scene, t_ray ray,
@@ -136,5 +142,6 @@ void	add_cylinder_intersections(t_scene *scene, t_ray ray,
 		// }
 		i++;
 	}
-	free_intersections(&cylinder_xs);
+	if (scene->cylinder_count > 0)
+		free_intersections(&cylinder_xs);
 }

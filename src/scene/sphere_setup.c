@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sphere_setup.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbella-n <tbella-n@student.42.fr>          +#+  +:+       +#+        */
+/*   By: darotche <darotche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 20:57:18 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/20 21:10:06 by tbella-n         ###   ########.fr       */
+/*   Updated: 2024/12/22 22:30:21 by darotche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,16 @@ void	set_sphere_center(t_sphere *sphere, char **pos)
 
 void	add_sphere(t_scene *scene, t_sphere *sphere)
 {
+	t_sphere	*new_spheres;
+
 	scene->sphere_count++;
-	scene->spheres = realloc(scene->spheres, scene->sphere_count
-			* sizeof(t_sphere));
+	new_spheres = ft_calloc(scene->sphere_count, sizeof(t_sphere));
+	if (scene->spheres)
+	{
+		ft_memcpy(new_spheres, scene->spheres, (scene->sphere_count - 1)
+				* sizeof(t_sphere));
+		free(scene->spheres);
+	}
+	scene->spheres = new_spheres;
 	scene->spheres[scene->sphere_count - 1] = *sphere;
 }
-

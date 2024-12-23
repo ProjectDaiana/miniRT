@@ -6,7 +6,7 @@
 /*   By: darotche <darotche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 19:51:05 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/21 22:56:48 by darotche         ###   ########.fr       */
+/*   Updated: 2024/12/23 18:06:36 by darotche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,14 +60,14 @@ double	calculate_determinant(t_matrix *matrix, int size)
 	}
 }
 
-double	calculate_determinant_m2(double **m, int size)
-{
-	double	determinant;
+// double	calculate_determinant_m2(double **m, int size)
+// {
+// 	double	determinant;
 
-	if (size == 2)
-	{
-		determinant = m[0][0] * m[1][1] - m[0][1] * m[1][0];
-		return (determinant);
-	}
-	return (0);
-}
+// 	if (size == 2)
+// 	{
+// 		determinant = m[0][0] * m[1][1] - m[0][1] * m[1][0];
+// 		return (determinant);
+// 	}
+// 	return (0);
+// }

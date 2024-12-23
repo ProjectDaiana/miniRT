@@ -6,12 +6,13 @@
 /*   By: darotche <darotche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/12/21 23:40:59 by darotche         ###   ########.fr       */
+/*   Updated: 2024/12/23 18:25:19 by darotche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "minirt.h"
+#include <pthread.h>
 #include <pthread.h>
 
 static void	render_pixel(t_scene *scene, t_camera *camera, t_canvas *canvas,
@@ -45,7 +46,7 @@ static void	copy_to_image(t_data *data, t_canvas *canvas)
 	}
 }
 
-// No-threaded version of render_pixels
+//No-threaded version of render_pixels
 // static void	render_pixels(t_scene *scene, t_camera *camera, t_canvas *canvas)
 // {
 // 	int	x;
@@ -92,9 +93,7 @@ static void	copy_to_image(t_data *data, t_canvas *canvas)
 // }
 
 
-// Thread version
-
-//	Threaded version of render_pixels
+// //	Threaded version of render_pixels
 static void *render_pixels(void *arg)
 {
     t_thread_data *data = (t_thread_data *)arg;

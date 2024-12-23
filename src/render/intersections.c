@@ -6,7 +6,7 @@
 /*   By: darotche <darotche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 20:12:23 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/21 23:42:43 by darotche         ###   ########.fr       */
+/*   Updated: 2024/12/23 18:23:39 by darotche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,12 @@ t_intersections	intersect_world(t_scene *scene, t_ray ray)
 	result.object = NULL;
 	max_intersections = scene->sphere_count * 2 + scene->plane_count
 		+ scene->cylinder_count * 2;
-	result.t = malloc(sizeof(double) * max_intersections);
-	result.object = malloc(sizeof(void *) * max_intersections);
+	result.t = ft_calloc(max_intersections, sizeof(double));
+	result.object = ft_calloc(max_intersections, sizeof(void *));
 	add_sphere_intersections(scene, ray, &result);
 	add_plane_intersections(scene, ray, &result);
 	add_cylinder_intersections(scene, ray, &result);
 	sort_intersections(&result);
-	
 	return (result);
 }
 
@@ -72,8 +71,8 @@ void	init_intersection_result(t_intersections *result, double discriminant)
 	if (discriminant >= 0)
 	{
 		result->count = 2;
-		result->t = malloc(sizeof(double) * 2);
-		result->object = malloc(sizeof(void *) * 2);
+		result->t = ft_calloc(2, sizeof(double));
+		result->object = ft_calloc(2, sizeof(void *));
 	}
 }
 
@@ -123,8 +122,8 @@ void	allocate_intersections(t_intersections *result, double *t,
 	result->count = (t[0] != INFINITY) + (t[1] != INFINITY);
 	if (result->count > 0)
 	{
-		result->t = malloc(sizeof(double) * result->count);
-		result->object = malloc(sizeof(void *) * result->count);
+		result->t = ft_calloc(result->count, sizeof(double));
+		result->object = ft_calloc(result->count, sizeof(void *));
 		index = 0;
 		if (t[0] != INFINITY)
 			add_valid_intersection(result, t[0], cylinder, &index);
