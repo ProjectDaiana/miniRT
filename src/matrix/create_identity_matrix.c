@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_identity_matrix.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tasha <tasha@student.42.fr>                +#+  +:+       +#+        */
+/*   By: darotche <darotche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 19:50:51 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/24 01:06:50 by tasha            ###   ########.fr       */
+/*   Updated: 2024/12/24 15:40:24 by darotche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,14 @@ t_matrix	create_identity_matrix(void)
 
 	ft_memset(&matrix, 0, sizeof(t_matrix));
 	matrix.size = 4;
-	matrix.m = malloc(sizeof(double *) * matrix.size);
+	matrix.m = ft_calloc(matrix.size, sizeof(double *));
 	if (!matrix.m)
 		return (matrix);
 		
 	i = 0;
 	while (i < matrix.size)
 	{
-		matrix.m[i] = malloc(sizeof(double) * matrix.size);
+		matrix.m[i] = ft_calloc(matrix.size, sizeof(double));
 		if (!matrix.m[i])
 		{
 			while (--i >= 0)
