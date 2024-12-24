@@ -6,7 +6,7 @@
 /*   By: tasha <tasha@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 20:26:58 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/23 19:57:15 by tasha            ###   ########.fr       */
+/*   Updated: 2024/12/24 00:58:50 by tasha            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ int	main(int argc, char **argv)
 		return (MLX_ERROR);
 	if (init_scene(&data, argv[1]))
 	{
+		if (data.img.img)
+			mlx_destroy_image(data.mlx_ptr, data.img.img);
 		mlx_destroy_display(data.mlx_ptr);
 		free(data.mlx_ptr);
 		return (1);
@@ -57,17 +59,22 @@ int	main(int argc, char **argv)
 	render(&data);
 	setup_hooks(&data);
 	mlx_loop(data.mlx_ptr);
-	
-	// Cleanup (this will run after mlx_loop ends)
 	free_scene(&data.scene);
 	if (data.img.img)
+	{
 		mlx_destroy_image(data.mlx_ptr, data.img.img);
+		data.img.img = NULL;
+	}
 	if (data.win_ptr)
+	{
 		mlx_destroy_window(data.mlx_ptr, data.win_ptr);
+		data.win_ptr = NULL;
+	}
 	if (data.mlx_ptr)
 	{
 		mlx_destroy_display(data.mlx_ptr);
 		free(data.mlx_ptr);
+		data.mlx_ptr = NULL;
 	}
 	return (0);
 }

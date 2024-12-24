@@ -6,7 +6,7 @@
 /*   By: tasha <tasha@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 19:45:12 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/23 18:56:33 by tasha            ###   ########.fr       */
+/*   Updated: 2024/12/24 01:07:40 by tasha            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ int	is_shadowed(t_scene *scene, t_tuple point, t_light *light)
 
 	if (!scene || !point.w || !light)
 		return (0);
-	// Initialize the intersections struct
 	ft_memset(&intersections, 0, sizeof(t_intersections));
 	shadow_ray = create_shadow_ray(point, light);
 	distance = tuple_magnitude(tuple_subtract(light->position, point));
@@ -72,6 +71,8 @@ int	is_shadowed(t_scene *scene, t_tuple point, t_light *light)
 // 	return (color_add(surface, reflected));
 // }
 
+
+
 t_color	shade_hit(t_scene *scene, t_compu comps, int remaining)
 {
 	t_material			material;
@@ -86,13 +87,11 @@ t_color	shade_hit(t_scene *scene, t_compu comps, int remaining)
 	if (!scene || !comps.object)
 		return (surface);
 		
-	// Initialize all fields of params to 0
 	ft_memset(&params, 0, sizeof(t_lighting_params));
 	
 	material = get_object_material(comps.object);
 	shadowed = is_shadowed(scene, comps.over_point, &scene->light);
 	
-	// Populate params with validated values
 	params.material = material;
 	params.light = scene->light;
 	params.point = comps.point;

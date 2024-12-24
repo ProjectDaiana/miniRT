@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_cylinder.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbella-n <tbella-n@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tasha <tasha@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 20:53:24 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/20 20:54:54 by tbella-n         ###   ########.fr       */
+/*   Updated: 2024/12/23 21:37:08 by tasha            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ void	parse_cylinder(char *line, t_scene *scene)
 	char		**orient;
 	char		**color;
 
+	ft_memset(&cylinder, 0, sizeof(t_cylinder));
+
 	split = ft_split(line, ' ');
 	if (!validate_params(split, 5, "cylinder"))
 		return ;
@@ -31,6 +33,7 @@ void	parse_cylinder(char *line, t_scene *scene)
 		free_splits(split, pos, orient);
 		return ;
 	}
+	
 	cylinder.center = create_point(ft_atof(pos[0]), ft_atof(pos[1]),
 			ft_atof(pos[2]));
 	cylinder.axis = create_vector(ft_atof(orient[0]), ft_atof(orient[1]),

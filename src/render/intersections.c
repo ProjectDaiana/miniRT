@@ -6,7 +6,7 @@
 /*   By: tasha <tasha@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 20:12:23 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/23 20:16:25 by tasha            ###   ########.fr       */
+/*   Updated: 2024/12/23 22:23:56 by tasha            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,13 @@ t_intersections	intersect_world(t_scene *scene, t_ray ray)
 	t_intersections	result;
 	int				max_intersections;
 
-	ft_memset(&result, 0, sizeof(t_intersections));
+	result.count = 0;
+	result.t1 = 0;
+	result.t2 = 0;
+	result.t = NULL;
+	result.object = NULL;
+	result.capacity = 0;
+	
 	if (!scene || !is_valid_tuple(ray.origin) || !is_valid_tuple(ray.direction))
 		return (result);
 	max_intersections = scene->sphere_count * 2 + scene->plane_count

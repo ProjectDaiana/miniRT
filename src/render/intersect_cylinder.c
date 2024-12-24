@@ -6,7 +6,7 @@
 /*   By: tasha <tasha@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 21:19:49 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/23 16:40:12 by tasha            ###   ########.fr       */
+/*   Updated: 2024/12/24 01:04:02 by tasha            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,14 +42,12 @@ void	intersect_caps(t_cylinder *cylinder, t_ray ray, t_intersections *result)
 	if (fabs(direction_dot) < EPSILON)
 		return ;
 
-	// Bottom cap
 	t = tuple_dot(tuple_subtract(tuple_add(cylinder->center,
 				tuple_multiply(cylinder->axis, -cylinder->height/2)), 
 				ray.origin), cylinder->axis) / direction_dot;
 	if (check_cap(ray, t, *cylinder))
 		add_intersection(result, t, cylinder);
 
-	// Top cap
 	t = tuple_dot(tuple_subtract(tuple_add(cylinder->center,
 				tuple_multiply(cylinder->axis, cylinder->height/2)), 
 				ray.origin), cylinder->axis) / direction_dot;

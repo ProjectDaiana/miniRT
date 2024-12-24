@@ -6,7 +6,7 @@
 /*   By: tasha <tasha@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/12/23 20:17:51 by tasha            ###   ########.fr       */
+/*   Updated: 2024/12/24 01:02:59 by tasha            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,30 +97,40 @@ static void	*render_pixels(void *arg)
 	t_thread_data	*data;
 	int				x;
 	int				y;
+	int				total_pixels;
+	int				pixels_done;
+	t_tuple			pixel;
 
+	pixels_done = 0;
 	if (!arg)
 		return (NULL);
 	data = (t_thread_data *)arg;
-	
-	if (!data->scene || !data->camera || !data->canvas 
-		|| data->start_y < 0 || data->end_y > W_HEIGHT)
+	if (!data->scene || !data->camera || !data->canvas || data->start_y < 0
+		|| data->end_y > W_HEIGHT)
 		return (NULL);
-		
+	total_pixels = (data->end_y - data->start_y) * W_WIDTH;
 	y = data->start_y;
 	while (y < data->end_y)
 	{
 		x = 0;
 		while (x < W_WIDTH)
 		{
-			t_tuple pixel = {x, y, 0, 1};
+			pixel.x = x;
+			pixel.y = y;
+			pixel.z = 0;
+			pixel.w = 1;
 			render_pixel(data->scene, data->camera, data->canvas, pixel);
+			pixels_done++;
+			if (pixels_done % 1000 == 0)
+				printf("Thread %d: %.1f%% complete\n", (int)(data->start_y
+						/ (W_HEIGHT / THREADS)), (float)pixels_done
+					/ total_pixels * 100);
 			x++;
 		}
 		y++;
 	}
 	return (NULL);
 }
-
 
 void	render_threads(t_data *data, t_camera *camera, t_canvas *canvas)
 {
@@ -130,9 +140,9 @@ void	render_threads(t_data *data, t_camera *camera, t_canvas *canvas)
 	int				i;
 	int				start_y;
 	int				end_y;
+	void			*status;
 
 	memset(thread_data, 0, sizeof(t_thread_data) * THREADS);
-	
 	start_y = 0;
 	end_y = W_HEIGHT / THREADS;
 	pthread_attr_init(&attr);
@@ -149,7 +159,11 @@ void	render_threads(t_data *data, t_camera *camera, t_canvas *canvas)
 				&thread_data[i]) != 0)
 		{
 			while (--i >= 0)
-				pthread_join(threads[i], NULL);
+			{
+				pthread_join(threads[i], &status);
+				if (status)
+					free(status);
+			}
 			pthread_attr_destroy(&attr);
 			return ;
 		}
@@ -160,7 +174,9 @@ void	render_threads(t_data *data, t_camera *camera, t_canvas *canvas)
 	i = 0;
 	while (i < THREADS)
 	{
-		pthread_join(threads[i], NULL);
+		pthread_join(threads[i], &status);
+		if (status)
+			free(status);
 		i++;
 	}
 	pthread_attr_destroy(&attr);
@@ -168,45 +184,48 @@ void	render_threads(t_data *data, t_camera *camera, t_canvas *canvas)
 
 int	render(t_data *data)
 {
-	t_canvas		canvas;
-	t_camera		camera;
-	t_tuple			up;
-	t_matrix		transform;
-	pthread_attr_t	attr;
+	t_canvas	canvas;
+	t_camera	camera;
+	t_tuple		up;
+	t_matrix	transform;
 
 	canvas = create_canvas(W_WIDTH, W_HEIGHT);
-	camera = create_camera(W_WIDTH, W_HEIGHT, data->scene.camera.fov * M_PI
-			/ 180.0);
+	camera = create_camera(W_WIDTH, W_HEIGHT, data->scene.camera.fov * M_PI / 180.0);
 	up = create_vector(0, 1, 0);
+	
+	if (data->img.img)
+	{
+		mlx_destroy_image(data->mlx_ptr, data->img.img);
+		data->img.img = NULL;
+	}
+	
+	data->img.img = mlx_new_image(data->mlx_ptr, W_WIDTH, W_HEIGHT);
+	if (!data->img.img)
+	{
+		free_canvas(&canvas);
+		free_mtrx(&camera.transform);
+		return (1);
+	}
+	
+	if (camera.transform.m)
+		free_mtrx(&camera.transform);
+		
 	transform = look_at(data->scene.camera.position,
 			tuple_add(data->scene.camera.position,
 				data->scene.camera.orientation), up);
 	if (!transform.m)
 	{
 		free_canvas(&canvas);
+		free_mtrx(&camera.transform);
 		return (1);
 	}
-
 	camera.transform = transform;
-	pthread_attr_init(&attr);
-	pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_JOINABLE);
 	render_threads(data, &camera, &canvas);
-	pthread_attr_destroy(&attr);
-
-	data->img.img = mlx_new_image(data->mlx_ptr, W_WIDTH, W_HEIGHT);
-	if (!data->img.img)
-	{
-		free_canvas(&canvas);
-		free_mtrx(&transform);
-		return (1);
-	}
-
 	data->img.addr = mlx_get_data_addr(data->img.img, &data->img.bits_per_pixel,
 			&data->img.line_length, &data->img.endian);
 	copy_to_image(data, &canvas);
 	mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->img.img, 0, 0);
-	
 	free_canvas(&canvas);
-	free_mtrx(&transform);
+	free_mtrx(&camera.transform);
 	return (0);
 }

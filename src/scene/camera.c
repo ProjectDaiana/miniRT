@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   camera.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbella-n <tbella-n@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tasha <tasha@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 20:14:50 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/20 21:14:51 by tbella-n         ###   ########.fr       */
+/*   Updated: 2024/12/23 22:53:36 by tasha            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ t_camera	create_camera(int hsize, int vsize, double field_of_view)
 	double		half_view;
 	double		aspect;
 
+	ft_memset(&cam, 0, sizeof(t_camera));
 	cam.height = hsize;
 	cam.width = vsize;
 	cam.fov = field_of_view;

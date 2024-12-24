@@ -6,7 +6,7 @@
 /*   By: tasha <tasha@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 19:51:13 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/23 19:46:04 by tasha            ###   ########.fr       */
+/*   Updated: 2024/12/23 22:08:49 by tasha            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,9 +77,8 @@ t_tuple	matrix_multiply_tuple(t_matrix m, t_tuple t)
 	return (result);
 }
 
-
-void	set_orientation_matrix(t_matrix *matrix, t_tuple left,
-		t_tuple true_up, t_tuple forward)
+void	set_orientation_matrix(t_matrix *matrix, t_tuple left, t_tuple true_up,
+		t_tuple forward)
 {
 	if (!matrix || !matrix->m)
 		return ;
@@ -100,4 +99,3 @@ void	set_orientation_matrix(t_matrix *matrix, t_tuple left,
 	matrix->m[3][2] = 0;
 	matrix->m[3][3] = 1;
 }
-

@@ -40,8 +40,10 @@ static t_color	get_diffuse_and_specular(t_lighting_params params,
 	t_tuple			reflectv;
 	double			dot;
 
+	ft_memset(&data, 0, sizeof(t_light_data));
 	diffuse = create_color(0, 0, 0);
 	specular = create_color(0, 0, 0);
+	reflectv = create_vector(0, 0, 0);
 	if (tuple_magnitude(lightv) < EPSILON
 		|| tuple_magnitude(params.normal_v) < EPSILON
 		|| tuple_magnitude(params.eye_v) < EPSILON)

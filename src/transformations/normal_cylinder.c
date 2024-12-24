@@ -6,7 +6,7 @@
 /*   By: tasha <tasha@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 21:18:10 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/23 19:00:04 by tasha            ###   ########.fr       */
+/*   Updated: 2024/12/24 01:00:59 by tasha            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@
 
 t_tuple	normal_at_cylinder(t_cylinder *cylinder, t_tuple world_point)
 {
-	// Initialize all variables
 	t_tuple normal = create_vector(0, 0, 0);
 	t_tuple obj_point;
 	t_tuple axis_projection;

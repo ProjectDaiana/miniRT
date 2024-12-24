@@ -6,7 +6,7 @@
 /*   By: tasha <tasha@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 20:36:39 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/23 14:03:40 by tasha            ###   ########.fr       */
+/*   Updated: 2024/12/24 01:08:17 by tasha            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,25 @@
 
 t_color	get_base_color(t_material material, t_tuple point)
 {
+	t_color default_color;
+
+	default_color = create_color(0, 0, 0);
+	
+	if (!is_valid_tuple(point))
+		return (default_color);
+	if (material.color.r < 0 || material.color.g < 0 || material.color.b < 0)
+		return (default_color);
+		
 	if (material.pattern.type == CHECKERS)
 	{
+		if (material.pattern.color1.r < 0 || material.pattern.color1.g < 0 || 
+			material.pattern.color1.b < 0 || material.pattern.color2.r < 0 || 
+			material.pattern.color2.g < 0 || material.pattern.color2.b < 0)
+			return (default_color);
+			
 		return (pattern_at(material.pattern, point));
 	}
+	
 	return (material.color);
 }
 

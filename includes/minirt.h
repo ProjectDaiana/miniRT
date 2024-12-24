@@ -7,8 +7,8 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
-#define W_HEIGHT 800
-#define W_WIDTH 800
+#define W_HEIGHT 100
+#define W_WIDTH 100
 #define MLX_ERROR 1
 #define BLU_PX 0x0000FF
 #define RED_PX 0xFF0000
@@ -580,3 +580,4 @@ int					is_cylinder(void *object);
 int					is_sphere(void *object);
 int					is_plane(void *object);
 int					is_valid_tuple(t_tuple t);
+void				free_pattern(t_pattern *pattern);

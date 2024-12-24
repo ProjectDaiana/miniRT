@@ -6,7 +6,7 @@
 /*   By: tasha <tasha@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 20:18:14 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/23 16:04:57 by tasha            ###   ########.fr       */
+/*   Updated: 2024/12/24 01:01:58 by tasha            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,6 @@ t_color	pattern_at(t_pattern pattern, t_tuple point)
 // 	return (pattern_at(pattern, pattern_point));
 // }
 
-
 t_color	pattern_at_shape(t_pattern pattern, void *shape, t_tuple world_point)
 {
 	t_matrix	shape_inv;
@@ -77,12 +76,9 @@ t_color	pattern_at_shape(t_pattern pattern, void *shape, t_tuple world_point)
 	t_tuple		pattern_point;
 	t_color		result;
 
-	// Initialize default color
 	result = create_color(0, 0, 0);
-	// Validate inputs
 	if (!shape || !is_valid_tuple(world_point))
 		return (result);
-	// Get inverse matrices
 	shape_inv = inverse_matrix(&((t_plane *)shape)->transform);
 	if (!shape_inv.m)
 		return (result);
@@ -92,12 +88,17 @@ t_color	pattern_at_shape(t_pattern pattern, void *shape, t_tuple world_point)
 		free_mtrx(&shape_inv);
 		return (result);
 	}
-	// Transform points
 	object_point = matrix_multiply_tuple(shape_inv, world_point);
 	pattern_point = matrix_multiply_tuple(pattern_inv, object_point);
-	// Clean up
 	free_mtrx(&shape_inv);
 	free_mtrx(&pattern_inv);
 	return (pattern_at(pattern, pattern_point));
 }
 
+void	free_pattern(t_pattern *pattern)
+{
+	if (!pattern)
+		return ;
+	if (pattern->transform.m)
+		free_mtrx(&pattern->transform);
+}
