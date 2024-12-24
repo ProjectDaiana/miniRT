@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_matrix.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tasha <tasha@student.42.fr>                +#+  +:+       +#+        */
+/*   By: darotche <darotche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 19:49:38 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/23 19:47:58 by tasha            ###   ########.fr       */
+/*   Updated: 2024/12/24 15:41:31 by darotche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,6 @@ void	free_mtrx(t_matrix *matrix)
 		i++;
 	}
 	free(matrix->m);
-	matrix->m = NULL;
-	matrix->size = 0;
+	// matrix->m = NULL;
+	// matrix->size = 0;
 }

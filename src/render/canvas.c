@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   canvas.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbella-n <tbella-n@student.42.fr>          +#+  +:+       +#+        */
+/*   By: darotche <darotche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 20:11:14 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/20 20:11:18 by tbella-n         ###   ########.fr       */
+/*   Updated: 2024/12/24 15:41:08 by darotche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,11 @@ t_canvas	create_canvas(int width, int height)
 
 	canvas.width = width;
 	canvas.height = height;
-	canvas.pixels = (t_color **)malloc(sizeof(t_color *) * height);
+	canvas.pixels = (t_color **)ft_calloc(height, sizeof(t_color *));
 	i = 0;
 	while (i < height)
 	{
-		canvas.pixels[i] = (t_color *)malloc(sizeof(t_color) * width);
+		canvas.pixels[i] = (t_color *)ft_calloc(width, sizeof(t_color));
 		init_canvas_row(canvas.pixels[i], width);
 		i++;
 	}

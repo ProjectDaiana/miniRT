@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tasha <tasha@student.42.fr>                +#+  +:+       +#+        */
+/*   By: darotche <darotche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 20:26:58 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/24 00:58:50 by tasha            ###   ########.fr       */
+/*   Updated: 2024/12/24 15:24:42 by darotche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,11 @@ static int	init_scene(t_data *data, char *scene_file)
 	printf("Parsing scene...\n");
 	parse_scene(scene_file, &(data->scene));
 	printf("Scene parsed\n");
-	if (!data->scene.spheres)
-	{
-		printf("Error: Scene initialization failed\n");
-		return (1);
-	}
+	// if (!data->scene.spheres)
+	// {
+	// 	printf("Error: Scene initialization failed\n");
+	// 	return (1);
+	// }
 	return (0);
 }
 

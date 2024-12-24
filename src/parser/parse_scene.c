@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_scene.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tasha <tasha@student.42.fr>                +#+  +:+       +#+        */
+/*   By: darotche <darotche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 19:53:37 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/23 17:03:45 by tasha            ###   ########.fr       */
+/*   Updated: 2024/12/24 15:25:34 by darotche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,9 @@ void	parse_scene(const char *filename, t_scene *scene)
 		parse_line_by_type(line, scene);
 	}
 	fclose(file);
-	if (scene->sphere_count == 0 || scene->light_count == 0)
+	if (((scene->sphere_count == 0) && (scene->cylinder_count == 0) && (scene->plane_count == 0)) || scene->light_count == 0)
 	{
-		printf("Error: Scene must contain at least one sphere and one light\n");
+		printf("Error: Scene must contain at least one shape and one light\n");
 		exit(1);
 	}
 	printf("Scene contents:\n");
