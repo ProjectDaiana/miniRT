@@ -7,8 +7,8 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
-#define W_HEIGHT 100
-#define W_WIDTH 100
+#define W_HEIGHT 80
+#define W_WIDTH 80
 #define MLX_ERROR 1
 #define BLU_PX 0x0000FF
 #define RED_PX 0xFF0000

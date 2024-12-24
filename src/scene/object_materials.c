@@ -6,7 +6,7 @@
 /*   By: tasha <tasha@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 19:52:17 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/24 00:51:40 by tasha            ###   ########.fr       */
+/*   Updated: 2024/12/24 18:25:43 by tasha            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,20 +32,6 @@ void	init_cylinder_material(t_cylinder *cylinder)
 	cylinder->material.reflective = 0.0;
 }
 
-// void	init_plane_material(t_plane *plane, t_color color)
-// {
-// 	plane->material.color = color;
-// 	plane->material.ambient = 0.2;
-// 	plane->material.diffuse = 0.9;
-// 	plane->material.specular = 0.1;
-// 	plane->material.shininess = 200;
-// 	plane->material.reflective = 0.0;
-// 	plane->material.transparency = 0.0;
-// 	// plane->material.pattern.type = CHECKERS;
-// 	plane->material.pattern.type = 0;
-
-// }
-
 void	init_plane_material(t_plane *plane, t_color color)
 {
 	if (!plane)
@@ -57,6 +43,9 @@ void	init_plane_material(t_plane *plane, t_color color)
 	plane->material.shininess = 200;
 	plane->material.reflective = 0.0;
 	plane->material.transparency = 0.0;
-	plane->material.pattern.type = 0;
+	//plane->material.pattern.type = SOLID;
+	plane->material.pattern.type = CHECKERS;
 	plane->material.pattern.transform.m = NULL;
+	if (plane->material.pattern.type == CHECKERS)
+		set_plane_pattern(plane);
 }

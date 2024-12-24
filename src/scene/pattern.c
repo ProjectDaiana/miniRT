@@ -6,7 +6,7 @@
 /*   By: tasha <tasha@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 20:18:14 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/24 01:01:58 by tasha            ###   ########.fr       */
+/*   Updated: 2024/12/24 19:45:57 by tasha            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ t_pattern	create_checkers_pattern(t_color c1, t_color c2)
 	pattern.type = CHECKERS;
 	pattern.color1 = c1;
 	pattern.color2 = c2;
-	pattern.transform = create_identity_matrix();
+	// pattern.transform = create_identity_matrix();
+	pattern.transform.m = NULL;
 	return (pattern);
 }
 
