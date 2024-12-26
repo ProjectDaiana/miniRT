@@ -6,7 +6,7 @@
 /*   By: tasha <tasha@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 20:18:34 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/23 16:29:02 by tasha            ###   ########.fr       */
+/*   Updated: 2024/12/26 19:29:54 by tasha            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,33 +26,18 @@ t_sphere	create_sphere(void)
 	return (sphere);
 }
 
-// t_tuple	normal_at(void *object, t_tuple world_point)
-// {
-// 	if (((t_sphere *)object)->radius > 0)
-// 		return (normal_at_sphere((t_sphere *)object, world_point));
-// 	if (((t_cylinder *)object)->diameter > 0)
-// 		return (normal_at_cylinder((t_cylinder *)object, world_point));
-// 	if (((t_plane *)object)->normal.x != 0 || ((t_plane *)object)->normal.y != 0
-// 		|| ((t_plane *)object)->normal.z != 0)
-// 		return (normal_at_plane((t_plane *)object, world_point));
-// 	return (create_vector(0, 0, 0));
-// }
-
-
 t_tuple	normal_at(void *object, t_tuple world_point)
 {
+	t_tuple	normal;
+
 	if (!object || !is_valid_tuple(world_point))
 		return (create_vector(0, 0, 0));
-
-	t_tuple normal = create_vector(0, 0, 0);
-
+	normal = create_vector(0, 0, 0);
 	if (is_sphere(object))
 		return (normal_at_sphere((t_sphere *)object, world_point));
 	if (is_cylinder(object))
 		return (normal_at_cylinder((t_cylinder *)object, world_point));
 	if (is_plane(object))
 		return (normal_at_plane((t_plane *)object, world_point));
-
 	return (normal);
 }
-

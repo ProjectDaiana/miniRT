@@ -6,7 +6,7 @@
 /*   By: tasha <tasha@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 20:08:47 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/23 20:13:11 by tasha            ###   ########.fr       */
+/*   Updated: 2024/12/26 18:07:29 by tasha            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ static t_color	blend_colors(t_color surface_color, t_color reflect_color,
 // 	return (surface_color);
 // }
 
-
 static t_color	get_intersection_color(t_scene *scene, t_ray ray, void *object,
 		t_tuple point)
 {
@@ -52,41 +51,54 @@ static t_color	get_intersection_color(t_scene *scene, t_ray ray, void *object,
 	t_material	material;
 	t_color		surface_color;
 	t_compu		comps;
+	t_color		reflect_color;
 
 	surface_color = create_color(0, 0, 0);
 	if (!scene || !object || !is_valid_tuple(point))
 		return (surface_color);
-	
 	ft_memset(&comps, 0, sizeof(t_compu));
 	normal = get_object_normal(object, point);
 	if (!is_valid_tuple(normal))
 		return (surface_color);
-	
 	material = get_object_material(object);
 	comps.point = point;
 	comps.eyev = tuple_negate(ray.direction);
 	comps.normalv = normal;
 	comps.object = object;
-	
 	surface_color = get_surface_color(scene, material, comps);
 	if (material.reflective > 0)
 	{
-		t_color reflect_color = calculate_reflection(scene, ray, point, normal);
-		surface_color = blend_colors(surface_color, reflect_color, material.reflective);
+		reflect_color = calculate_reflection(scene, ray, point, normal);
+		surface_color = blend_colors(surface_color, reflect_color,
+				material.reflective);
 	}
 	return (surface_color);
 }
+
+// static t_color	process_intersection(t_scene *scene, t_ray ray,
+// 		t_intersections xs)
+// {
+// 	t_tuple	point;
+// 	void	*object;
+
+// 	point = position(ray, xs.t[0]);
+// 	object = xs.object[0];
+// 	return (get_intersection_color(scene, ray, object, point));
+// }
+
 
 static t_color	process_intersection(t_scene *scene, t_ray ray,
 		t_intersections xs)
 {
 	t_tuple	point;
 	void	*object;
+	t_color	color;
 
 	point = position(ray, xs.t[0]);
 	object = xs.object[0];
+	color = get_intersection_color(scene, ray, object, point);
 	free_intersections(&xs);
-	return (get_intersection_color(scene, ray, object, point));
+	return (color);
 }
 
 t_color	ray_color(t_scene *scene, t_ray ray)

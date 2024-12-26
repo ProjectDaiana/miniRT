@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   intersect_objects.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: darotche <darotche@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tasha <tasha@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 21:35:59 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/24 16:05:01 by darotche         ###   ########.fr       */
+/*   Updated: 2024/12/26 18:34:28 by tasha            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,31 +89,6 @@ t_intersections	intersect_cylinder(t_cylinder cylinder, t_ray ray)
 	return (result);
 }
 
-void	add_sphere_intersections(t_scene *scene, t_ray ray,
-		t_intersections *result)
-{
-	t_intersections	sphere_xs;
-	int				i;
-	int				j;
-
-	i = 0;
-	while (i < scene->sphere_count)
-	{
-		sphere_xs = intersect_sphere(scene->spheres[i], ray);
-		j = 0;
-		while (j < sphere_xs.count)
-		{
-			result->t[result->count] = sphere_xs.t[j];
-			result->object[result->count] = &scene->spheres[i];
-			result->count++;
-			j++;
-		}
-		i++;
-	}
-	if (scene->sphere_count > 0)
-		free_intersections(&sphere_xs);
-}
-
 void	add_plane_intersections(t_scene *scene, t_ray ray,
 		t_intersections *result)
 {
@@ -160,6 +135,30 @@ void	add_cylinder_intersections(t_scene *scene, t_ray ray,
 		free_intersections(&cylinder_xs);
 		i++;
 	}
-	if (scene->cylinder_count > 0)
-		free_intersections(&cylinder_xs);
+	// if (scene->cylinder_count > 0)
+	// 	free_intersections(&cylinder_xs);
+}
+
+void	add_sphere_intersections(t_scene *scene, t_ray ray,
+		t_intersections *result)
+{
+	t_intersections	sphere_xs;
+	int				i;
+	int				j;
+
+	i = 0;
+	while (i < scene->sphere_count)
+	{
+		sphere_xs = intersect_sphere(scene->spheres[i], ray);
+		j = 0;
+		while (j < sphere_xs.count)
+		{
+			result->t[result->count] = sphere_xs.t[j];
+			result->object[result->count] = &scene->spheres[i];
+			result->count++;
+			j++;
+		}
+		free_intersections(&sphere_xs);
+		i++;
+	}
 }

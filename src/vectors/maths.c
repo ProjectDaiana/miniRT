@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   maths.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbella-n <tbella-n@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tasha <tasha@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 20:25:07 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/20 21:16:09 by tbella-n         ###   ########.fr       */
+/*   Updated: 2024/12/26 18:51:55 by tasha            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,18 +37,18 @@ t_vector	vect_multiplication(t_vector a, double b)
 	return (result);
 }
 
-void	calculate_t(double *t1, double *t2, double discriminant, double a,
-		double b)
+void	calculate_t(double *t1, double *t2, t_quad_params params)
 {
 	double	temp;
 
-	if (fabs(a) < EPSILON)
+	if (fabs(params.a) < EPSILON)
 	{
-		*t1 = *t2 = INFINITY;
+		*t1 = INFINITY;
+		*t2 = INFINITY;
 		return ;
 	}
-	*t1 = (-b - sqrt(discriminant)) / (2 * a);
-	*t2 = (-b + sqrt(discriminant)) / (2 * a);
+	*t1 = (-params.b - sqrt(params.discriminant)) / (2 * params.a);
+	*t2 = (-params.b + sqrt(params.discriminant)) / (2 * params.a);
 	if (*t1 > *t2)
 	{
 		temp = *t1;

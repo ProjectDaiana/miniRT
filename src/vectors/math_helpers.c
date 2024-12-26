@@ -6,7 +6,7 @@
 /*   By: tasha <tasha@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 20:24:58 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/23 15:15:47 by tasha            ###   ########.fr       */
+/*   Updated: 2024/12/26 18:45:46 by tasha            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,34 +26,6 @@ double	dot_product(t_vector a, t_vector b)
 {
 	return (a.x * b.x + a.y * b.y + a.z * b.z);
 }
-
-// t_compu	prepare_computations(double t, t_ray ray, t_intersections *xs)
-// {
-// 	t_compu	comps;
-
-// 	if (!xs || !xs->object || !xs->t)
-// 	{
-// 		comps = (t_compu){0};
-// 		return (comps);
-// 	}
-// 	comps.t = t;
-// 	comps.object = xs->object[0];
-// 	comps.point = position(ray, t);
-// 	comps.eyev = tuple_negate(ray.direction);
-// 	comps.normalv = normal_at(comps.object, comps.point);
-// 	if (tuple_dot(comps.normalv, comps.eyev) < 0)
-// 	{
-// 		comps.inside = 1;
-// 		comps.normalv = tuple_negate(comps.normalv);
-// 	}
-// 	else
-// 		comps.inside = 0;
-// 	comps.over_point = tuple_add(comps.point, tuple_multiply(comps.normalv,
-// 				EPSILON));
-// 	comps.reflectv = tuple_reflect(ray.direction, comps.normalv);
-// 	return (comps);
-// }
-
 
 t_compu	prepare_computations(double t, t_ray ray, t_intersections *xs)
 {
@@ -83,4 +55,3 @@ t_compu	prepare_computations(double t, t_ray ray, t_intersections *xs)
 	comps.reflectv = tuple_reflect(ray.direction, comps.normalv);
 	return (comps);
 }
-

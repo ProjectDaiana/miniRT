@@ -308,6 +308,13 @@ typedef struct
 	int				end_y;
 }					t_thread_data;
 
+typedef struct s_quad_params
+{
+	double			a;
+	double			b;
+	double			discriminant;
+}					t_quad_params;
+
 int					handle_no_event(void *data);
 int					handle_keypress(int keysym, t_data *data);
 int					handle_keyrelease(int keysym, void *data);
@@ -550,8 +557,7 @@ void				setup_hooks(t_data *data);
 void				free_scene(t_scene *scene);
 void				free_intersections(t_intersections *xs);
 void				parse_cylinder(char *line, t_scene *scene);
-void				calculate_t(double *t1, double *t2, double discriminant,
-						double a, double b);
+void				calculate_t(double *t1, double *t2, t_quad_params params);
 
 void				intersect_caps(t_cylinder *cylinder, t_ray ray,
 						t_intersections *result);
@@ -581,3 +587,9 @@ int					is_sphere(void *object);
 int					is_plane(void *object);
 int					is_valid_tuple(t_tuple t);
 void				free_pattern(t_pattern *pattern);
+int					validate_and_split_line(char *line, char ***split);
+int					validate_and_split_pos(char ***split, char ***pos);
+int					validate_and_split_normal(char ***split, char ***pos,
+						char ***normal);
+void				copy_existing_planes(t_plane *new_planes, t_scene *scene,
+						int old_count);
