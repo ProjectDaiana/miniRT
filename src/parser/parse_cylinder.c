@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_cylinder.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tasha <tasha@student.42.fr>                +#+  +:+       +#+        */
+/*   By: darotche <darotche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 20:53:24 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/23 21:37:08 by tasha            ###   ########.fr       */
+/*   Updated: 2024/12/26 20:57:09 by darotche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,16 @@ void	parse_cylinder(char *line, t_scene *scene)
 		free_splits(split, pos, orient);
 		return ;
 	}
-	
 	cylinder.center = create_point(ft_atof(pos[0]), ft_atof(pos[1]),
 			ft_atof(pos[2]));
 	cylinder.axis = create_vector(ft_atof(orient[0]), ft_atof(orient[1]),
 			ft_atof(orient[2]));
+    if (tuple_magnitude(cylinder.axis) == 0.0)
+    {
+        fprintf(stderr, "Error: Cylinder orientation cannot be (0,0,0)\n");
+        free_splits(split, pos, orient);
+        exit (0);
+    }		
 	cylinder.axis = tuple_normalize(cylinder.axis);
 	cylinder.diameter = ft_atof(split[3]);
 	cylinder.height = ft_atof(split[4]);
