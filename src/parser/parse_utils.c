@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbella-n <tbella-n@student.42.fr>          +#+  +:+       +#+        */
+/*   By: darotche <darotche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 19:53:33 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/20 20:42:48 by tbella-n         ###   ########.fr       */
+/*   Updated: 2024/12/26 21:27:28 by darotche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	validate_coordinates(char **coords, char *element, char **to_free)
 	{
 		fprintf(stderr, "Error: Invalid %s position format\n", element);
 		ft_free_split(to_free);
-		return (0);
+		exit (0);
 	}
 	return (1);
 }
