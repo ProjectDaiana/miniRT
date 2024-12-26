@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ray.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tasha <tasha@student.42.fr>                +#+  +:+       +#+        */
+/*   By: darotche <darotche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 20:08:47 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/23 20:13:11 by tasha            ###   ########.fr       */
+/*   Updated: 2024/12/26 19:39:52 by darotche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,26 @@ static t_color	get_intersection_color(t_scene *scene, t_ray ray, void *object,
 		return (surface_color);
 	
 	ft_memset(&comps, 0, sizeof(t_compu));
-	normal = get_object_normal(object, point);
+
+	if (is_cylinder(object))
+    {
+        t_cylinder *cylinder = (t_cylinder *)object;
+        double y = tuple_dot(tuple_subtract(point, cylinder->center), cylinder->axis);
+        if (fabs(y - cylinder->height / 2) < EPSILON)
+            normal = cylinder->axis;
+        else if (fabs(y + cylinder->height / 2) < EPSILON)
+            normal = tuple_negate(cylinder->axis);
+        else
+        {
+            t_tuple p = tuple_subtract(point, tuple_add(cylinder->center, tuple_multiply(cylinder->axis, y)));
+            normal = tuple_normalize(p);
+        }
+    }
+    else
+    {
+        normal = get_object_normal(object, point);
+    }
+	//normal = get_object_normal(object, point);
 	if (!is_valid_tuple(normal))
 		return (surface_color);
 	
