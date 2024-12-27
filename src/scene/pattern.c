@@ -6,7 +6,7 @@
 /*   By: tasha <tasha@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 20:18:14 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/24 01:01:58 by tasha            ###   ########.fr       */
+/*   Updated: 2024/12/26 19:24:18 by tasha            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ t_pattern	create_checkers_pattern(t_color c1, t_color c2)
 	pattern.type = CHECKERS;
 	pattern.color1 = c1;
 	pattern.color2 = c2;
-	pattern.transform = create_identity_matrix();
+	pattern.transform.m = NULL;
 	return (pattern);
 }
 
@@ -48,25 +48,6 @@ t_color	pattern_at(t_pattern pattern, t_tuple point)
 		return (pattern_at_checkers(pattern, point));
 	return (create_color(0, 0, 0));
 }
-
-// t_color	pattern_at_shape(t_pattern pattern, void *shape,
-//		t_tuple world_point)
-// {
-// 	t_matrix	shape_inv;
-// 	t_matrix	pattern_inv;
-// 	t_tuple		object_point;
-// 	t_tuple		pattern_point;
-// 	double		epsilon;
-
-// 	epsilon = 0.00001;
-// 	shape_inv = inverse_matrix(&((t_plane *)shape)->transform);
-// 	pattern_inv = inverse_matrix(&pattern.transform);
-// 	object_point = matrix_multiply_tuple(shape_inv, world_point);
-// 	object_point.x += (fabs(object_point.x) < epsilon) ? epsilon : 0;
-// 	object_point.z += (fabs(object_point.z) < epsilon) ? epsilon : 0;
-// 	pattern_point = matrix_multiply_tuple(pattern_inv, object_point);
-// 	return (pattern_at(pattern, pattern_point));
-// }
 
 t_color	pattern_at_shape(t_pattern pattern, void *shape, t_tuple world_point)
 {

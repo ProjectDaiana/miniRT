@@ -6,7 +6,7 @@
 /*   By: tasha <tasha@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 19:49:47 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/23 14:05:18 by tasha            ###   ########.fr       */
+/*   Updated: 2024/12/26 20:12:38 by tasha            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,16 +24,6 @@ void	free_split(char **split)
 	}
 	free(split);
 }
-
-// void	free_splits(char **split1, char **split2, char **split3)
-// {
-// 	if (split1)
-// 		ft_free_split(split1);
-// 	if (split2)
-// 		ft_free_split(split2);
-// 	if (split3)
-// 		ft_free_split(split3);
-// }
 
 void	free_splits(char **split1, char **split2, char **split3)
 {

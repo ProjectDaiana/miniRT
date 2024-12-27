@@ -6,69 +6,54 @@
 /*   By: tasha <tasha@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 21:18:10 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/24 01:00:59 by tasha            ###   ########.fr       */
+/*   Updated: 2024/12/26 19:15:44 by tasha            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-// t_tuple	normal_at_cylinder(t_cylinder *cylinder, t_tuple world_point)
-// {
-// 	t_tuple	obj_point;
-// 	t_tuple	axis_projection;
-// 	t_tuple	radial_vect;
-// 	double	projection_len;
-// 	t_tuple	normal;
+static int	validate_cylinder_inputs(t_cylinder *cylinder, t_tuple world_point)
+{
+	if (!cylinder || !is_valid_tuple(world_point)
+		|| !is_valid_tuple(cylinder->center) || !is_valid_tuple(cylinder->axis))
+		return (0);
+	if (fabs(tuple_magnitude(cylinder->axis) - 1.0) > EPSILON)
+		cylinder->axis = tuple_normalize(cylinder->axis);
+	return (1);
+}
 
-// 	obj_point = tuple_subtract(world_point, cylinder->center);
-// 	projection_len = tuple_dot(obj_point, cylinder->axis);
-// 	if (projection_len >= cylinder->height - EPSILON)
-// 	{
-// 		normal = cylinder->axis;
-// 		return (normal);
-// 	}
-// 	if (projection_len <= EPSILON)
-// 	{
-// 		normal = tuple_negate(cylinder->axis);
-// 		return (normal);
-// 	}
-// 	axis_projection = tuple_multiply(cylinder->axis, projection_len);
-// 	radial_vect = tuple_subtract(obj_point, axis_projection);
-// 	normal = tuple_normalize(radial_vect);
-// 	return (normal);
-// }
+static t_tuple	calculate_radial_vector(t_tuple obj_point, t_tuple axis,
+		double *projection_len)
+{
+	t_tuple	axis_projection;
+	t_tuple	radial_vector;
+
+	*projection_len = tuple_dot(obj_point, axis);
+	axis_projection = tuple_multiply(axis, *projection_len);
+	if (!is_valid_tuple(axis_projection))
+		return (create_vector(0, 1, 0));
+	radial_vector = tuple_subtract(obj_point, axis_projection);
+	if (!is_valid_tuple(radial_vector))
+		return (create_vector(0, 1, 0));
+	return (radial_vector);
+}
 
 t_tuple	normal_at_cylinder(t_cylinder *cylinder, t_tuple world_point)
 {
-	t_tuple normal = create_vector(0, 0, 0);
-	t_tuple obj_point;
-	t_tuple axis_projection;
-	t_tuple radial_vector;
-	double projection_len = 0.0;
+	t_tuple	normal;
+	t_tuple	obj_point;
+	t_tuple	radial_vector;
+	double	projection_len;
 
-	if (!cylinder || !is_valid_tuple(world_point) || 
-		!is_valid_tuple(cylinder->center) || !is_valid_tuple(cylinder->axis))
-		return normal;
-
-	if (fabs(tuple_magnitude(cylinder->axis) - 1.0) > EPSILON)
-		cylinder->axis = tuple_normalize(cylinder->axis);
-
+	if (!validate_cylinder_inputs(cylinder, world_point))
+		return (create_vector(0, 0, 0));
 	obj_point = tuple_subtract(world_point, cylinder->center);
 	if (!is_valid_tuple(obj_point))
-		return create_vector(0, 1, 0);
-
-	projection_len = tuple_dot(obj_point, cylinder->axis);
-	axis_projection = tuple_multiply(cylinder->axis, projection_len);
-	if (!is_valid_tuple(axis_projection))
-		return create_vector(0, 1, 0);
-
-	radial_vector = tuple_subtract(obj_point, axis_projection);
-	if (!is_valid_tuple(radial_vector))
-		return create_vector(0, 1, 0);
-
+		return (create_vector(0, 1, 0));
+	radial_vector = calculate_radial_vector(obj_point, cylinder->axis,
+			&projection_len);
 	normal = tuple_normalize(radial_vector);
 	if (!is_valid_tuple(normal))
-		return create_vector(0, 1, 0);
-
-	return normal;
+		return (create_vector(0, 1, 0));
+	return (normal);
 }
