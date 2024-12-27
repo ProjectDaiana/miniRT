@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   intersect_helpers.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tasha <tasha@student.42.fr>                +#+  +:+       +#+        */
+/*   By: darotche <darotche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 20:11:34 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/23 16:40:13 by tasha            ###   ########.fr       */
+/*   Updated: 2024/12/27 16:43:36 by darotche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,3 +89,4 @@ void	check_cylinder_bounds(t_cylinder cylinder, double *t, double *y)
 	if (y[1] < -cylinder.height / 2 || y[1] > cylinder.height / 2)
 		t[1] = INFINITY;
 }
+		

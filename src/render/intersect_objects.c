@@ -6,7 +6,7 @@
 /*   By: darotche <darotche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 21:35:59 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/24 16:05:01 by darotche         ###   ########.fr       */
+/*   Updated: 2024/12/27 17:40:34 by darotche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ t_intersections	intersect_cylinder(t_cylinder cylinder, t_ray ray)
 	{
 		free_intersections(&result);
 		result.capacity = 0;
-		return (result);
+		return (result);	
 	}
 	intersect_body(&cylinder, ray, &result);
 	intersect_caps(&cylinder, ray, &result);

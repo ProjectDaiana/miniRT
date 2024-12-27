@@ -6,7 +6,7 @@
 /*   By: darotche <darotche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 20:08:47 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/26 19:39:52 by darotche         ###   ########.fr       */
+/*   Updated: 2024/12/27 17:09:19 by darotche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,9 +56,7 @@ static t_color	get_intersection_color(t_scene *scene, t_ray ray, void *object,
 	surface_color = create_color(0, 0, 0);
 	if (!scene || !object || !is_valid_tuple(point))
 		return (surface_color);
-	
 	ft_memset(&comps, 0, sizeof(t_compu));
-
 	if (is_cylinder(object))
     {
         t_cylinder *cylinder = (t_cylinder *)object;
@@ -72,21 +70,19 @@ static t_color	get_intersection_color(t_scene *scene, t_ray ray, void *object,
             t_tuple p = tuple_subtract(point, tuple_add(cylinder->center, tuple_multiply(cylinder->axis, y)));
             normal = tuple_normalize(p);
         }
+		material = cylinder->material;
     }
     else
     {
         normal = get_object_normal(object, point);
+		if (!is_valid_tuple(normal))
+			return (surface_color);
+		material = get_object_material(object);
     }
-	//normal = get_object_normal(object, point);
-	if (!is_valid_tuple(normal))
-		return (surface_color);
-	
-	material = get_object_material(object);
 	comps.point = point;
 	comps.eyev = tuple_negate(ray.direction);
 	comps.normalv = normal;
 	comps.object = object;
-	
 	surface_color = get_surface_color(scene, material, comps);
 	if (material.reflective > 0)
 	{
