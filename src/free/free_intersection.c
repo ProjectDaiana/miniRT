@@ -6,7 +6,7 @@
 /*   By: tasha <tasha@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 19:49:27 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/26 20:12:11 by tasha            ###   ########.fr       */
+/*   Updated: 2024/12/24 01:07:13 by tasha            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,31 @@ void	free_intersections(t_intersections *xs)
 		xs->object = NULL;
 	}
 	xs->count = 0;
-	xs->capacity = 0;
 }
+
+// void	free_scene(t_scene *scene)
+// {
+// 	if (scene->cylinders)
+// 	{
+// 		free(scene->cylinders);
+// 		scene->cylinders = NULL;
+// 	}
+// 	if (scene->planes)
+// 	{
+// 		free(scene->planes);
+// 		scene->planes = NULL;
+// 	}
+// 	if (scene->spheres)
+// 	{
+// 		free(scene->spheres);
+// 		scene->spheres = NULL;
+// 	}
+// 	if (scene->lights)
+// 	{
+// 		free(scene->lights);
+// 		scene->lights = NULL;
+// 	}
+// }
 
 void	free_scene(t_scene *scene)
 {

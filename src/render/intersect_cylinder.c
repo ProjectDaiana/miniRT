@@ -6,7 +6,7 @@
 /*   By: darotche <darotche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 21:19:49 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/26 19:34:19 by darotche         ###   ########.fr       */
+/*   Updated: 2024/12/28 16:05:36 by darotche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@
 // 	if (check_cap(ray, t, cylinder))
 // 		add_intersection(result, t);
 // }
-
 
 void	intersect_caps(t_cylinder *cylinder, t_ray ray, t_intersections *result)
 {

@@ -6,7 +6,7 @@
 /*   By: darotche <darotche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 20:12:23 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/27 18:23:35 by darotche         ###   ########.fr       */
+/*   Updated: 2024/12/28 16:04:30 by darotche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,15 +77,44 @@ t_intersections	intersect_world(t_scene *scene, t_ray ray)
 // 	result->count++;
 // }
 
+// void	add_intersection(t_intersections *result, double t, void *object)
+// {
+// 	if (!result || !result->t || !result->object
+// 		|| result->count >= result->capacity)
+// 		return ;
+// 	result->t[result->count] = t;
+// 	result->object[result->count] = object;
+// 	result->count++;
+// }
+
 void	add_intersection(t_intersections *result, double t, void *object)
 {
-	if (!result || !result->t || !result->object
-		|| result->count >= result->capacity)
-		return ;
-	result->t[result->count] = t;
-	result->object[result->count] = object;
-	result->count++;
+	if (t > EPSILON)
+	{
+		if (result->count >= result->capacity)
+		{
+			result->capacity *= 2;
+			double *new_t = ft_calloc(result->capacity, sizeof(double));
+			void **new_object = ft_calloc(result->capacity, sizeof(void *));
+			if (!new_t || !new_object)
+			{
+				free(new_t);
+				free(new_object);
+				return;
+			}
+			ft_memcpy(new_t, result->t, result->count * sizeof(double));
+			ft_memcpy(new_object, result->object, result->count * sizeof(void *));
+			free(result->t);
+			free(result->object);
+			result->t = new_t;
+			result->object = new_object;
+		}
+		result->t[result->count] = t;
+		result->object[result->count] = object;
+		result->count++;
+	}
 }
+
 
 // void	init_intersection_result(t_intersections *result, double discriminant)
 // {
