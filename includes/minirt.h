@@ -341,6 +341,7 @@ t_color				color_add(t_color c1, t_color c2);
 t_color				color_subtract(t_color c1, t_color c2);
 t_color				color_multiply(t_color c, double scalar);
 t_color				color_multiply_colors(t_color c1, t_color c2);
+void				color_normalize(t_color *color);
 
 t_tuple				multiply_matrix_by_tuple(t_matrix *matrix, t_tuple *tuple);
 t_matrix			create_matrix_3(double m[3][3]);

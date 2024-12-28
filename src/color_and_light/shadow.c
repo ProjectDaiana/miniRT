@@ -6,7 +6,7 @@
 /*   By: darotche <darotche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 19:45:12 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/24 16:01:39 by darotche         ###   ########.fr       */
+/*   Updated: 2024/12/28 18:06:24 by darotche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,5 +101,6 @@ t_color	shade_hit(t_scene *scene, t_compu comps, int remaining)
 	
 	surface = lighting(params);
 	reflected = reflected_color(scene, comps, remaining);
+	printf("\033[0;31mReflected Color: (%d, %d, %d)\033[0m\n", reflected.r, reflected.g, reflected.b);
 	return (color_add(surface, reflected));
 }

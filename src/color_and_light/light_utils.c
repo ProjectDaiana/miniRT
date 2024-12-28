@@ -3,14 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   light_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tasha <tasha@student.42.fr>                +#+  +:+       +#+        */
+/*   By: darotche <darotche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 19:44:49 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/23 14:24:56 by tasha            ###   ########.fr       */
+/*   Updated: 2024/12/28 21:03:30 by darotche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
+
+void	color_normalize(t_color *color)
+{
+	color->r = (double)fmin(color->r, 1.0);
+	color->g = (double)fmin(color->g, 1.0);
+	color->b = (double)fmin(color->b, 1.0);
+}
 
 t_color	get_ambient_component(t_color base_color, t_light_data *light_data)
 {
@@ -44,7 +51,8 @@ t_color	get_diffuse_component(t_color base_color, t_light_data *light_data,
 	double	factor;
 
 	temp = create_color(0, 0, 0);
-	
+//	color_normalize(&base_color);
+	printf("\033[0;33mBase Color: R: %d, G: %d, B: %d\033[0m\n", base_color.r, base_color.g, base_color.b);
 	if (!light_data)
 		return temp;
 	
