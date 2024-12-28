@@ -6,7 +6,7 @@
 /*   By: darotche <darotche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 21:19:49 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/27 22:52:52 by darotche         ###   ########.fr       */
+/*   Updated: 2024/12/28 16:05:36 by darotche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,19 +45,13 @@ void	intersect_caps(t_cylinder *cylinder, t_ray ray, t_intersections *result)
 				tuple_multiply(cylinder->axis, -cylinder->height/2)), 
 				ray.origin), cylinder->axis) / direction_dot;
 	if (check_cap(ray, t, *cylinder))
-	{
 		add_intersection(result, t, cylinder);
-		//printf("\033[0;35mIntersection at t = %f\033[0m\n", t);
-	}
 
 	t = tuple_dot(tuple_subtract(tuple_add(cylinder->center,
 				tuple_multiply(cylinder->axis, cylinder->height/2)), 
 				ray.origin), cylinder->axis) / direction_dot;
 	if (check_cap(ray, t, *cylinder))
-	{
 		add_intersection(result, t, cylinder);
-		printf("\033[0;34mIntersection at t = %f\033[0m\n", t);
-	}
 }
 
 // void	intersect_body(double a, double b, double c, t_intersections *result,
