@@ -6,7 +6,7 @@
 /*   By: darotche <darotche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 20:12:23 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/27 18:23:35 by darotche         ###   ########.fr       */
+/*   Updated: 2024/12/28 00:04:24 by darotche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,15 +77,32 @@ t_intersections	intersect_world(t_scene *scene, t_ray ray)
 // 	result->count++;
 // }
 
+// void	add_intersection(t_intersections *result, double t, void *object)
+// {
+// 	if (!result || !result->t || !result->object
+// 		|| result->count >= result->capacity)
+// 		return ;
+// 	result->t[result->count] = t;
+// 	result->object[result->count] = object;
+// 	result->count++;
+// }
+
 void	add_intersection(t_intersections *result, double t, void *object)
 {
-	if (!result || !result->t || !result->object
-		|| result->count >= result->capacity)
-		return ;
-	result->t[result->count] = t;
-	result->object[result->count] = object;
-	result->count++;
+    if (t > EPSILON)
+    {
+        if (result->count >= result->capacity)
+        {
+            result->capacity *= 2;
+            result->t = realloc(result->t, result->capacity * sizeof(double));
+            result->object = realloc(result->object, result->capacity * sizeof(void *));
+        }
+        result->t[result->count] = t;
+        result->object[result->count] = object;
+        result->count++;
+    }
 }
+
 
 // void	init_intersection_result(t_intersections *result, double discriminant)
 // {
