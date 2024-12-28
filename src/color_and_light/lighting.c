@@ -59,6 +59,14 @@ static t_color	get_diffuse_and_specular(t_lighting_params params,
 	return (color_add(diffuse, specular));
 }
 
+t_color	clamp_color(t_color color)
+{
+    color.r = fmin(fmax(color.r, 0), 255);
+    color.g = fmin(fmax(color.g, 0), 255);
+    color.b = fmin(fmax(color.b, 0), 255);
+    return (color);
+}
+
 // t_color	lighting(t_lighting_params params)
 // {
 // 	t_light_data	data;
@@ -114,5 +122,6 @@ t_color	lighting(t_lighting_params params)
 		return (ambient);
 	final = color_add(ambient, get_diffuse_and_specular(params, lightv,
 				base_color));
+	final = clamp_color(final);
 	return (final);
 }
