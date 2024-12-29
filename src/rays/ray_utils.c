@@ -6,175 +6,79 @@
 /*   By: tasha <tasha@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 20:08:38 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/29 15:59:37 by tasha            ###   ########.fr       */
+/*   Updated: 2024/12/29 23:47:10 by tasha            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-// static int	is_cylinder(void *object)
-// {
-// 	t_cylinder	*cylinder;
-
-// 	cylinder = (t_cylinder *)object;
-// 	return (cylinder->diameter > 0 && cylinder->height > 0
-// 		&& cylinder->axis.w == 0 && cylinder->center.w == 1.0
-// 		&& fabs(tuple_magnitude(cylinder->axis) - 1.0) < EPSILON);
-// }
-
-int	is_cylinder(void *object)
+static void	init_reflection_params(t_lighting_params *params,
+		t_material material, t_scene *scene, t_reflection_data data)
 {
-	t_cylinder	*cylinder;
-	double		mag;
-
-	if (!object)
-		return (0);
-	cylinder = (t_cylinder *)object;
-	if (!is_valid_tuple(cylinder->axis) || !is_valid_tuple(cylinder->center))
-		return (0);
-	if (cylinder->axis.w != 0 || cylinder->center.w != 1.0)
-		return (0);
-	if (cylinder->diameter <= 0 || cylinder->height <= 0)
-		return (0);
-	mag = tuple_magnitude(cylinder->axis);
-	if (isnan(mag) || isinf(mag) || fabs(mag - 1.0) >= EPSILON)
-		return (0);
-	return (1);
+	ft_memset(params, 0, sizeof(t_lighting_params));
+	params->material = material;
+	params->light = scene->light;
+	params->point = data.point;
+	params->eye_v = data.eye;
+	params->normal_v = data.normal;
+	params->in_shadow = data.in_shadow;
 }
 
-int	is_sphere(void *object)
+static t_reflection_data	get_cylinder_reflection(t_cylinder *cylinder,
+		t_tuple reflect_point)
 {
-	t_sphere	*sphere;
+	t_reflection_data	data;
+	double				y;
+	t_tuple				p;
 
-	sphere = (t_sphere *)object;
-	return (sphere->radius > 0 && sphere->center.w == 1.0
-		&& sphere->material.color.r >= 0 && sphere->material.color.g >= 0
-		&& sphere->material.color.b >= 0);
-}
-
-int	is_plane(void *object)
-{
-	t_plane	*plane;
-
-	plane = (t_plane *)object;
-	if (!plane || plane->point.w != 1.0 || plane->normal.w != 0.0)
-		return (0);
-	if (!(plane->normal.x != 0 || plane->normal.y != 0 || plane->normal.z != 0))
-		return (0);
-	return (1);
-}
-
-// t_material	get_object_material(void *object)
-// {
-// 	if (!object)
-// 		return ((t_material){0});
-// 	if (is_sphere(object))
-// 		return (((t_sphere *)object)->material);
-// 	if (is_cylinder(object))
-// 		return (((t_cylinder *)object)->material);
-// 	if (is_plane(object))
-// 		return (((t_plane *)object)->material);
-// 	return ((t_material){0});
-// }
-
-t_material	get_object_material(void *object)
-{
-	t_material	material;
-	t_sphere	*sphere;
-	t_cylinder	*cylinder;
-	t_plane		*plane;
-
-	ft_memset(&material, 0, sizeof(t_material));
-	if (!object)
-		return (material);
-	if (is_sphere(object))
+	y = tuple_dot(tuple_subtract(reflect_point, cylinder->center),
+			cylinder->axis);
+	data.material = cylinder->material;
+	if (fabs(y - cylinder->height / 2) < EPSILON)
 	{
-		sphere = (t_sphere *)object;
-		if (!sphere)
-			return (material);
-		return (sphere->material);
+		data.normal = cylinder->axis;
+		data.material.reflective *= 0.5;
 	}
-	if (is_cylinder(object))
+	else if (fabs(y + cylinder->height / 2) < EPSILON)
 	{
-		cylinder = (t_cylinder *)object;
-		if (!cylinder)
-			return (material);
-		return (cylinder->material);
+		data.normal = tuple_negate(cylinder->axis);
+		data.material.reflective *= 0.5;
 	}
-	if (is_plane(object))
+	else
 	{
-		plane = (t_plane *)object;
-		if (!plane)
-			return (material);
-		return (plane->material);
+		p = tuple_subtract(reflect_point, tuple_add(cylinder->center,
+					tuple_multiply(cylinder->axis, y)));
+		data.normal = tuple_normalize(p);
 	}
-	return (material);
-}
-
-t_tuple	get_object_normal(void *object, t_tuple point)
-{
-	return (normal_at(object, point));
+	return (data);
 }
 
 t_color	get_reflection_color(t_scene *scene, t_ray reflect_ray,
 		void *reflect_object, t_tuple reflect_point)
 {
-	t_material			reflect_material;
-	t_tuple				reflect_normal;
-	t_tuple				reflect_eye;
-	int					in_shadow;
+	t_reflection_data	data;
 	t_lighting_params	params;
 	t_color				default_color;
-	t_cylinder			*cylinder;
-	double				y;
-	t_tuple				p;
 
 	default_color = create_color(0, 0, 0);
 	if (!scene || !reflect_object || !is_valid_tuple(reflect_point))
 		return (default_color);
-	// Special handling for cylinders
 	if (is_cylinder(reflect_object))
-	{
-		cylinder = (t_cylinder *)reflect_object;
-		y = tuple_dot(tuple_subtract(reflect_point, cylinder->center),
-				cylinder->axis);
-		reflect_material = cylinder->material;
-		// Determine if we hit a cap
-		if (fabs(y - cylinder->height / 2) < EPSILON)
-		{
-			reflect_normal = cylinder->axis;
-			reflect_material.reflective *= 0.5; // Reduce reflectivity for caps
-		}
-		else if (fabs(y + cylinder->height / 2) < EPSILON)
-		{
-			reflect_normal = tuple_negate(cylinder->axis);
-			reflect_material.reflective *= 0.5; // Reduce reflectivity for caps
-		}
-		else
-		{
-			p = tuple_subtract(reflect_point, tuple_add(cylinder->center,
-						tuple_multiply(cylinder->axis, y)));
-			reflect_normal = tuple_normalize(p);
-		}
-	}
+		data = get_cylinder_reflection((t_cylinder *)reflect_object,
+				reflect_point);
 	else
 	{
-		reflect_material = get_object_material(reflect_object);
-		reflect_normal = get_object_normal(reflect_object, reflect_point);
+		data.material = get_object_material(reflect_object);
+		data.normal = get_object_normal(reflect_object, reflect_point);
 	}
-	if (!is_valid_tuple(reflect_normal))
+	if (!is_valid_tuple(data.normal))
 		return (default_color);
-	reflect_eye = tuple_negate(reflect_ray.direction);
-	if (!is_valid_tuple(reflect_eye))
+	data.eye = tuple_negate(reflect_ray.direction);
+	if (!is_valid_tuple(data.eye))
 		return (default_color);
-	in_shadow = is_shadowed(scene, reflect_point, &scene->light);
-	ft_memset(&params, 0, sizeof(t_lighting_params));
-	params.material = reflect_material;
-	params.light = scene->light;
-	params.point = reflect_point;
-	params.eye_v = reflect_eye;
-	params.normal_v = reflect_normal;
-	params.in_shadow = in_shadow;
+	data.in_shadow = is_shadowed(scene, reflect_point, &scene->light);
+	data.point = reflect_point;
+	init_reflection_params(&params, data.material, scene, data);
 	return (lighting(params));
 }
 

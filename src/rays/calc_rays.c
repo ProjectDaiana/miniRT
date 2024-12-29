@@ -6,7 +6,7 @@
 /*   By: tasha <tasha@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 20:06:36 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/29 15:54:53 by tasha            ###   ########.fr       */
+/*   Updated: 2024/12/29 23:15:39 by tasha            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,13 +53,10 @@ t_color	calculate_reflection(t_scene *scene, t_ray ray, t_tuple point,
 	if (!scene || !is_valid_tuple(point) || !is_valid_tuple(normal))
 		return (reflect_color);
 	reflect_dir = tuple_reflect(ray.direction, normal);
-	
 	if (!is_valid_tuple(reflect_dir))
 		return (reflect_color);
-		
 	offset_point = tuple_add(point, tuple_multiply(normal, EPSILON));
 	reflect_ray = create_ray(offset_point, reflect_dir);
-	
 	reflect_xs = intersect_world(scene, reflect_ray);
 	if (reflect_xs.count > 0)
 	{
