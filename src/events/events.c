@@ -3,26 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   events.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tasha <tasha@student.42.fr>                +#+  +:+       +#+        */
+/*   By: darotche <darotche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 19:48:58 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/23 19:57:26 by tasha            ###   ########.fr       */
+/*   Updated: 2024/12/29 17:54:47 by darotche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-int	handle_no_event(void *data)
-{
-	(void)data;
-	return (0);
-}
-
-// int	close_window(t_data *data)
-// {
-// 	mlx_destroy_window(data->mlx_ptr, data->win_ptr);
-// 	exit (0);
-// }
 int	close_window(t_data *data)
 {
 	free_scene(&data->scene);
@@ -39,7 +28,6 @@ int	close_window(t_data *data)
 	return (0);
 }
 
-
 int	handle_keypress(int keysym, t_data *data)
 {
 	if (keysym == XK_Escape)
@@ -49,13 +37,11 @@ int	handle_keypress(int keysym, t_data *data)
 		free(data->mlx_ptr);
 		exit(0);
 	}
-	printf("Keypress: %d\n", keysym);
 	return (0);
 }
 
 int	handle_keyrelease(int keysym, void *data)
 {
 	(void)data;
-	printf("Keyrelease: %d\n", keysym);
 	return (0);
 }

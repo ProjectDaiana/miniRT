@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tasha <tasha@student.42.fr>                +#+  +:+       +#+        */
+/*   By: darotche <darotche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/12/29 15:27:11 by tasha            ###   ########.fr       */
+/*   Updated: 2024/12/29 17:51:23 by darotche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static void	copy_to_image(t_data *data, t_canvas *canvas)
 	}
 }
 
-// // // No-threaded version of render_pixels
+// // // // No-threaded version of render_pixels
 // static void	render_pixels(t_scene *scene, t_camera *camera,
 // 		t_canvas *canvas)
 // {
