@@ -75,7 +75,7 @@ typedef struct s_hit
 	int				inside;
 }					t_hit;
 
-typedef struct
+typedef struct s_ray
 {
 	t_tuple			origin;
 	t_tuple			direction;
@@ -202,7 +202,7 @@ typedef struct s_ambient_light
 	double			intensity;
 }					t_ambient_light;
 
-typedef struct
+typedef struct s_scene
 {
 	double			ambient_intensity;
 	t_color			ambient_color;
@@ -302,7 +302,7 @@ typedef struct s_skew_params
 	double			z_y;
 }					t_skew_params;
 
-typedef struct
+typedef struct s_thread_data
 {
 	t_canvas		*canvas;
 	t_scene			*scene;
@@ -318,7 +318,6 @@ typedef struct s_quad_params
 	double			discriminant;
 }					t_quad_params;
 
-int					handle_no_event(void *data);
 int					handle_keypress(int keysym, t_data *data);
 int					handle_keyrelease(int keysym, void *data);
 
@@ -329,8 +328,6 @@ double				vect_length(double x, double y, double z);
 t_vector			vect_addition(t_vector a, t_vector b);
 t_vector			vect_multiplication(t_vector a, double b);
 t_tuple				normalize_vect(t_tuple v);
-
-void				draw_clock(t_data *data);
 
 int					rgb_to_int(t_color color);
 int					add_color(t_color *color1, t_color *color2);
@@ -346,10 +343,8 @@ t_color				color_multiply_colors(t_color c1, t_color c2);
 void				color_normalize(t_color *color);
 
 t_tuple				multiply_matrix_by_tuple(t_matrix *matrix, t_tuple *tuple);
-t_matrix			create_matrix_3(double m[3][3]);
 t_matrix			create_matrix(int size);
 void				assign_matrix(t_matrix *matrix, double m[4][4]);
-void				assign_matrix_3(t_matrix *matrix, double m[3][3]);
 
 t_matrix			matrix_multiply(t_matrix a, t_matrix b);
 t_matrix			transpose_matrix(t_matrix *identity_matrix);
@@ -373,15 +368,6 @@ t_matrix			rotation_x(double rad);
 t_matrix			rotation_y(double rad);
 t_matrix			rotation_z(double rad);
 t_matrix			skewing(t_skew_params params);
-
-void				print_error(char *msg);
-
-/// TEST FUNCTIONS, DELETE LATER
-int					check_rotation_results(t_tuple result_half,
-						t_tuple result_full);
-
-t_tuple				point(double x, double y, double z, double w);
-void				test_intersection(t_tuple origin, t_tuple direction);
 
 t_ray				transform(t_ray *ray, t_matrix *matrix);
 
@@ -564,7 +550,6 @@ void				calculate_t(double *t1, double *t2, t_quad_params params);
 
 void				intersect_caps(t_cylinder *cylinder, t_ray ray,
 						t_intersections *result);
-// void				add_intersection(t_intersections *result, double t);
 void				add_intersection(t_intersections *result, double t,
 						void *object);
 int					check_cap(t_ray ray, double t, t_cylinder cylinder);
@@ -611,7 +596,7 @@ void				render_row(t_thread_data *data, int y, int *pixels_done);
 void				*render_pixels(void *arg);
 void				render_pixel(t_scene *scene, t_camera *camera,
 						t_canvas *canvas, t_tuple pixel);
-void	render_threads(t_data *data, t_camera *camera, t_canvas *canvas);
+void				render_threads(t_data *data, t_camera *camera, t_canvas *canvas);
 	// static void	init_thread_attr(pthread_attr_t *attr);
 	// static void	init_thread_data_array(t_thread_data *thread_data,
 	// 		t_data *data, t_camera *camera, t_canvas *canvas);
