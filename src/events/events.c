@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   events.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: darotche <darotche@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tasha <tasha@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 19:48:58 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/29 17:54:47 by darotche         ###   ########.fr       */
+/*   Updated: 2024/12/29 18:29:13 by tasha            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,5 +43,6 @@ int	handle_keypress(int keysym, t_data *data)
 int	handle_keyrelease(int keysym, void *data)
 {
 	(void)data;
+	printf("Keyrelease: %d\n", keysym);
 	return (0);
 }
