@@ -6,7 +6,7 @@
 /*   By: darotche <darotche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 15:00:59 by tasha             #+#    #+#             */
-/*   Updated: 2024/12/29 19:46:22 by darotche         ###   ########.fr       */
+/*   Updated: 2024/12/29 23:56:00 by darotche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,6 @@ void	render_threads(t_data *data, t_camera *camera, t_canvas *canvas)
 	init_thread_attr(&attr);
 	init_thread_data_array(thread_data, data, camera, canvas);
 	i = 0;
-	printf("\033[0;33mRendering with %d threads\033[0m\n", THREADS);
 	while (i < THREADS)
 	{
 		if (pthread_create(&threads[i], &attr, render_pixels,
