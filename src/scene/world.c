@@ -5,10 +5,11 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: tasha <tasha@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/20 20:19:54 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/28 23:51:59 by tasha            ###   ########.fr       */
+/*   Created: Invalid date        by                   #+#    #+#             */
+/*   Updated: 2024/12/29 12:24:54 by tasha            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "minirt.h"
 
@@ -75,8 +76,8 @@ t_color	reflected_color(t_scene *scene, t_compu comps, int remaining)
 		return (create_color(0, 0, 0));
 	material = get_object_material(comps.object);
 	reflective = material.reflective;
-	if (reflective < EPSILON)
-		return (create_color(0, 0, 0));
+	if (reflective < 0.1)
+		return create_color(0, 0, 0);
 	reflect_ray = create_ray(comps.over_point, comps.reflectv);
 	color = color_at(scene, reflect_ray, remaining - 1);
 	printf("Material reflective: %f\n", reflective);

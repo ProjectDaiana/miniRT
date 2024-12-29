@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   intersections.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: darotche <darotche@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tasha <tasha@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 20:12:23 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/28 16:04:30 by darotche         ###   ########.fr       */
+/*   Updated: 2024/12/29 12:24:15 by tasha            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ t_intersections	intersect_world(t_scene *scene, t_ray ray)
 	result.t = NULL;
 	result.object = NULL;
 	result.capacity = 0;
-	
 	if (!scene || !is_valid_tuple(ray.origin) || !is_valid_tuple(ray.direction))
 		return (result);
 	max_intersections = scene->sphere_count * 2 + scene->plane_count
@@ -46,33 +45,11 @@ t_intersections	intersect_world(t_scene *scene, t_ray ray)
 	return (result);
 }
 
-// void	add_intersection(t_intersections *result, double t)
+// void	add_intersection(t_intersections *result, double t, void *object)
 // {
-// 	double	*new_t;
-
-// 	if (result->count == 0)
-// 	{
-// 		result->t = ft_calloc(1, sizeof(double));
-// 	}
-// 	else
-// 	{
-// 		new_t = ft_calloc(result->count + 1, sizeof(double));
-// 		if (!new_t)
-// 		{
-// 			fprintf(stderr,
-// 				"Error: Memory allocation failed in add_intersection\n");
-// 			exit(1);
-// 		}
-// 		ft_memcpy(new_t, result->t, sizeof(double) * result->count);
-// 		free(result->t);
-// 		result->t = new_t;
-// 	}
-// 	if (!result->t)
-// 	{
-// 		fprintf(stderr,
-// 			"Error: Memory allocation failed in add_intersection\n");
-// 		exit(1);
-// 	}
+// 	if (!result || !result->t || !result->object
+// 		|| result->count >= result->capacity)
+// 		return ;
 // 	result->t[result->count] = t;
 // 	result->count++;
 // }

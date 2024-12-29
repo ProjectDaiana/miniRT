@@ -6,7 +6,7 @@
 /*   By: tasha <tasha@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 20:08:38 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/29 00:18:14 by tasha            ###   ########.fr       */
+/*   Updated: 2024/12/29 12:22:54 by tasha            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -202,6 +202,8 @@ t_color	get_surface_color(t_scene *scene, t_material material, t_compu comps)
 	int					in_shadow;
 	t_lighting_params	params;
 
+	printf("Material color: r=%.2d, g=%.2d, b=%.2d\n", material.color.r,
+		material.color.g, material.color.b);
 	ft_memset(&params, 0, sizeof(t_lighting_params));
 	in_shadow = is_shadowed(scene, comps.point, &scene->light);
 	params = (t_lighting_params){material, scene->light, comps.point,
