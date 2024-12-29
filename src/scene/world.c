@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   world.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: darotche <darotche@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tasha <tasha@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 20:19:54 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/28 19:56:51 by darotche         ###   ########.fr       */
+/*   Updated: 2024/12/28 23:51:59 by tasha            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ t_color	reflected_color(t_scene *scene, t_compu comps, int remaining)
 		return (create_color(0, 0, 0));
 	reflect_ray = create_ray(comps.over_point, comps.reflectv);
 	color = color_at(scene, reflect_ray, remaining - 1);
+	printf("Material reflective: %f\n", reflective);
 	return (color_multiply(color, reflective));
 }
 

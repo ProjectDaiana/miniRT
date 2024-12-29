@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ray.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: darotche <darotche@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tasha <tasha@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 20:08:47 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/27 22:48:00 by darotche         ###   ########.fr       */
+/*   Updated: 2024/12/29 00:17:45 by tasha            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,40 +52,54 @@ static t_color	get_intersection_color(t_scene *scene, t_ray ray, void *object,
 	t_color		surface_color;
 	t_compu		comps;
 	t_color		reflect_color;
+	t_cylinder	*cylinder;
+	double		y;
+	t_tuple		p;
 
-	surface_color = create_color(0, 255, 0);
 	if (!scene || !object || !is_valid_tuple(point))
-	{
-		//printf("\033[0;31mError: Invalid scene or object or point\033[0m\n");
-		return (surface_color);
-	}
+		return (create_color(0, 0, 0));
 	ft_memset(&comps, 0, sizeof(t_compu));
 	if (is_cylinder(object))
-    {
-        t_cylinder *cylinder = (t_cylinder *)object;
-        double y = tuple_dot(tuple_subtract(point, cylinder->center), cylinder->axis);
-        if (fabs(y - cylinder->height / 2) < EPSILON)
-            normal = cylinder->axis;
-        else if (fabs(y + cylinder->height / 2) < EPSILON)
-            normal = tuple_negate(cylinder->axis);
-        else
-        {
-            t_tuple p = tuple_subtract(point, tuple_add(cylinder->center, tuple_multiply(cylinder->axis, y)));
-            normal = tuple_normalize(p);
-        }
+	{
+		cylinder = (t_cylinder *)object;
+		y = tuple_dot(tuple_subtract(point, cylinder->center), cylinder->axis);
 		material = cylinder->material;
-    }
-    else
-    {
-        normal = get_object_normal(object, point);
+		// First calculate normal based on where we hit the cylinder
+		if (fabs(y - cylinder->height / 2) < EPSILON)
+		{
+			normal = cylinder->axis;
+			comps.is_cap = 1;
+		}
+		else if (fabs(y + cylinder->height / 2) < EPSILON)
+		{
+			normal = tuple_negate(cylinder->axis);
+			comps.is_cap = 1;
+		}
+		else
+		{
+			p = tuple_subtract(point, tuple_add(cylinder->center,
+						tuple_multiply(cylinder->axis, y)));
+			normal = tuple_normalize(p);
+			comps.is_cap = 0;
+		}
+		comps.point = point;
+		comps.over_point = tuple_add(point, tuple_multiply(normal, EPSILON));
+		comps.eyev = tuple_negate(ray.direction);
+		comps.normalv = normal;
+		comps.object = object;
+	}
+	else
+	{
+		normal = get_object_normal(object, point);
 		if (!is_valid_tuple(normal))
-			return (surface_color);
+			return (create_color(0, 0, 0));
 		material = get_object_material(object);
-    }
-	comps.point = point;
-	comps.eyev = tuple_negate(ray.direction);
-	comps.normalv = normal;
-	comps.object = object;
+		comps.point = point;
+		comps.over_point = tuple_add(point, tuple_multiply(normal, EPSILON));
+		comps.eyev = tuple_negate(ray.direction);
+		comps.normalv = normal;
+		comps.object = object;
+	}
 	surface_color = get_surface_color(scene, material, comps);
 	if (material.reflective > 0)
 	{
@@ -107,7 +121,6 @@ static t_color	get_intersection_color(t_scene *scene, t_ray ray, void *object,
 // 	return (get_intersection_color(scene, ray, object, point));
 // }
 
-
 static t_color	process_intersection(t_scene *scene, t_ray ray,
 		t_intersections xs)
 {
@@ -116,7 +129,7 @@ static t_color	process_intersection(t_scene *scene, t_ray ray,
 	t_color	color;
 
 	point = position(ray, xs.t[0]);
-	//printf("\033[0;31mpoint: %f %f %f\033[0m\n", point.x, point.y, point.z);
+	// printf("\033[0;31mpoint: %f %f %f\033[0m\n", point.x, point.y, point.z);
 	object = xs.object[0];
 	color = get_intersection_color(scene, ray, object, point);
 	free_intersections(&xs);

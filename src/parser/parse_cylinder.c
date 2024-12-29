@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_cylinder.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: darotche <darotche@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tasha <tasha@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 20:53:24 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/28 18:43:36 by darotche         ###   ########.fr       */
+/*   Updated: 2024/12/28 23:51:58 by tasha            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,9 @@ void	parse_cylinder(char *line, t_scene *scene)
 	// 	free_splits(split, pos, orient);
 	// 	return ;
 	// }
-	cylinder.material.color = create_material_color(color);
 	init_cylinder_material(&cylinder);
+	cylinder.material.color = create_material_color(color);
+	cylinder.material.reflective = 0.3;
 	add_cylinder(scene, &cylinder);
 	free_splits(split, pos, orient);
 	ft_free_split(color);

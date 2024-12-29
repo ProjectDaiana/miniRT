@@ -6,7 +6,7 @@
 /*   By: tasha <tasha@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 20:06:36 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/24 01:05:07 by tasha            ###   ########.fr       */
+/*   Updated: 2024/12/29 00:08:39 by tasha            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,26 +59,20 @@ t_color	calculate_reflection(t_scene *scene, t_ray ray, t_tuple point,
 		return (reflect_color);
 		
 	reflect_dir = tuple_reflect(ray.direction, normal);
+	printf("Reflection direction: (%f, %f, %f)\n", reflect_dir.x, reflect_dir.y, reflect_dir.z);
+	
 	if (!is_valid_tuple(reflect_dir))
 		return (reflect_color);
 		
-	offset_point = tuple_add(point, tuple_multiply(normal, 0.00001));
-	if (!is_valid_tuple(offset_point))
-		return (reflect_color);
-		
+	offset_point = tuple_add(point, tuple_multiply(normal, EPSILON));
 	reflect_ray = create_ray(offset_point, reflect_dir);
-	if (!is_valid_tuple(reflect_ray.origin) || !is_valid_tuple(reflect_ray.direction))
-		return (reflect_color);
-		
-	ft_memset(&reflect_xs, 0, sizeof(t_intersections));
 	
 	reflect_xs = intersect_world(scene, reflect_ray);
 	if (reflect_xs.count > 0)
 	{
 		reflect_color = calculate_reflection_color(scene, reflect_xs,
 				reflect_ray);
-		free_intersections(&reflect_xs);
-		return (reflect_color);
+		printf("Reflection color: (%d, %d, %d)\n", reflect_color.r, reflect_color.g, reflect_color.b);
 	}
 	free_intersections(&reflect_xs);
 	return (reflect_color);

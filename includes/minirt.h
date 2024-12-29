@@ -7,8 +7,8 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
-#define W_HEIGHT 300
-#define W_WIDTH 300
+#define W_HEIGHT 800
+#define W_WIDTH 800
 #define MLX_ERROR 1
 #define BLU_PX 0x0000FF
 #define RED_PX 0xFF0000
@@ -254,6 +254,7 @@ typedef struct s_computations
 	double			n2;
 	void			*object;
 	int				inside;
+	int				is_cap;
 }					t_compu;
 
 typedef struct s_world

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   light_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: darotche <darotche@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tasha <tasha@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 19:44:49 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/28 21:03:30 by darotche         ###   ########.fr       */
+/*   Updated: 2024/12/28 23:57:58 by tasha            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ t_color	get_ambient_component(t_color base_color, t_light_data *light_data)
 // 	return (color_multiply(temp, factor));
 // }
 
-
 t_color	get_diffuse_component(t_color base_color, t_light_data *light_data,
 		double dot)
 {
@@ -51,17 +50,16 @@ t_color	get_diffuse_component(t_color base_color, t_light_data *light_data,
 	double	factor;
 
 	temp = create_color(0, 0, 0);
-//	color_normalize(&base_color);
-	printf("\033[0;33mBase Color: R: %d, G: %d, B: %d\033[0m\n", base_color.r, base_color.g, base_color.b);
+	//	color_normalize(&base_color);
+	// printf("\033[0;33mBase Color: R: %d, G: %d, B: %d\033[0m\n", base_color.r,
+	// 	base_color.g, base_color.b);
 	if (!light_data)
-		return temp;
-	
+		return (temp);
 	temp = color_multiply_colors(base_color, light_data->light.color);
 	factor = light_data->material.diffuse * pow(dot, 1.1);
 	factor *= light_data->light.intensity;
 	return (color_multiply(temp, factor));
 }
-
 
 t_color	get_specular_component(t_light_data *light_data, double reflect_dot)
 {

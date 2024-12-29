@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ray_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: darotche <darotche@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tasha <tasha@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 20:08:38 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/28 17:00:31 by darotche         ###   ########.fr       */
+/*   Updated: 2024/12/29 00:18:14 by tasha            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,12 +143,44 @@ t_color	get_reflection_color(t_scene *scene, t_ray reflect_ray,
 	int					in_shadow;
 	t_lighting_params	params;
 	t_color				default_color;
+	t_cylinder			*cylinder;
+	double				y;
+	t_tuple				p;
+	// t_color				reflection;
 
 	default_color = create_color(0, 0, 0);
 	if (!scene || !reflect_object || !is_valid_tuple(reflect_point))
 		return (default_color);
-	reflect_material = get_object_material(reflect_object);
-	reflect_normal = get_object_normal(reflect_object, reflect_point);
+	// Special handling for cylinders
+	if (is_cylinder(reflect_object))
+	{
+		cylinder = (t_cylinder *)reflect_object;
+		y = tuple_dot(tuple_subtract(reflect_point, cylinder->center),
+				cylinder->axis);
+		reflect_material = cylinder->material;
+		// Determine if we hit a cap
+		if (fabs(y - cylinder->height / 2) < EPSILON)
+		{
+			reflect_normal = cylinder->axis;
+			reflect_material.reflective *= 0.5; // Reduce reflectivity for caps
+		}
+		else if (fabs(y + cylinder->height / 2) < EPSILON)
+		{
+			reflect_normal = tuple_negate(cylinder->axis);
+			reflect_material.reflective *= 0.5; // Reduce reflectivity for caps
+		}
+		else
+		{
+			p = tuple_subtract(reflect_point, tuple_add(cylinder->center,
+						tuple_multiply(cylinder->axis, y)));
+			reflect_normal = tuple_normalize(p);
+		}
+	}
+	else
+	{
+		reflect_material = get_object_material(reflect_object);
+		reflect_normal = get_object_normal(reflect_object, reflect_point);
+	}
 	if (!is_valid_tuple(reflect_normal))
 		return (default_color);
 	reflect_eye = tuple_negate(reflect_ray.direction);
@@ -173,7 +205,7 @@ t_color	get_surface_color(t_scene *scene, t_material material, t_compu comps)
 	ft_memset(&params, 0, sizeof(t_lighting_params));
 	in_shadow = is_shadowed(scene, comps.point, &scene->light);
 	params = (t_lighting_params){material, scene->light, comps.point,
-			comps.eyev, comps.normalv, in_shadow};
+		comps.eyev, comps.normalv, in_shadow};
 	return (lighting(params));
 }
 
