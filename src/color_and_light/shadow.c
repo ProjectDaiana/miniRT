@@ -6,7 +6,7 @@
 /*   By: darotche <darotche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 19:45:12 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/29 21:53:57 by darotche         ###   ########.fr       */
+/*   Updated: 2024/12/29 23:06:14 by darotche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,24 +60,18 @@ t_color	shade_hit(t_scene *scene, t_compu comps, int remaining)
 
 	surface = create_color(0, 0, 0);
 	reflected = create_color(0, 0, 0);
-	
 	if (!scene || !comps.object)
 		return (surface);
-		
 	ft_memset(&params, 0, sizeof(t_lighting_params));
-	
 	material = get_object_material(comps.object);
 	shadowed = is_shadowed(scene, comps.over_point, &scene->light);
-	
 	params.material = material;
 	params.light = scene->light;
 	params.point = comps.point;
 	params.eye_v = comps.eyev;
 	params.normal_v = comps.normalv;
 	params.in_shadow = shadowed;
-	
 	surface = lighting(params);
 	reflected = reflected_color(scene, comps, remaining);
-	printf("\033[0;31mReflected Color: (%d, %d, %d)\033[0m\n", reflected.r, reflected.g, reflected.b);
 	return (color_add(surface, reflected));
 }

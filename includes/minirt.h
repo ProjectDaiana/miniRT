@@ -6,7 +6,7 @@
 /*   By: darotche <darotche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 20:22:28 by darotche          #+#    #+#             */
-/*   Updated: 2024/12/29 22:45:28 by darotche         ###   ########.fr       */
+/*   Updated: 2024/12/29 23:45:40 by darotche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -497,6 +497,8 @@ t_color				get_specular_component(t_light_data *light_data,
 						double reflect_dot);
 t_color				lighting(t_lighting_params params);
 
+t_color				clamp_color(t_color color);
+
 void				init_cylinder_intersection(t_intersections *result);
 void				calculate_cylinder_params(t_cylinder cylinder, t_ray ray,
 						double *params);
@@ -520,6 +522,7 @@ int					init_mlx(t_data *data);
 void				setup_hooks(t_data *data);
 void				free_scene(t_scene *scene);
 void				free_intersections(t_intersections *xs);
+void				cleanup_camera(t_camera *camera);
 void				parse_cylinder(char *line, t_scene *scene);
 void				calculate_t(double *t1, double *t2, t_quad_params params);
 
