@@ -6,7 +6,7 @@
 /*   By: darotche <darotche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 20:22:28 by darotche          #+#    #+#             */
-/*   Updated: 2024/12/29 21:37:49 by darotche         ###   ########.fr       */
+/*   Updated: 2024/12/29 22:45:28 by darotche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -409,9 +409,6 @@ t_color				ray_color(t_scene *scene, t_ray ray);
 t_ray				ray_for_pixel(t_camera *camera, int px, int py);
 
 t_tuple				tuple_reflect(t_tuple in, t_tuple normal);
-// void				intersect_body(double a, double b, double c,
-// 						t_intersections *result, t_cylinder cylinder,
-// 						t_ray ray);
 void				intersect_body(t_cylinder *cylinder, t_ray ray,
 						t_intersections *result);
 void				ft_free_split(char **split);
