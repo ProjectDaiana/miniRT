@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   colors_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: darotche <darotche@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tasha <tasha@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 20:36:39 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/28 19:08:24 by darotche         ###   ########.fr       */
+/*   Updated: 2024/12/29 16:42:56 by tasha            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,17 +45,6 @@ void	set_color_components(t_color *dest, char **color_values)
 	dest->g = ft_atof(color_values[1]);
 	dest->b = ft_atof(color_values[2]);
 }
-
-// int	init_plane_color(char **split, char ***color)
-// {
-// 	*color = ft_split(split[3], ',');
-// 	if (!validate_coordinates(*color, "plane color", split))
-// 	{
-// 		ft_free_split(*color);
-// 		return (0);
-// 	}
-// 	return (1);
-// }
 
 int	init_plane_color(char **split, char ***color)
 {

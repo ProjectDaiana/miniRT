@@ -6,7 +6,7 @@
 /*   By: tasha <tasha@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 20:14:50 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/23 22:53:36 by tasha            ###   ########.fr       */
+/*   Updated: 2024/12/29 18:02:12 by tasha            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,9 @@ t_camera	create_camera(int hsize, int vsize, double field_of_view)
 	double		aspect;
 
 	ft_memset(&cam, 0, sizeof(t_camera));
-	cam.height = hsize;
-	cam.width = vsize;
+	cam.hsize = hsize;
+	cam.vsize = vsize;
 	cam.fov = field_of_view;
-	cam.transform = create_identity_matrix();
 	half_view = tan(field_of_view / 2);
 	aspect = (double)hsize / vsize;
 	if (aspect >= 1)
@@ -35,6 +34,7 @@ t_camera	create_camera(int hsize, int vsize, double field_of_view)
 		cam.half_width = half_view * aspect;
 		cam.half_height = half_view;
 	}
-	cam.pixel_size = (cam.half_width * 2) / hsize;
+	cam.pixel_size = (cam.half_width * 2) / cam.hsize;
+	cam.transform = create_identity_matrix();
 	return (cam);
 }

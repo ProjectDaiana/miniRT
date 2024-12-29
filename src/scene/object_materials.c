@@ -6,7 +6,7 @@
 /*   By: tasha <tasha@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 19:52:17 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/28 20:52:48 by tasha            ###   ########.fr       */
+/*   Updated: 2024/12/29 17:14:10 by tasha            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	init_cylinder_material(t_cylinder *cylinder)
 	cylinder->material.diffuse = 0.9;
 	cylinder->material.specular = 0.1;
 	cylinder->material.shininess = 100;
-	cylinder->material.reflective = 0.7;
+	cylinder->material.reflective = 0.0;
 }
 
 // void	init_plane_material(t_plane *plane, t_color color)
