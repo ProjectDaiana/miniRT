@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minirt.h                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: darotche <darotche@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/12/29 20:22:28 by darotche          #+#    #+#             */
+/*   Updated: 2024/12/29 21:37:49 by darotche         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../lib/libft/libft.h"
 #include "../lib/minilibx-linux/mlx.h"
 #include <X11/X.h>
@@ -16,22 +28,12 @@
 #define GRN_PX 0x00FF00
 #define SCALE 100
 #define M_PI 3.14159265358979323846
-#define SQRT2_DIV2 (sqrt(2) / 2)
 #define MAX_SPHERES 10
 #define EPSILON 0.00001
 #define MAX_LIGHTS 10
 #define MAX_REFLECTION_DEPTH 5
 #define EPSILON 0.00001
 #define THREADS 4
-
-#define RED "\e[0;31m"
-#define GRN "\e[0;32m"
-#define YEL "\e[0;33m"
-#define BLU "\e[0;34m"
-#define MAG "\e[0;35m"
-#define CYN "\e[0;36m"
-#define WHT "\e[0;37m"
-#define RESET "\033[0m"
 
 typedef struct s_vector
 {
@@ -95,7 +97,7 @@ typedef struct s_point
 	double			z;
 }					t_point;
 
-typedef struct
+typedef struct s_light
 {
 	double			intensity;
 	t_color			color;
@@ -124,7 +126,7 @@ typedef struct s_camera
 	int				vsize;
 }					t_camera;
 
-typedef struct
+typedef struct s_img
 {
 	void			*img;
 	char			*addr;
@@ -319,35 +321,22 @@ typedef struct s_quad_params
 }					t_quad_params;
 
 int					handle_keypress(int keysym, t_data *data);
-int					handle_keyrelease(int keysym, void *data);
 
 double				ft_sqr(double x);
-double				double_to_degrees(double radians);
 
 double				vect_length(double x, double y, double z);
-t_vector			vect_addition(t_vector a, t_vector b);
-t_vector			vect_multiplication(t_vector a, double b);
-t_tuple				normalize_vect(t_tuple v);
 
 int					rgb_to_int(t_color color);
 int					add_color(t_color *color1, t_color *color2);
-int					substract_color(t_color *color1, t_color *color2);
-int					multiply_color_by_scalar(t_color *color1, int scalar);
-int					hadamard_product(t_color *color1, t_color *color2);
 
 t_color				create_color(double r, double g, double b);
 t_color				color_add(t_color c1, t_color c2);
-t_color				color_subtract(t_color c1, t_color c2);
 t_color				color_multiply(t_color c, double scalar);
 t_color				color_multiply_colors(t_color c1, t_color c2);
-void				color_normalize(t_color *color);
 
-t_tuple				multiply_matrix_by_tuple(t_matrix *matrix, t_tuple *tuple);
 t_matrix			create_matrix(int size);
-void				assign_matrix(t_matrix *matrix, double m[4][4]);
 
 t_matrix			matrix_multiply(t_matrix a, t_matrix b);
-t_matrix			transpose_matrix(t_matrix *identity_matrix);
 t_matrix			find_submatrix(t_matrix *matrix, int row, int col,
 						int mtrx_size);
 double				calculate_determinant_m2(double **m, int size);
@@ -359,23 +348,12 @@ double				calculate_cofactor(t_matrix *matrix, int row, int col,
 t_matrix			inverse_matrix(t_matrix *matrix);
 int					is_invertible(double det);
 
-int					compare_matrix(t_matrix a, t_matrix b);
-void				print_matrix(t_matrix matrix, char *str, int size);
-
 t_matrix			translation(double x, double y, double z);
 t_matrix			scaling(double x, double y, double z);
 t_matrix			rotation_x(double rad);
 t_matrix			rotation_y(double rad);
 t_matrix			rotation_z(double rad);
 t_matrix			skewing(t_skew_params params);
-
-t_ray				transform(t_ray *ray, t_matrix *matrix);
-
-double				vect_lenght(double x, double y, double z);
-
-double				dot_product(t_vector a, t_vector b);
-
-double				cross_product_to_array(t_vector a, t_vector b);
 
 t_tuple				create_tuple(double x, double y, double z, double w);
 
@@ -596,22 +574,5 @@ void				render_row(t_thread_data *data, int y, int *pixels_done);
 void				*render_pixels(void *arg);
 void				render_pixel(t_scene *scene, t_camera *camera,
 						t_canvas *canvas, t_tuple pixel);
-void				render_threads(t_data *data, t_camera *camera, t_canvas *canvas);
-	// static void	init_thread_attr(pthread_attr_t *attr);
-	// static void	init_thread_data_array(t_thread_data *thread_data,
-	// 		t_data *data, t_camera *camera, t_canvas *canvas);
-	// static void	cleanup_threads(pthread_t *threads, int count,
-//			void **status);
-
-	// static int	init_render_resources(t_data *data, t_canvas *canvas,
-	// 		t_camera *camera, t_tuple *up);
-	// static int	setup_camera_transform(t_data *data, t_camera *camera,
-	// 		t_canvas *canvas, t_tuple up);
-
-	// static t_matrix	create_view_matrices(t_tuple forward, t_tuple left,
-	// 		t_tuple from);
-
-	// static void	init_cylinder_comps(t_compu *comps, t_cylinder *cylinder,
-	// 		t_tuple point, t_ray ray);
-	// static void	init_comps(t_compu *comps, void *object, t_tuple point,
-	//	t_ray ray);
+void				render_threads(t_data *data, t_camera *camera,
+						t_canvas *canvas);
