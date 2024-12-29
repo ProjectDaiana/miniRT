@@ -6,7 +6,7 @@
 /*   By: tasha <tasha@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 20:18:02 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/24 18:36:44 by tasha            ###   ########.fr       */
+/*   Updated: 2024/12/30 00:38:01 by tasha            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,20 @@ void	set_plane_pattern(t_plane *plane)
 	t_color		base_color;
 
 	base_color = plane->material.color;
-	black = create_color(0.0, 0.0, 0.0);
 	if (plane->material.pattern.transform.m)
 		free_mtrx(&plane->material.pattern.transform);
-	plane->material.pattern = create_checkers_pattern(base_color, black);
+	
+	if (plane->material.pattern.type == CHECKERS)
+	{
+		black = create_color(0.0, 0.0, 0.0);
+		plane->material.pattern = create_checkers_pattern(base_color, black);
+	}
+	else // SOLID pattern
+	{
+		plane->material.pattern.type = SOLID;
+		plane->material.pattern.color1 = base_color;
+	}
+	
 	scale = scaling(1, 1, 1);
 	plane->material.pattern.transform = scale;
 }
