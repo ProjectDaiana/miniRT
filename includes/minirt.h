@@ -4,11 +4,12 @@
 #include <X11/keysym.h>
 #include <fcntl.h>
 #include <math.h>
+#include <pthread.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
-#define W_HEIGHT 800
-#define W_WIDTH 800
+#define W_HEIGHT 300
+#define W_WIDTH 300
 #define MLX_ERROR 1
 #define BLU_PX 0x0000FF
 #define RED_PX 0xFF0000
@@ -551,8 +552,7 @@ void				allocate_intersections(t_intersections *result, double *t,
 
 void				calculate_sphere_params(t_ray ray, t_sphere sphere,
 						double *params);
-void				init_intersection_result(t_intersections *result,
-						double discriminant);
+void				init_intersection_result(t_intersections *result);
 void				set_intersection_values(t_intersections *result,
 						t_sphere *sphere, double *params);
 int					init_mlx(t_data *data);
@@ -596,3 +596,37 @@ int					validate_and_split_normal(char ***split, char ***pos,
 						char ***normal);
 void				copy_existing_planes(t_plane *new_planes, t_scene *scene,
 						int old_count);
+void				init_intersection_result(t_intersections *result);
+void				reallocate_intersection_arrays(t_intersections *result);
+void				init_world_intersection(t_intersections *result);
+void				set_plane_intersection_values(t_intersections *result,
+						t_plane *plane, double t);
+void				calculate_intersection_points(t_ray ray,
+						t_cylinder *cylinder, double *t, double *y);
+
+void				init_thread_data(t_thread_data *data, int *pixels_done,
+						int *total_pixels);
+void				render_row(t_thread_data *data, int y, int *pixels_done);
+
+void				*render_pixels(void *arg);
+void				render_pixel(t_scene *scene, t_camera *camera,
+						t_canvas *canvas, t_tuple pixel);
+void	render_threads(t_data *data, t_camera *camera, t_canvas *canvas);
+	// static void	init_thread_attr(pthread_attr_t *attr);
+	// static void	init_thread_data_array(t_thread_data *thread_data,
+	// 		t_data *data, t_camera *camera, t_canvas *canvas);
+	// static void	cleanup_threads(pthread_t *threads, int count,
+//			void **status);
+
+	// static int	init_render_resources(t_data *data, t_canvas *canvas,
+	// 		t_camera *camera, t_tuple *up);
+	// static int	setup_camera_transform(t_data *data, t_camera *camera,
+	// 		t_canvas *canvas, t_tuple up);
+
+	// static t_matrix	create_view_matrices(t_tuple forward, t_tuple left,
+	// 		t_tuple from);
+
+	// static void	init_cylinder_comps(t_compu *comps, t_cylinder *cylinder,
+	// 		t_tuple point, t_ray ray);
+	// static void	init_comps(t_compu *comps, void *object, t_tuple point,
+	//	t_ray ray);

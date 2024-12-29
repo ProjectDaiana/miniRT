@@ -3,91 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   intersect_objects.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: darotche <darotche@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tasha <tasha@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 21:35:59 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/28 17:31:01 by darotche         ###   ########.fr       */
+/*   Updated: 2024/12/29 13:37:18 by tasha            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
-
-t_intersections	intersect_plane(t_plane *plane, t_ray ray)
-{
-	double			denom;
-	t_tuple			p0l0;
-	double			t;
-	t_intersections	result;
-
-	result.count = 0;
-	result.t = NULL;
-	result.object = NULL;
-	denom = tuple_dot(plane->normal, ray.direction);
-	if (fabs(denom) > EPSILON)
-	{
-		p0l0 = tuple_subtract(plane->point, ray.origin);
-		t = tuple_dot(p0l0, plane->normal) / denom;
-		if (t >= 0)
-		{
-			result.count = 1;
-			result.t = ft_calloc(1, sizeof(double));
-			result.object = ft_calloc(1, sizeof(void *));
-			if (!result.t || !result.object)
-			{
-				free_intersections(&result);
-				return (result);
-			}
-			result.t[0] = t;
-			result.object[0] = plane;
-		}
-	}
-	return (result);
-}
-
-// t_intersections	intersect_cylinder(t_cylinder cylinder, t_ray ray)
-// {
-// 	t_intersections	result;
-// 	t_tuple			oc;
-// 	double			a;
-// 	double			b;
-// 	double			c;
-
-//     a = 0.0;
-//     b = 0.0;
-//     c = 0.0;
-// 	result.count = 0;
-// 	result.t = NULL;
-// 	result.object = NULL;
-// 	oc = tuple_subtract(ray.origin, cylinder.center);
-// 	a = tuple_dot(ray.direction, ray.direction) - pow(tuple_dot(ray.direction,
-// 				cylinder.axis), 2);
-// 	b = 2 * (tuple_dot(ray.direction, oc) - tuple_dot(ray.direction,
-// 				cylinder.axis) * tuple_dot(oc, cylinder.axis));
-// 	c = tuple_dot(oc, oc) - pow(tuple_dot(oc, cylinder.axis), 2)
-// 		- pow(cylinder.diameter / 2, 2);
-// 	intersect_body(a, b, c, &result, cylinder, ray);
-// 	intersect_caps(cylinder, ray, &result);
-// 	return (result);
-// }
-
-t_intersections	intersect_cylinder(t_cylinder cylinder, t_ray ray)
-{
-	t_intersections	result;
-
-	result.count = 0;
-	result.capacity = 4;
-	result.t = ft_calloc(result.capacity, sizeof(double));
-	result.object = ft_calloc(result.capacity, sizeof(void *));
-	if (!result.t || !result.object)
-	{
-		free_intersections(&result);
-		result.capacity = 0;
-		return (result);	
-	}
-	intersect_body(&cylinder, ray, &result);
-	intersect_caps(&cylinder, ray, &result);
-	return (result);
-}
 
 void	add_plane_intersections(t_scene *scene, t_ray ray,
 		t_intersections *result)

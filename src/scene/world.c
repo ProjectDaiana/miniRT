@@ -6,10 +6,9 @@
 /*   By: tasha <tasha@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/12/29 12:24:54 by tasha            ###   ########.fr       */
+/*   Updated: 2024/12/29 12:32:25 by tasha            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "minirt.h"
 
@@ -47,24 +46,6 @@ t_color	color_at(t_scene *scene, t_ray ray, int remaining)
 	return (color);
 }
 
-// t_color	reflected_color(t_scene *scene, t_compu comps, int remaining)
-// {
-// 	double		reflective;
-// 	t_ray		reflect_ray;
-// 	t_color		color;
-// 	t_material	material;
-
-// 	if (remaining <= 0)
-// 		return (create_color(0, 0, 0));
-// 	material = get_object_material(comps.object);
-// 	reflective = material.reflective;
-// 	if (reflective < EPSILON)
-// 		return (create_color(0, 0, 0));
-// 	reflect_ray = create_ray(comps.over_point, comps.reflectv);
-// 	color = color_at(scene, reflect_ray, remaining - 1);
-// 	return (color_multiply(color, reflective));
-// }
-
 t_color	reflected_color(t_scene *scene, t_compu comps, int remaining)
 {
 	double		reflective;
@@ -77,10 +58,9 @@ t_color	reflected_color(t_scene *scene, t_compu comps, int remaining)
 	material = get_object_material(comps.object);
 	reflective = material.reflective;
 	if (reflective < 0.1)
-		return create_color(0, 0, 0);
+		return (create_color(0, 0, 0));
 	reflect_ray = create_ray(comps.over_point, comps.reflectv);
 	color = color_at(scene, reflect_ray, remaining - 1);
-	printf("Material reflective: %f\n", reflective);
 	return (color_multiply(color, reflective));
 }
 

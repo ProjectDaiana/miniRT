@@ -6,7 +6,7 @@
 /*   By: tasha <tasha@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 20:08:38 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/29 12:22:54 by tasha            ###   ########.fr       */
+/*   Updated: 2024/12/29 15:59:37 by tasha            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,24 +116,6 @@ t_tuple	get_object_normal(void *object, t_tuple point)
 	return (normal_at(object, point));
 }
 
-// t_color	get_reflection_color(t_scene *scene, t_ray reflect_ray,
-// 		void *reflect_object, t_tuple reflect_point)
-// {
-// 	t_material			reflect_material;
-// 	t_tuple				reflect_normal;
-// 	t_tuple				reflect_eye;
-// 	int					in_shadow;
-// 	t_lighting_params	params;
-
-// 	reflect_material = get_object_material(reflect_object);
-// 	reflect_normal = get_object_normal(reflect_object, reflect_point);
-// 	reflect_eye = tuple_negate(reflect_ray.direction);
-// 	in_shadow = is_shadowed(scene, reflect_point, &scene->light);
-// 	params = (t_lighting_params){reflect_material, scene->light, reflect_point,
-// 		reflect_eye, reflect_normal, in_shadow};
-// 	return (lighting(params));
-// }
-
 t_color	get_reflection_color(t_scene *scene, t_ray reflect_ray,
 		void *reflect_object, t_tuple reflect_point)
 {
@@ -146,7 +128,6 @@ t_color	get_reflection_color(t_scene *scene, t_ray reflect_ray,
 	t_cylinder			*cylinder;
 	double				y;
 	t_tuple				p;
-	// t_color				reflection;
 
 	default_color = create_color(0, 0, 0);
 	if (!scene || !reflect_object || !is_valid_tuple(reflect_point))
@@ -202,8 +183,6 @@ t_color	get_surface_color(t_scene *scene, t_material material, t_compu comps)
 	int					in_shadow;
 	t_lighting_params	params;
 
-	printf("Material color: r=%.2d, g=%.2d, b=%.2d\n", material.color.r,
-		material.color.g, material.color.b);
 	ft_memset(&params, 0, sizeof(t_lighting_params));
 	in_shadow = is_shadowed(scene, comps.point, &scene->light);
 	params = (t_lighting_params){material, scene->light, comps.point,

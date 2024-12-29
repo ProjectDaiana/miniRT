@@ -3,50 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   intersect_helpers.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: darotche <darotche@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tasha <tasha@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 20:11:34 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/27 16:43:36 by darotche         ###   ########.fr       */
+/*   Updated: 2024/12/29 15:16:24 by tasha            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
-
-void	init_cylinder_intersection(t_intersections *result)
-{
-	result->count = 0;
-	result->t1 = 0;
-	result->t2 = 0;
-}
-
-void	calculate_cylinder_params(t_cylinder cylinder, t_ray ray,
-		double *params)
-{
-	t_tuple	oc;
-
-	if (!params || !is_valid_tuple(ray.origin) || !is_valid_tuple(ray.direction) ||
-		!is_valid_tuple(cylinder.center) || !is_valid_tuple(cylinder.axis))
-		return;
-
-	oc = tuple_subtract(ray.origin, cylinder.center);
-	if (!is_valid_tuple(oc))
-		return;
-
-	params[0] = tuple_dot(ray.direction, ray.direction)
-		- pow(tuple_dot(ray.direction, cylinder.axis), 2);
-	params[1] = 2 * (tuple_dot(ray.direction, oc) - tuple_dot(ray.direction,
-				cylinder.axis) * tuple_dot(oc, cylinder.axis));
-	params[2] = tuple_dot(oc, oc) - pow(tuple_dot(oc, cylinder.axis), 2)
-		- pow(cylinder.diameter / 2, 2);
-}
-
-void	add_valid_intersection(t_intersections *result, double t,
-		t_cylinder *cylinder, int *index)
-{
-	result->t[*index] = t;
-	result->object[*index] = cylinder;
-	(*index)++;
-}
 
 void	calculate_cylinder_intersections(t_cylinder cylinder, t_ray ray,
 		double *t, double *y)
@@ -70,23 +34,24 @@ void	calculate_cylinder_intersections(t_cylinder cylinder, t_ray ray,
 	}
 }
 
-// void	check_cylinder_bounds(t_cylinder cylinder, double *t, double *y)
-// {
-// 	if (y[0] < cylinder.center.y || y[0] > cylinder.center.y + cylinder.height)
-// 		t[0] = INFINITY;
-// 	if (y[1] < cylinder.center.y || y[1] > cylinder.center.y + cylinder.height)
-// 		t[1] = INFINITY;
-// }
-
-
 void	check_cylinder_bounds(t_cylinder cylinder, double *t, double *y)
 {
 	if (!t || !y)
-		return;
-
+		return ;
 	if (y[0] < -cylinder.height / 2 || y[0] > cylinder.height / 2)
 		t[0] = INFINITY;
 	if (y[1] < -cylinder.height / 2 || y[1] > cylinder.height / 2)
 		t[1] = INFINITY;
 }
-		
+
+void	init_intersection_result(t_intersections *result)
+{
+	result->count = 2;
+	result->t = ft_calloc(2, sizeof(double));
+	result->object = ft_calloc(2, sizeof(void *));
+	if (!result->t || !result->object)
+	{
+		free_intersections(result);
+		result->count = 0;
+	}
+}

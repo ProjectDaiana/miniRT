@@ -6,7 +6,7 @@
 /*   By: tasha <tasha@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 20:06:36 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/29 12:22:42 by tasha            ###   ########.fr       */
+/*   Updated: 2024/12/29 15:54:53 by tasha            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ t_color	calculate_reflection(t_scene *scene, t_ray ray, t_tuple point,
 	if (!scene || !is_valid_tuple(point) || !is_valid_tuple(normal))
 		return (reflect_color);
 	reflect_dir = tuple_reflect(ray.direction, normal);
-	printf("Reflection direction: (%f, %f, %f)\n", reflect_dir.x, reflect_dir.y, reflect_dir.z);
 	
 	if (!is_valid_tuple(reflect_dir))
 		return (reflect_color);
@@ -66,7 +65,6 @@ t_color	calculate_reflection(t_scene *scene, t_ray ray, t_tuple point,
 	{
 		reflect_color = calculate_reflection_color(scene, reflect_xs,
 				reflect_ray);
-		printf("Reflection color: (%d, %d, %d)\n", reflect_color.r, reflect_color.g, reflect_color.b);
 	}
 	free_intersections(&reflect_xs);
 	return (reflect_color);

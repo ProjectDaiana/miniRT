@@ -6,7 +6,7 @@
 /*   By: tasha <tasha@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 20:12:23 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/29 12:24:15 by tasha            ###   ########.fr       */
+/*   Updated: 2024/12/29 13:20:56 by tasha            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,7 @@ t_intersections	intersect_world(t_scene *scene, t_ray ray)
 	t_intersections	result;
 	int				max_intersections;
 
-	result.count = 0;
-	result.t1 = 0;
-	result.t2 = 0;
-	result.t = NULL;
-	result.object = NULL;
-	result.capacity = 0;
+	init_world_intersection(&result);
 	if (!scene || !is_valid_tuple(ray.origin) || !is_valid_tuple(ray.direction))
 		return (result);
 	max_intersections = scene->sphere_count * 2 + scene->plane_count
@@ -45,66 +40,20 @@ t_intersections	intersect_world(t_scene *scene, t_ray ray)
 	return (result);
 }
 
-// void	add_intersection(t_intersections *result, double t, void *object)
-// {
-// 	if (!result || !result->t || !result->object
-// 		|| result->count >= result->capacity)
-// 		return ;
-// 	result->t[result->count] = t;
-// 	result->count++;
-// }
-
-// void	add_intersection(t_intersections *result, double t, void *object)
-// {
-// 	if (!result || !result->t || !result->object
-// 		|| result->count >= result->capacity)
-// 		return ;
-// 	result->t[result->count] = t;
-// 	result->object[result->count] = object;
-// 	result->count++;
-// }
-
 void	add_intersection(t_intersections *result, double t, void *object)
 {
 	if (t > EPSILON)
 	{
 		if (result->count >= result->capacity)
+			reallocate_intersection_arrays(result);
+		if (result->t && result->object)
 		{
-			result->capacity *= 2;
-			double *new_t = ft_calloc(result->capacity, sizeof(double));
-			void **new_object = ft_calloc(result->capacity, sizeof(void *));
-			if (!new_t || !new_object)
-			{
-				free(new_t);
-				free(new_object);
-				return;
-			}
-			ft_memcpy(new_t, result->t, result->count * sizeof(double));
-			ft_memcpy(new_object, result->object, result->count * sizeof(void *));
-			free(result->t);
-			free(result->object);
-			result->t = new_t;
-			result->object = new_object;
+			result->t[result->count] = t;
+			result->object[result->count] = object;
+			result->count++;
 		}
-		result->t[result->count] = t;
-		result->object[result->count] = object;
-		result->count++;
 	}
 }
-
-
-// void	init_intersection_result(t_intersections *result, double discriminant)
-// {
-// 	result->count = 0;
-// 	result->t = NULL;
-// 	result->object = NULL;
-// 	if (discriminant >= 0)
-// 	{
-// 		result->count = 2;
-// 		result->t = ft_calloc(2, sizeof(double));
-// 		result->object = ft_calloc(2, sizeof(void *));
-// 	}
-// }
 
 void	set_intersection_values(t_intersections *result, t_sphere *sphere,
 		double *params)
@@ -130,9 +79,12 @@ void	set_intersection_values(t_intersections *result, t_sphere *sphere,
 t_intersections	intersect_sphere(t_sphere sphere, t_ray ray)
 {
 	t_intersections	result;
-	double			params[3] = {0, 0, 0};
+	double			params[3];
 	double			discriminant;
 
+	params[0] = 0;
+	params[1] = 0;
+	params[2] = 0;
 	ft_memset(&result, 0, sizeof(t_intersections));
 	if (!is_valid_tuple(ray.origin) || !is_valid_tuple(ray.direction)
 		|| !is_valid_tuple(sphere.center))
@@ -140,34 +92,8 @@ t_intersections	intersect_sphere(t_sphere sphere, t_ray ray)
 	calculate_sphere_params(ray, sphere, params);
 	discriminant = (params[1] * params[1]) - (4.0 * params[0] * params[2]);
 	if (discriminant >= 0 && params[0] != 0)
-	{
-		result.count = 2;
-		result.t = ft_calloc(2, sizeof(double));
-		result.object = ft_calloc(2, sizeof(void *));
-		if (!result.t || !result.object)
-		{
-			free_intersections(&result);
-			return (result);
-		}
+		init_intersection_result(&result);
+	if (result.count > 0)
 		set_intersection_values(&result, &sphere, params);
-	}
 	return (result);
-}
-
-void	allocate_intersections(t_intersections *result, double *t,
-		t_cylinder *cylinder)
-{
-	int	index;
-
-	result->count = (t[0] != INFINITY) + (t[1] != INFINITY);
-	if (result->count > 0)
-	{
-		result->t = ft_calloc(result->count, sizeof(double));
-		result->object = ft_calloc(result->count, sizeof(void *));
-		index = 0;
-		if (t[0] != INFINITY)
-			add_valid_intersection(result, t[0], cylinder, &index);
-		if (t[1] != INFINITY)
-			add_valid_intersection(result, t[1], cylinder, &index);
-	}
 }
