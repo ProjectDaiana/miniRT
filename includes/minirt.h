@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: darotche <darotche@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tasha <tasha@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 20:22:28 by darotche          #+#    #+#             */
-/*   Updated: 2024/12/29 22:45:28 by darotche         ###   ########.fr       */
+/*   Updated: 2024/12/29 23:48:32 by tasha            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -320,6 +320,15 @@ typedef struct s_quad_params
 	double			discriminant;
 }					t_quad_params;
 
+typedef struct s_reflection_data
+{
+	t_material		material;
+	t_tuple			normal;
+	t_tuple			eye;
+	t_tuple			point;
+	int				in_shadow;
+}					t_reflection_data;
+
 int					handle_keypress(int keysym, t_data *data);
 
 double				ft_sqr(double x);
@@ -573,3 +582,13 @@ void				render_pixel(t_scene *scene, t_camera *camera,
 						t_canvas *canvas, t_tuple pixel);
 void				render_threads(t_data *data, t_camera *camera,
 						t_canvas *canvas);
+t_color				blend_colors(t_color surface_color, t_color reflect_color,
+						double reflective);
+void				init_cylinder_comps(t_compu *comps, t_cylinder *cylinder,
+						t_tuple point);
+void				init_comps(t_compu *comps, void *object, t_tuple point,
+						t_ray ray);
+t_material			get_object_specific_material(void *object);
+t_material	get_sphere_material(void *object);
+t_material	get_plane_material(void *object);
+t_material	get_cylinder_material(void *object);
