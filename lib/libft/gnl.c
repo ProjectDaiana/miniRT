@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   gnl.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: darotche <darotche@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/12/29 20:59:17 by darotche          #+#    #+#             */
+/*   Updated: 2024/12/29 21:00:46 by darotche         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libft.h"
 
 #define BUFFER_SIZE 1024
@@ -56,19 +68,16 @@ static char	*ft_new_left_str(char *left_str)
 	return (str);
 }
 
-int	get_next_line(int fd, char **line)
+static int	read_to_left_str(int fd, char **left_str)
 {
-	char *buff;
-	static char *left_str = NULL;  // Initialize to NULL
-	int rd_bytes;
+	char	*buff;
+	int		rd_bytes;
 
-	if (fd < 0 || !line || BUFFER_SIZE <= 0)
-		return (-1);
 	buff = malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!buff)
 		return (-1);
 	rd_bytes = 1;
-	while ((!left_str || !ft_strchr(left_str, '\n')) && rd_bytes != 0)
+	while ((!*left_str || !ft_strchr(*left_str, '\n')) && rd_bytes != 0)
 	{
 		rd_bytes = read(fd, buff, BUFFER_SIZE);
 		if (rd_bytes == -1)
@@ -77,9 +86,22 @@ int	get_next_line(int fd, char **line)
 			return (-1);
 		}
 		buff[rd_bytes] = '\0';
-		left_str = ft_strjoin(left_str, buff);
+		*left_str = ft_strjoin(*left_str, buff);
 	}
 	free(buff);
+	return (rd_bytes);
+}
+
+int	get_next_line(int fd, char **line)
+{
+	static char	*left_str = NULL;
+	int			rd_bytes;
+
+	if (fd < 0 || !line || BUFFER_SIZE <= 0)
+		return (-1);
+	rd_bytes = read_to_left_str(fd, &left_str);
+	if (rd_bytes == -1)
+		return (-1);
 	*line = ft_get_line(left_str);
 	left_str = ft_new_left_str(left_str);
 	if (rd_bytes == 0 && !left_str)

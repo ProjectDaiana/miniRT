@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   thread_helpers.c                                   :+:      :+:    :+:   */
+/*   bonus_thread_helpers.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tasha <tasha@student.42.fr>                +#+  +:+       +#+        */
+/*   By: darotche <darotche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 15:07:47 by tasha             #+#    #+#             */
-/*   Updated: 2024/12/29 15:10:00 by tasha            ###   ########.fr       */
+/*   Updated: 2024/12/29 20:53:24 by darotche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,6 @@ void	render_row(t_thread_data *data, int y, int *pixels_done)
 		pixel = (t_tuple){x, y, 0, 1};
 		render_pixel(data->scene, data->camera, data->canvas, pixel);
 		(*pixels_done)++;
-		// print_progress(data->start_y / (W_HEIGHT / THREADS),
-		// 	*pixels_done, total_pixels);
 		x++;
 	}
 }

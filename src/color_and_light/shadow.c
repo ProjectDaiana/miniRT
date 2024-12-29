@@ -6,7 +6,7 @@
 /*   By: darotche <darotche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 19:45:12 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/28 18:06:24 by darotche         ###   ########.fr       */
+/*   Updated: 2024/12/29 21:53:57 by darotche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,29 +49,6 @@ int	is_shadowed(t_scene *scene, t_tuple point, t_light *light)
 	free_intersections(&intersections);
 	return (0);
 }
-
-// t_color	shade_hit(t_scene *scene, t_compu comps, int remaining)
-// {
-// 	t_material			material;
-// 	t_color				surface;
-// 	t_color				reflected;
-// 	int					shadowed;
-// 	t_lighting_params	params;
-
-// 	material = get_object_material(comps.object);
-// 	shadowed = is_shadowed(scene, comps.over_point, &scene->light);
-// 	params.material = material;
-// 	params.light = scene->light;
-// 	params.point = comps.point;
-// 	params.eye_v = comps.eyev;
-// 	params.normal_v = comps.normalv;
-// 	params.in_shadow = shadowed;
-// 	surface = lighting(params);
-// 	reflected = reflected_color(scene, comps, remaining);
-// 	return (color_add(surface, reflected));
-// }
-
-
 
 t_color	shade_hit(t_scene *scene, t_compu comps, int remaining)
 {

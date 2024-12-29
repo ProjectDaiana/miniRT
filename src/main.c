@@ -6,7 +6,7 @@
 /*   By: darotche <darotche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 20:26:58 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/24 15:24:42 by darotche         ###   ########.fr       */
+/*   Updated: 2024/12/29 20:25:51 by darotche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,7 @@ static void	init(t_data *data, t_vector *vector)
 
 static int	init_scene(t_data *data, char *scene_file)
 {
-	printf("Parsing scene...\n");
 	parse_scene(scene_file, &(data->scene));
-	printf("Scene parsed\n");
-	// if (!data->scene.spheres)
-	// {
-	// 	printf("Error: Scene initialization failed\n");
-	// 	return (1);
-	// }
 	return (0);
 }
 
