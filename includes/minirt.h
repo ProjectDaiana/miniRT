@@ -6,7 +6,7 @@
 /*   By: tbella-n <tbella-n@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 20:22:28 by darotche          #+#    #+#             */
-/*   Updated: 2024/12/30 13:19:34 by tbella-n         ###   ########.fr       */
+/*   Updated: 2024/12/30 19:09:04 by tbella-n         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -219,7 +219,7 @@ typedef struct s_scene
 	int				plane_count;
 	t_cylinder		*cylinders;
 	int				cylinder_count;
-	t_ambient_light	ambient_light;
+	int	ambient_light;
 	int				max_spheres;
 }					t_scene;
 

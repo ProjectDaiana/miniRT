@@ -6,7 +6,7 @@
 /*   By: tbella-n <tbella-n@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 19:53:37 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/30 16:33:29 by tbella-n         ###   ########.fr       */
+/*   Updated: 2024/12/30 19:19:38 by tbella-n         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,9 @@ void	parse_scene(const char *filename, t_scene *scene)
 	FILE	*file;
 	char	line[256];
 	char	*newline;
+	int		ambient_present;
 
+	ambient_present = 0;
 	init_scene_file(filename, &file, scene);
 	while (fgets(line, sizeof(line), file))
 	{
@@ -60,9 +62,16 @@ void	parse_scene(const char *filename, t_scene *scene)
 			*newline = '\0';
 		if (!is_valid_line(line))
 			continue ;
+		if (line[0] == 'A')
+			ambient_present = 1;
 		parse_line_by_type(line, scene);
 	}
 	fclose(file);
+	if (!ambient_present)
+	{
+		printf("Error: Scene must contain ambient light\n");
+		exit(0);
+	}
 	if (((scene->sphere_count == 0) && (scene->cylinder_count == 0)
 			&& (scene->plane_count == 0)) || scene->light_count == 0)
 	{
