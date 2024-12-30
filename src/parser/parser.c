@@ -6,7 +6,7 @@
 /*   By: tbella-n <tbella-n@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 19:53:42 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/30 12:28:08 by tbella-n         ###   ########.fr       */
+/*   Updated: 2024/12/30 17:16:05 by tbella-n         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,22 +18,19 @@ void	parse_ambient(char *line, t_scene *scene)
 	char	**color;
 
 	split = ft_split(line, ' ');
-	if (!split || !split[1] || !split[2])
+	if (!validate_params(split, 4, "ambient"))
+		exit(1);
+	color = ft_split(split[1], ',');
+	if (!validate_coordinates(color, "ambient light", split))
 	{
-		fprintf(stderr, "Error: Invalid ambient light format\n");
-		return ;
-	}
-	scene->ambient_intensity = ft_atof(split[1]);
-	color = ft_split(split[2], ',');
-	if (!color || !color[0] || !color[1] || !color[2])
-	{
-		fprintf(stderr, "Error: Invalid ambient light color format\n");
-		ft_free_split(split);
-		return ;
+		ft_free_split(color);
+		exit(1);
 	}
 	scene->ambient_color.r = ft_atof(color[0]) / 255.0;
 	scene->ambient_color.g = ft_atof(color[1]) / 255.0;
 	scene->ambient_color.b = ft_atof(color[2]) / 255.0;
+	set_color_components(&scene->light.color, color);
+	scene->light_count++;
 	ft_free_split(split);
 	ft_free_split(color);
 }

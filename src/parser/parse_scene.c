@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_scene.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: darotche <darotche@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tbella-n <tbella-n@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 19:53:37 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/29 23:13:15 by darotche         ###   ########.fr       */
+/*   Updated: 2024/12/30 16:33:29 by tbella-n         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,14 @@
 
 void	init_scene_file(const char *filename, FILE **file, t_scene *scene)
 {
-	*file = fopen(filename, "r");
+	const char	*extension = strrchr(filename, '.');
+
+	*file = fopen(filename, "rt");
+	if (!extension || strcmp(extension, ".rt") != 0)
+	{
+		fprintf(stderr, "Error: Invalid file extension. Expected '.rt'\n");
+		exit(1);
+	}
 	if (!*file)
 	{
 		fprintf(stderr, "Error: Could not open file %s\n ", filename);
