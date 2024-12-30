@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: darotche <darotche@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tbella-n <tbella-n@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 20:55:21 by darotche          #+#    #+#             */
-/*   Updated: 2024/12/29 23:55:39 by darotche         ###   ########.fr       */
+/*   Updated: 2024/12/30 13:20:41 by tbella-n         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ static int	setup_camera_and_canvas(t_data *data, t_canvas *canvas,
 		free_canvas(canvas);
 		return (1);
 	}
+	cleanup_camera(camera);
 	camera->transform = transform;
 	return (0);
 }

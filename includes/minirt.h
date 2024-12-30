@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tasha <tasha@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tbella-n <tbella-n@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 20:22:28 by darotche          #+#    #+#             */
-/*   Updated: 2024/12/30 00:23:00 by tasha            ###   ########.fr       */
+/*   Updated: 2024/12/30 13:19:34 by tbella-n         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
-#define W_HEIGHT 500
-#define W_WIDTH 500
+#define W_HEIGHT 80
+#define W_WIDTH 80
 #define MLX_ERROR 1
 #define BLU_PX 0x0000FF
 #define RED_PX 0xFF0000
