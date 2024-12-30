@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbella-n <tbella-n@student.42.fr>          +#+  +:+       +#+        */
+/*   By: darotche <darotche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 20:22:28 by darotche          #+#    #+#             */
-/*   Updated: 2024/12/30 19:09:04 by tbella-n         ###   ########.fr       */
+/*   Updated: 2024/12/30 20:50:44 by darotche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -219,7 +219,7 @@ typedef struct s_scene
 	int				plane_count;
 	t_cylinder		*cylinders;
 	int				cylinder_count;
-	int	ambient_light;
+	int				ambient_light;
 	int				max_spheres;
 }					t_scene;
 
@@ -592,6 +592,6 @@ void				init_cylinder_comps(t_compu *comps, t_cylinder *cylinder,
 void				init_comps(t_compu *comps, void *object, t_tuple point,
 						t_ray ray);
 t_material			get_object_specific_material(void *object);
-t_material	get_sphere_material(void *object);
-t_material	get_plane_material(void *object);
-t_material	get_cylinder_material(void *object);
+t_material			get_sphere_material(void *object);
+t_material			get_plane_material(void *object);
+t_material			get_cylinder_material(void *object);
