@@ -6,34 +6,87 @@
 /*   By: tbella-n <tbella-n@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 19:53:42 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/30 17:16:05 by tbella-n         ###   ########.fr       */
+/*   Updated: 2024/12/30 18:35:35 by tbella-n         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-void	parse_ambient(char *line, t_scene *scene)
-{
-	char	**split;
-	char	**color;
 
-	split = ft_split(line, ' ');
-	if (!validate_params(split, 4, "ambient"))
-		exit(1);
-	color = ft_split(split[1], ',');
-	if (!validate_coordinates(color, "ambient light", split))
-	{
-		ft_free_split(color);
-		exit(1);
-	}
-	scene->ambient_color.r = ft_atof(color[0]) / 255.0;
-	scene->ambient_color.g = ft_atof(color[1]) / 255.0;
-	scene->ambient_color.b = ft_atof(color[2]) / 255.0;
-	set_color_components(&scene->light.color, color);
-	scene->light_count++;
-	ft_free_split(split);
-	ft_free_split(color);
+
+// void	parse_ambient(char *line, t_scene *scene)
+// {
+// 	char	**split;
+// 	char	**color;
+
+// 	split = ft_split(line, ' ');
+// 	if (!validate_params(split, 2, "ambient"))
+// 		{ft_free_split(split);
+// 			exit(1);}
+// 	if (split[1] == NULL) {
+// 		ft_free_split(split);
+// 			exit(1);
+// 	}
+// 	color = ft_split(split[2], ',');
+// 	if (!validate_coordinates(color, "ambient light", split))
+// 	{
+// 		ft_free_split(color);
+// 		return;
+// 	}
+// 	scene->ambient_color.r = ft_atof(color[0]) / 255.0;
+// 	scene->ambient_color.g = ft_atof(color[1]) / 255.0;
+// 	scene->ambient_color.b = ft_atof(color[2]) / 255.0;
+// 	set_color_components(&scene->light.color, color);
+// 	scene->light_count++;
+// 	ft_free_split(split);
+// 	ft_free_split(color);
+// }
+
+void parse_ambient(char *line, t_scene *scene)
+{
+    char **split;
+    char **color;
+    split = ft_split(line, ' ');
+    if (!validate_params(split, 2, "ambient")) // anything after a?
+    {
+        ft_free_split(split);
+        exit(1);
+    }
+    if (split[1] == NULL) // only a?
+    {
+        ft_free_split(split);
+        exit(1);
+    }
+    scene->ambient_intensity = ft_atof(split[1]);
+    if (split[2]) // if exist?
+    {
+        color = ft_split(split[2], ',');
+        if (!validate_coordinates(color, "ambient light", split))
+        {
+            ft_free_split(color);
+            ft_free_split(split);
+            exit(1);
+        }
+        scene->ambient_color.r = ft_atof(color[0]) / 255.0;
+        scene->ambient_color.g = ft_atof(color[1]) / 255.0;
+        scene->ambient_color.b = ft_atof(color[2]) / 255.0;
+        ft_free_split(color);
+    }
+    else
+    {
+        ft_free_split(split);
+        exit(1);
+    }
+    scene->light_count++;
+    ft_free_split(split);
 }
+
+
+
+
+
+
+
 
 void	parse_camera(char *line, t_scene *scene)
 {
