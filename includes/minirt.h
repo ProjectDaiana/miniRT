@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tasha <tasha@student.42.fr>                +#+  +:+       +#+        */
+/*   By: darotche <darotche@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 20:22:28 by darotche          #+#    #+#             */
-/*   Updated: 2024/12/31 02:19:29 by tasha            ###   ########.fr       */
+/*   Updated: 2024/12/31 10:46:56 by darotche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -397,6 +397,9 @@ t_sphere			create_sphere(void);
 t_intersections		intersect_sphere(t_sphere sphere, t_ray ray);
 
 void				parse_scene(const char *filename, t_scene *scene);
+int					process_scene_file(int fd, t_scene *scene);
+void			process_buffer(char *buffer, t_scene *scene, int *element_flags);
+void			process_line_and_flags(char *line, t_scene *scene, int *element_flags);
 
 void				my_mlx_pixel_put(t_img *img, int x, int y, int color);
 
@@ -468,8 +471,6 @@ int					init_plane_splits(char *line, char ***split, char ***pos,
 
 int					init_plane_color(char **split, char ***color);
 
-// void				init_scene_file(const char *filename, FILE **file,
-// 						t_scene *scene);
 void				init_scene_file(const char *filename, int *fd,
 						t_scene *scene);
 void				parse_line_by_type(char *line, t_scene *scene);
