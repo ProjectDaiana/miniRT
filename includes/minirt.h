@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: darotche <darotche@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tasha <tasha@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 20:22:28 by darotche          #+#    #+#             */
-/*   Updated: 2024/12/30 20:50:44 by darotche         ###   ########.fr       */
+/*   Updated: 2024/12/31 02:19:29 by tasha            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
+#include <unistd.h>
 #define W_HEIGHT 80
 #define W_WIDTH 80
 #define MLX_ERROR 1
@@ -467,7 +468,9 @@ int					init_plane_splits(char *line, char ***split, char ***pos,
 
 int					init_plane_color(char **split, char ***color);
 
-void				init_scene_file(const char *filename, FILE **file,
+// void				init_scene_file(const char *filename, FILE **file,
+// 						t_scene *scene);
+void				init_scene_file(const char *filename, int *fd,
 						t_scene *scene);
 void				parse_line_by_type(char *line, t_scene *scene);
 void				parse_scene(const char *filename, t_scene *scene);
@@ -476,8 +479,7 @@ void				parse_camera(char *line, t_scene *scene);
 void				parse_light(char *line, t_scene *scene);
 void				parse_sphere(char *line, t_scene *scene);
 void				parse_plane(char *line, t_scene *scene);
-void				init_scene_file(const char *filename, FILE **file,
-						t_scene *scene);
+
 t_plane				create_plane_from_params(char **pos, char **normal,
 						char **color);
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: darotche <darotche@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tasha <tasha@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 19:53:42 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/30 20:35:17 by darotche         ###   ########.fr       */
+/*   Updated: 2024/12/31 02:37:40 by tasha            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,15 @@ void	validate_a(char **color, char *str, char **split, t_scene *scene)
 
 void	parse_ambient(char *line, t_scene *scene)
 {
-	char		**split;
-	char		**color;
+	char	**split;
+	char	**color;
 
 	split = ft_split(line, ' ');
 	if (!validate_params(split, 2, "ambient"))
 	{
+		printf("Error: Invalid ambient light format\n");
 		ft_free_split(split);
-		exit (1);
+		exit(1);
 	}
 	scene->ambient_intensity = ft_atof(split[1]);
 	if (split[2])
@@ -45,6 +46,7 @@ void	parse_ambient(char *line, t_scene *scene)
 	}
 	else
 	{
+		printf("Error: Missing ambient light color\n");
 		ft_free_split(split);
 		exit(1);
 	}
@@ -61,6 +63,7 @@ void	parse_camera(char *line, t_scene *scene)
 	split = ft_split(line, ' ');
 	if (!validate_params(split, 4, "camera"))
 	{
+		printf("Error: Invalid camera format\n");
 		ft_free_split(split);
 		exit(1);
 	}
@@ -82,6 +85,7 @@ void	validate_l(char **split, int size, char *str)
 {
 	if (!validate_params(split, size, str))
 	{
+		printf("Error: Invalid light format\n");
 		ft_free_split(split);
 		exit(1);
 	}

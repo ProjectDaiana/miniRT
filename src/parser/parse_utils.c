@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbella-n <tbella-n@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tasha <tasha@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 19:53:33 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/30 17:12:26 by tbella-n         ###   ########.fr       */
+/*   Updated: 2024/12/31 02:33:46 by tasha            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	validate_params(char **split, int count, char *element)
 		i++;
 	if (i < count)
 	{
-		fprintf(stderr, "Error: Invalid %s format\n", element);
+		printf("Error: Invalid %s format\n", element);
 		return (0);
 	}
 	return (1);
@@ -33,15 +33,16 @@ int	validate_coordinates(char **coords, char *element, char **to_free)
 {
 	if (!coords || !coords[0] || !coords[1] || !coords[2])
 	{
-		fprintf(stderr, "Error: Invalid %s position format\n", element);
+		printf("Error: Invalid %s position format\n", element);
 		ft_free_split(to_free);
-		exit (0);
+		exit(0);
 	}
 	return (1);
 }
 
 int	is_valid_line(char *line)
 {
-	return (line[0] != '\n' && line[0] != '#' && line[0] != '\0'
-		&& line[0] != ' ');
+	while (*line && (*line == ' ' || *line == '\t'))
+		line++;
+	return (*line != '\n' && *line != '#' && *line != '\0');
 }

@@ -3,28 +3,48 @@
 /*                                                        :::      ::::::::   */
 /*   parse_scene.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: darotche <darotche@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tasha <tasha@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 19:53:37 by tbella-n          #+#    #+#             */
-/*   Updated: 2024/12/30 20:49:21 by darotche         ###   ########.fr       */
+/*   Updated: 2024/12/31 02:51:18 by tasha            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-void	init_scene_file(const char *filename, FILE **file, t_scene *scene)
+static int	validate_and_open_file(const char *filename)
 {
-	const char	*extension = strrchr(filename, '.');
+	const char	*extension = ft_strrchr(filename, '.');
+	int			fd;
+	char		test_buf[1];
 
-	*file = fopen(filename, "rt");
-	if (!extension || strcmp(extension, ".rt") != 0)
+	if (!extension || ft_strcmp(extension, ".rt") != 0)
 	{
-		fprintf(stderr, "Error: Invalid file extension. Expected '.rt'\n");
+		printf("Error: Invalid file extension. Expected '.rt'\n");
 		exit(1);
 	}
-	if (!*file)
+	fd = open(filename, O_RDONLY);
+	if (fd < 0)
 	{
-		fprintf(stderr, "Error: Could not open file %s\n ", filename);
+		perror("Error opening file");
+		exit(1);
+	}
+	if (read(fd, test_buf, 1) < 0)
+	{
+		perror("Error reading file");
+		close(fd);
+		exit(1);
+	}
+	return (fd);
+}
+
+void	init_scene_file(const char *filename, int *fd, t_scene *scene)
+{
+	close(*fd = validate_and_open_file(filename));
+	*fd = open(filename, O_RDONLY);
+	if (*fd < 0)
+	{
+		perror("Error reopening file");
 		exit(1);
 	}
 	ft_memset(scene, 0, sizeof(t_scene));
@@ -48,8 +68,7 @@ void	parse_line_by_type(char *line, t_scene *scene)
 
 void	validate_scene_elements(t_scene *scene, int element_flags)
 {
-	if (!(element_flags & (1 << 0)) || !(element_flags & (1 << 1))
-		|| !(element_flags & (1 << 2)))
+	if (!(element_flags & 1) || !(element_flags & 2) || !(element_flags & 4))
 	{
 		printf("Error: Scene must contain A, L and C\n");
 		exit(1);
@@ -62,39 +81,66 @@ void	validate_scene_elements(t_scene *scene, int element_flags)
 	}
 }
 
-int	process_scene_file(FILE *file, t_scene *scene)
+static void	process_line_and_flags(char *line, t_scene *scene,
+		int *element_flags)
 {
-	char	line[256];
-	char	*newline;
+	while (*line && (*line == ' ' || *line == '\t'))
+		line++;
+	if (!is_valid_line(line))
+		return ;
+	if (line[0] == 'A')
+		*element_flags |= 1;
+	else if (line[0] == 'L')
+		*element_flags |= 2;
+	else if (line[0] == 'C')
+		*element_flags |= 4;
+	parse_line_by_type(line, scene);
+}
+
+static void	process_buffer(char *buffer, t_scene *scene, int *element_flags)
+{
+	char	*start;
+	char	*end;
+
+	start = buffer;
+	while ((end = ft_strchr(start, '\n')))
+	{
+		*end = '\0';
+		process_line_and_flags(start, scene, element_flags);
+		start = end + 1;
+	}
+	if (*start)
+		process_line_and_flags(start, scene, element_flags);
+}
+
+int	process_scene_file(int fd, t_scene *scene)
+{
+	char	buffer[1024];
 	int		element_flags;
+	ssize_t	bytes_read;
 
 	element_flags = 0;
-	while (fgets(line, sizeof(line), file))
+	while ((bytes_read = read(fd, buffer, sizeof(buffer) - 1)) > 0)
 	{
-		newline = strchr(line, '\n');
-		if (newline)
-			*newline = '\0';
-		if (!is_valid_line(line))
-			continue ;
-		if (line[0] == 'A')
-			element_flags |= 1 << 0;
-		else if (line[0] == 'L')
-			element_flags |= 1 << 1;
-		else if (line[0] == 'C')
-			element_flags |= 1 << 2;
-		parse_line_by_type(line, scene);
+		buffer[bytes_read] = '\0';
+		process_buffer(buffer, scene, &element_flags);
+	}
+	if (bytes_read < 0)
+	{
+		perror("Error reading file");
+		exit(1);
 	}
 	return (element_flags);
 }
 
 void	parse_scene(const char *filename, t_scene *scene)
 {
-	FILE	*file;
-	int		element_flags;
+	int	fd;
+	int	element_flags;
 
-	init_scene_file(filename, &file, scene);
-	element_flags = process_scene_file(file, scene);
-	fclose(file);
+	init_scene_file(filename, &fd, scene);
+	element_flags = process_scene_file(fd, scene);
+	close(fd);
 	validate_scene_elements(scene, element_flags);
 }
 
