@@ -51,22 +51,6 @@ Welcome to miniRT, a basic raytracing engine built from scratch using the MiniLi
 ## Subject
 [Subject](https://cdn.intra.42.fr/pdf/pdf/137465/en.subject.pdf)
 
-## To Do
-- [x] Check for forbidden functions
-- [x] finish reflections
-- [x] change functions in parser
-- [x] left wall changing colors
-- [ ] Window resize
-- [ ] Camera input
-- [ ] Bring multithread
-- [ ] Check for race conditions
-- [ ] Check behaviour of camera movements
-- [ ] Check that rendering works everytime. Some times it is not rendering cylinder or sphere
-- [ ] Check for leaks
-- [ ] Norminette
-- [ ] Evaluate
-- [ ] Celebrate
-
 ## Features
 - **Geometric Objects.** Supports rendering of basic geometric shapes including planes, spheres, and cylinders. These objects can be resized, translated, and rotated (except for spheres and lights, which cannot be rotated).
 - **Lighting System.** Implements ambient and diffuse lighting, ensuring objects are illuminated realistically. The system also handles spot brightness and hard shadows, with no object ever being completely in the dark.
